@@ -96,7 +96,7 @@ Response headers, with reasoning in comments. The notable entries:
 
 ### `_redirects`
 
-38 rules preserving legacy WordPress URLs. See
+30 rules preserving legacy WordPress URLs. See
 [architecture ADR 3](architecture.md#adr-3-url-structure-preserves-every-legacy-path).
 
 Cloudflare Pages caps `_redirects` at 2,000 static rules and 100 rules using splats. We are
