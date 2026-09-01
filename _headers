@@ -27,8 +27,10 @@
 /*.html
   Cache-Control: public, max-age=0, must-revalidate
 
-# Fingerprint-free asset names, so revalidate rather than cache forever.
-# If asset hashing is ever introduced, raise these to immutable.
+# Asset URLs carry a ?v=<content hash> stamp injected by tools/build.py, so a
+# changed file is a new URL and these TTLs are safe. Note the zone's Browser
+# Cache TTL setting can override the max-age below (it was observed rewriting
+# 3600 to 432000); the version stamp is what actually guarantees freshness.
 /assets/css/*
   Cache-Control: public, max-age=3600, stale-while-revalidate=86400
 /assets/js/*

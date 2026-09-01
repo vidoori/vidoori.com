@@ -41,6 +41,7 @@ Requires only the Python 3 standard library (3.8+).
 import argparse
 import html
 import json
+import hashlib
 import os
 import re
 import shutil
@@ -92,6 +93,29 @@ def parse_page(text, filename):
 # --------------------------------------------------------------------------
 # Navigation
 # --------------------------------------------------------------------------
+
+_ASSET_VERSIONS = {}
+
+
+def asset_version(rel_path):
+    """Short content hash for a static asset, used as a ?v= cache buster.
+
+    Asset filenames are not fingerprinted, and Cloudflare serves them with a
+    long max-age (the zone's Browser Cache TTL can override what _headers asks
+    for). Without this, a CSS or JS change does not reach returning visitors
+    for days, while the HTML that depends on it updates immediately — the
+    worst possible pairing. The HTML is always revalidated, so a new hash here
+    pulls the new asset through instantly.
+
+    Cached per run: the file is read once, not once per page.
+    """
+    if rel_path not in _ASSET_VERSIONS:
+        full = os.path.join(ROOT, rel_path)
+        with open(full, "rb") as fh:
+            digest = hashlib.sha256(fh.read()).hexdigest()
+        _ASSET_VERSIONS[rel_path] = digest[:10]
+    return _ASSET_VERSIONS[rel_path]
+
 
 def is_current(item, page_nav, page_path):
     """A top-level nav item is 'current' for its own page and its children."""
@@ -313,6 +337,8 @@ def render(site, shell, meta, content, src_name, posts=None):
         "{{FOOTER_COLUMNS}}": render_footer_columns(site),
         "{{HEAD_EXTRA}}": meta.get("head", "").replace("\\n", "\n"),
         "{{CONTENT}}": content.rstrip() + "\n",
+        "{{CSS_VERSION}}": asset_version("assets/css/site.css"),
+        "{{JS_VERSION}}": asset_version("assets/js/site.js"),
     }
     for token, value in replacements.items():
         page = page.replace(token, value)
