@@ -1,0 +1,166 @@
+title: Contact
+description: Contact Vidoori. Corporate office at 4000 Garden City Drive, Suite 808, Hyattsville, MD 20785. Phone (240) 608-6810 or email info@vidoori.com.
+path: /contact/
+nav: contact
+schema: ContactPage
+head: <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+---
+<section class="page-hero">
+  <div class="container">
+    <p class="eyebrow">Contact</p>
+    <h1>Let's talk about your mission.</h1>
+    <p class="lede">Thank you for your interest in Vidoori. Please provide the requested information about your inquiry so that we may route your request to the appropriate individual. You should receive a response within three business days.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="split split--wide-start">
+
+      <div class="form-shell">
+        <h2>Send us a message</h2>
+        <p class="muted mt-5">Fields marked <span class="req" aria-hidden="true">*</span> are required.</p>
+
+        <form id="contact-form" action="/api/contact" method="post" novalidate class="mt-6">
+
+          <div class="field-grid">
+            <div class="field">
+              <label for="firstName">First name <span class="req" aria-hidden="true">*</span></label>
+              <input class="input" type="text" id="firstName" name="firstName" required maxlength="120"
+                     autocomplete="given-name" data-label="First name">
+              <p class="field__error" id="firstName-error" role="alert"></p>
+            </div>
+
+            <div class="field">
+              <label for="lastName">Last name <span class="req" aria-hidden="true">*</span></label>
+              <input class="input" type="text" id="lastName" name="lastName" required maxlength="120"
+                     autocomplete="family-name" data-label="Last name">
+              <p class="field__error" id="lastName-error" role="alert"></p>
+            </div>
+
+            <div class="field">
+              <label for="email">Email address <span class="req" aria-hidden="true">*</span></label>
+              <input class="input" type="email" id="email" name="email" required maxlength="200"
+                     autocomplete="email" data-label="Email address">
+              <p class="field__error" id="email-error" role="alert"></p>
+            </div>
+
+            <div class="field">
+              <label for="phone">Phone number <span class="hint">(optional)</span></label>
+              <input class="input" type="tel" id="phone" name="phone" maxlength="60"
+                     autocomplete="tel" placeholder="Include country code" data-label="Phone number">
+              <p class="field__error" id="phone-error" role="alert"></p>
+            </div>
+
+            <div class="field field--full">
+              <label for="company">Company or organization <span class="req" aria-hidden="true">*</span></label>
+              <input class="input" type="text" id="company" name="company" required maxlength="200"
+                     autocomplete="organization" data-label="Company or organization">
+              <p class="field__error" id="company-error" role="alert"></p>
+            </div>
+
+            <div class="field field--full">
+              <label for="region">Country or region <span class="req" aria-hidden="true">*</span></label>
+              <select class="select" id="region" name="region" required data-label="Country or region">
+                <option value="">Select a region&hellip;</option>
+                <option>United States</option>
+                <option>Canada</option>
+                <option>Mexico</option>
+                <option>South America</option>
+                <option>Europe</option>
+                <option>Asia</option>
+                <option>Africa</option>
+                <option>Australia</option>
+              </select>
+              <p class="field__error" id="region-error" role="alert"></p>
+            </div>
+
+            <div class="field field--full">
+              <label for="message">How can we help you? <span class="req" aria-hidden="true">*</span></label>
+              <textarea class="textarea" id="message" name="message" required maxlength="5000"
+                        data-label="Message"></textarea>
+              <p class="hint">5,000 character limit.</p>
+              <p class="field__error" id="message-error" role="alert"></p>
+            </div>
+          </div>
+
+          <div class="stack mt-6">
+            <label class="check">
+              <input type="checkbox" name="mediaInquiry" value="yes">
+              <span>This is a media inquiry.</span>
+            </label>
+
+            <div class="field">
+              <label class="check">
+                <input type="checkbox" name="privacyConsent" value="yes" required data-label="Privacy consent">
+                <span>I agree to the use and processing of my personal information by Vidoori for the purpose of responding to this request, in accordance with <a href="/privacy-policy/">Vidoori's Privacy Policy</a>. <span class="req" aria-hidden="true">*</span></span>
+              </label>
+              <p class="field__error" id="privacyConsent-error" role="alert"></p>
+            </div>
+          </div>
+
+          <!-- Bot traps. Real users never see or fill these. -->
+          <div class="hp" aria-hidden="true">
+            <label for="website">Website</label>
+            <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+          </div>
+          <input type="hidden" name="started_at" value="">
+
+          <div class="cf-turnstile" data-sitekey="{{TURNSTILE_SITEKEY}}" data-theme="light"></div>
+
+          <div class="btn-row">
+            <button class="btn btn--accent" type="submit">Send Message</button>
+          </div>
+
+          <p class="form-status" id="form-status" role="status" aria-live="polite" hidden></p>
+
+          <noscript>
+            <p class="form-status is-pending" style="display:block">
+              JavaScript is disabled, so this form will submit the ordinary way and load a
+              confirmation page. Alternatively, email
+              <a href="mailto:info@vidoori.com">info@vidoori.com</a> directly.
+            </p>
+          </noscript>
+        </form>
+      </div>
+
+      <div class="contact-panel">
+        <h2>Corporate office</h2>
+        <div>
+          <h3>Address</h3>
+          <address>
+            4000 Garden City Drive, Suite&nbsp;808<br>
+            Hyattsville, MD 20785<br>
+            United States
+          </address>
+        </div>
+        <div>
+          <h3>General inquiries</h3>
+          <address>
+            <a href="mailto:info@vidoori.com">info@vidoori.com</a><br>
+            Phone: <a href="tel:+12406086810">(240) 608-6810</a><br>
+            Fax: (240) 331-0304
+          </address>
+        </div>
+        <div>
+          <h3>Contracts</h3>
+          <address>
+            <a href="mailto:contracts@vidoori.com">contracts@vidoori.com</a><br>
+            UEI N37JST95C3S5<br>
+            CAGE 6T0A7
+          </address>
+        </div>
+        <div>
+          <h3>Careers</h3>
+          <p>Open roles are posted on our recruiting site.</p>
+          <p class="mt-5"><a class="link-arrow" href="https://vidoori.teamtailor.com/jobs" target="_blank" rel="noopener noreferrer">View open roles</a></p>
+        </div>
+        <div>
+          <h3>Other locations</h3>
+          <p>Satellite operating locations in Washington, D.C., Maryland, and Virginia.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>

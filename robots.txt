@@ -1,0 +1,7 @@
+# https://www.vidoori.com/robots.txt
+
+User-agent: *
+Allow: /
+Disallow: /api/
+
+Sitemap: https://www.vidoori.com/sitemap.xml

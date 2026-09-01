@@ -1,0 +1,123 @@
+{
+  "_comment": "Single source of truth for site-wide chrome. Edit here, then run tools/build.py. See docs/README.md.",
+
+  "name": "Vidoori",
+  "legalName": "Vidoori, Inc.",
+  "origin": "https://www.vidoori.com",
+  "tagline": "We are dedicated to our client's mission.",
+  "blurb": "Vidoori is a consulting firm that provides high quality information technology services and products to solve business problems for Government and Commercial clients.",
+  "foundedYear": "2008",
+
+  "contact": {
+    "email": "info@vidoori.com",
+    "contractsEmail": "contracts@vidoori.com",
+    "phone": "(240) 608-6810",
+    "phoneHref": "+12406086810",
+    "fax": "(240) 331-0304",
+    "street": "4000 Garden City Drive, Suite 808",
+    "city": "Hyattsville",
+    "state": "MD",
+    "zip": "20785",
+    "country": "US"
+  },
+
+  "_turnstileNote": "Cloudflare Turnstile SITE key (public, safe to commit). The matching SECRET key is a Pages environment variable named TURNSTILE_SECRET_KEY — never put it here. This is the live widget for vidoori.com; the widget is configured for the vidoori.com and test.vidoori.com hostnames. See docs/contact-form.md.",
+  "turnstileSiteKey": "0x4AAAAAAEkCdhTn3knzXCzq",
+
+  "identifiers": {
+    "uei": "N37JST95C3S5",
+    "cage": "6T0A7"
+  },
+
+  "external": {
+    "careers": "https://vidoori.teamtailor.com/jobs",
+    "vpt": "https://vpt.vidoori.com/about",
+    "linkedin": "https://www.linkedin.com/company/vidoori-inc/",
+    "twitter": "https://twitter.com/vidooriinc"
+  },
+
+  "nav": [
+    {
+      "id": "who-we-are",
+      "label": "Who We Are",
+      "href": "/who-we-are/",
+      "children": [
+        { "label": "Our Company", "href": "/who-we-are/" },
+        { "label": "Leadership", "href": "/who-we-are/leadership/" },
+        { "label": "Our Values", "href": "/who-we-are/our-values/" },
+        { "label": "Corporate Culture", "href": "/who-we-are/corporate-culture/" },
+        { "label": "Certifications", "href": "/who-we-are/certifications/" },
+        { "label": "Awards & Recognition", "href": "/who-we-are/awards/" },
+        { "label": "Contract Vehicles", "href": "/who-we-are/contract-vehicles/" }
+      ]
+    },
+    {
+      "id": "what-we-do",
+      "label": "What We Do",
+      "href": "/what-we-do/",
+      "children": [
+        { "label": "All Capabilities", "href": "/what-we-do/" },
+        { "label": "Integration & Test", "href": "/what-we-do/integration-test/" },
+        { "label": "DevSecOps", "href": "/what-we-do/devsecops/" },
+        { "label": "Cloud-Native", "href": "/what-we-do/cloud-native/" },
+        { "label": "Data Management", "href": "/what-we-do/data/" },
+        { "label": "Software Development", "href": "/what-we-do/software-development/" },
+        { "label": "Cybersecurity", "href": "/what-we-do/cybersecurity/" },
+        { "label": "Intelligence", "href": "/what-we-do/applied-intelligence/" },
+        { "label": "Strategy", "href": "/what-we-do/strategy-consulting/" }
+      ]
+    },
+    {
+      "id": "solutions",
+      "label": "Solutions",
+      "href": "https://vpt.vidoori.com/about",
+      "children": [
+        { "label": "VPT Performance Testing", "href": "https://vpt.vidoori.com/about", "external": true }
+      ]
+    },
+    { "id": "insights", "label": "Insights", "href": "/insights/" },
+    { "id": "careers", "label": "Careers", "href": "/careers/" }
+  ],
+
+  "footer": [
+    {
+      "heading": "Who We Are",
+      "links": [
+        { "label": "Our Company", "href": "/who-we-are/" },
+        { "label": "Leadership", "href": "/who-we-are/leadership/" },
+        { "label": "Certifications", "href": "/who-we-are/certifications/" },
+        { "label": "Awards", "href": "/who-we-are/awards/" },
+        { "label": "Contract Vehicles", "href": "/who-we-are/contract-vehicles/" }
+      ]
+    },
+    {
+      "heading": "What We Do",
+      "links": [
+        { "label": "Integration & Test", "href": "/what-we-do/integration-test/" },
+        { "label": "DevSecOps", "href": "/what-we-do/devsecops/" },
+        { "label": "Cloud-Native", "href": "/what-we-do/cloud-native/" },
+        { "label": "Data Management", "href": "/what-we-do/data/" },
+        { "label": "All Capabilities", "href": "/what-we-do/" }
+      ]
+    },
+    {
+      "heading": "Life at Vidoori",
+      "links": [
+        { "label": "Our Values", "href": "/who-we-are/our-values/" },
+        { "label": "Corporate Culture", "href": "/who-we-are/corporate-culture/" },
+        { "label": "Careers", "href": "https://vidoori.teamtailor.com/jobs", "external": true },
+        { "label": "Refer a Candidate", "href": "/careers/#referral" }
+      ]
+    },
+    {
+      "heading": "Connect",
+      "links": [
+        { "label": "Contact Us", "href": "/contact/" },
+        { "label": "Insights", "href": "/insights/" },
+        { "label": "Capability Statement", "href": "/assets/docs/Vidoori_CapabilityStatement.pdf" },
+        { "label": "Privacy Policy", "href": "/privacy-policy/" },
+        { "label": "Terms of Use", "href": "/terms-of-use/" }
+      ]
+    }
+  ]
+}

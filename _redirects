@@ -1,0 +1,54 @@
+# Cloudflare Pages redirects. One rule per line: <from> <to> <status>
+# Docs: https://developers.cloudflare.com/pages/configuration/redirects/
+#
+# Purpose: keep every URL the WordPress site had indexed alive, so the
+# rebuild does not shed search rankings or break inbound links.
+# Splats (:splat) capture the rest of the path.
+
+# --- Leadership bios: 10 individual pages consolidated onto one page ---
+/who-we-are/leadership/trong-bui-ceo      /who-we-are/leadership/  301
+/who-we-are/leadership/eric-huang         /who-we-are/leadership/  301
+/who-we-are/leadership/alan-heath-2       /who-we-are/leadership/  301
+/who-we-are/leadership/timothy-odom-2     /who-we-are/leadership/  301
+/who-we-are/leadership/thomas-george      /who-we-are/leadership/  301
+/who-we-are/leadership/joseph-stiers      /who-we-are/leadership/  301
+/who-we-are/leadership/bill-adamo         /who-we-are/leadership/  301
+/who-we-are/leadership/suzan-zimmerman    /who-we-are/leadership/  301
+/who-we-are/leadership/thomas-harrigan    /who-we-are/leadership/  301
+/who-we-are/leadership/*                  /who-we-are/leadership/  301
+
+# --- Legacy WordPress theme path that was still linked from /what-we-do/ ---
+/what-we-do-old/integration-test          /what-we-do/integration-test/  301
+/what-we-do-old/*                         /what-we-do/  301
+
+# --- Retired pages ---
+# Infographic-only post; its content was a single image we did not carry over.
+/cybersecurity/2020-security-breach-statistics  /insights/  301
+/blog-2                                   /insights/  301
+# PIMS was never a real product; the legacy page is not carried over.
+/pims                                     /what-we-do/  301
+/tamela                                   /  301
+
+# Referral forms replaced by the referral section on /careers/
+/referral-program-form                    /careers/  301
+/referral-form-non-vpn-test               /careers/  301
+
+# --- WordPress taxonomy and author archives (no equivalent) ---
+/category/*                               /insights/  301
+/tag/*                                    /insights/  301
+/author/*                                 /insights/  301
+
+# --- WordPress plumbing: send crawlers away rather than 404 ---
+/wp-admin/*                               /  301
+/wp-login.php                             /  301
+/wp-json/*                                /  301
+/xmlrpc.php                               /  301
+/feed                                     /insights/  301
+/comments/feed                            /insights/  301
+
+# --- Old sitemap locations ---
+/wp-sitemap.xml                           /sitemap.xml  301
+/wp-sitemap-index.xsl                     /sitemap.xml  301
+
+# --- Legacy uploaded PDFs now served from /assets/docs/ ---
+/wp-content/uploads/2025/07/Vidoori_CapabilityStatement.pdf        /assets/docs/Vidoori_CapabilityStatement.pdf  301

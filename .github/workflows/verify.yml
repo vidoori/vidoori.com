@@ -1,0 +1,20 @@
+name: Verify
+
+# Guards the one failure mode this repo is prone to: someone edits the generated
+# HTML in the site root by hand, or edits _src/ and forgets to rebuild. Both
+# produce a working-looking commit that the next `build.py` run silently undoes.
+on: [push, pull_request]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # No setup-python: GitHub's Ubuntu runners ship Python 3, and both scripts
+      # are stdlib-only. Adding a setup step would imply a dependency we do not have.
+      - name: Generated HTML is up to date
+        run: python3 tools/build.py --check
+
+      - name: No broken internal links
+        run: python3 tools/check_links.py

@@ -1,0 +1,43 @@
+# Cloudflare Pages response headers.
+# Syntax: a path pattern, then indented "Name: value" lines.
+# Docs: https://developers.cloudflare.com/pages/configuration/headers/
+# Rationale for each choice lives in docs/deployment.md.
+
+/*
+  # --- Security ---
+  # Content-Security-Policy is deliberately tight because this site has no
+  # third-party scripts other than Cloudflare Turnstile on /contact/.
+  # 'unsafe-inline' is required for script-src only because base.html carries
+  # one tiny inline script (the no-js class swap). Everything else is external.
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com; frame-src https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; form-action 'self'; base-uri 'none'; object-src 'none'; frame-ancestors 'none'; upgrade-insecure-requests
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  Cross-Origin-Opener-Policy: same-origin
+  # No feature of this site needs any of these device APIs.
+  Permissions-Policy: accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()
+
+# HTML is revalidated on every request so content edits go live immediately,
+# while still allowing the CDN to serve from cache.
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Fingerprint-free asset names, so revalidate rather than cache forever.
+# If asset hashing is ever introduced, raise these to immutable.
+/assets/css/*
+  Cache-Control: public, max-age=3600, stale-while-revalidate=86400
+/assets/js/*
+  Cache-Control: public, max-age=3600, stale-while-revalidate=86400
+
+/assets/img/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+
+/assets/docs/*
+  Cache-Control: public, max-age=86400
+  X-Content-Type-Options: nosniff
+
+# The form endpoint must never be cached or indexed.
+/api/*
+  Cache-Control: no-store
+  X-Robots-Tag: noindex
