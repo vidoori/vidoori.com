@@ -38,8 +38,8 @@ def built_pages():
 
 
 def load_redirects():
-    """Return (exact_paths, prefix_globs) from _redirects."""
-    exact, globs = set(), []
+    """Return (exact_paths, prefix_globs, placeholder_patterns, rules)."""
+    exact, globs, patterns, rules = set(), [], [], []
     path = os.path.join(ROOT, "_redirects")
     if not os.path.exists(path):
         return exact, globs
@@ -50,15 +50,39 @@ def load_redirects():
         parts = line.split()
         if len(parts) < 2:
             continue
-        src = parts[0]
+        src, dst = parts[0], parts[1]
+        rules.append((src, dst))
         if src.endswith("*"):
             globs.append(src[:-1])
+        elif ":" in src:
+            # A :placeholder matches exactly one non-empty path segment.
+            pattern = "/".join(
+                r"[^/]+" if seg.startswith(":") else re.escape(seg)
+                for seg in src.split("/"))
+            patterns.append(re.compile("^" + pattern + "/?$"))
         else:
             exact.add(src.rstrip("/") or "/")
-    return exact, globs
+    return exact, globs, patterns, rules
 
 
-def resolves(link, redirect_exact, redirect_globs):
+def redirect_loops(rules):
+    """Rules that send a path to itself.
+
+    A splat matches the empty string, so `/a/b/*  /a/b/  301` also matches
+    `/a/b/` and redirects the real page to itself until the browser gives up.
+    Use a `:placeholder` instead — it requires a non-empty path segment.
+    This is invisible locally: the file exists on disk and every link to it
+    resolves, so only the deployed site 500s.
+    """
+    out = []
+    for src, dst in rules:
+        base = src[:-1] if src.endswith("*") else src
+        if base.rstrip("/") == dst.rstrip("/"):
+            out.append("%s -> %s redirects to itself" % (src, dst))
+    return out
+
+
+def resolves(link, redirect_exact, redirect_globs, redirect_patterns=()):
     """Does this root-relative path resolve to a file, index, or redirect?"""
     clean = link.split("#")[0].split("?")[0]
     if not clean or clean == "/":
@@ -76,13 +100,15 @@ def resolves(link, redirect_exact, redirect_globs):
     normalised = "/" + rel.rstrip("/")
     if normalised in redirect_exact or clean.rstrip("/") in redirect_exact:
         return True
-    return any(clean.startswith(g) for g in redirect_globs)
+    if any(clean.startswith(g) for g in redirect_globs):
+        return True
+    return any(pat.match(clean.rstrip("/") or "/") for pat in redirect_patterns)
 
 
 def main():
-    redirect_exact, redirect_globs = load_redirects()
+    redirect_exact, redirect_globs, redirect_patterns, redirect_rules = load_redirects()
+    problems = ["_redirects: " + p for p in redirect_loops(redirect_rules)]
 
-    problems = []
     external = 0
     checked = 0
     pages = sorted(built_pages())
@@ -134,7 +160,7 @@ def main():
                                 % (rel_page, ref))
                 continue
 
-            if not resolves(ref, redirect_exact, redirect_globs):
+            if not resolves(ref, redirect_exact, redirect_globs, redirect_patterns):
                 problems.append("%s: broken link %s" % (rel_page, ref))
 
             # Cross-page anchors: verify the fragment against the target page.

@@ -15,7 +15,10 @@
 /who-we-are/leadership/bill-adamo         /who-we-are/leadership/  301
 /who-we-are/leadership/suzan-zimmerman    /who-we-are/leadership/  301
 /who-we-are/leadership/thomas-harrigan    /who-we-are/leadership/  301
-/who-we-are/leadership/*                  /who-we-are/leadership/  301
+# NOTE: :person (a placeholder) not * (a splat). A splat matches the empty string, so
+# /who-we-are/leadership/* would match /who-we-are/leadership/ itself and redirect the
+# real page to itself forever. A placeholder requires a non-empty path segment.
+/who-we-are/leadership/:person            /who-we-are/leadership/  301
 
 # --- Legacy WordPress theme path that was still linked from /what-we-do/ ---
 /what-we-do-old/integration-test          /what-we-do/integration-test/  301
