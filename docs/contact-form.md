@@ -1,8 +1,24 @@
-# Contact form: Postmark and Turnstile
+# Forms: Postmark and Turnstile
 
-The form at `/contact/` posts to `/api/contact`, which is implemented by
-`functions/api/contact.js` — a Cloudflare Pages Function. The file's path *is* the route:
-`functions/api/contact.js` serves `/api/contact`. There is no router to configure.
+Two forms, two Pages Functions, one shared configuration:
+
+| Form | Page | Endpoint | Function |
+|---|---|---|---|
+| Contact | `/contact/` | `/api/contact` | `functions/api/contact.js` |
+| External referral | `/careers/#referral` | `/api/referral` | `functions/api/referral.js` |
+
+The file's path *is* the route: `functions/api/contact.js` serves `/api/contact`. There is
+no router to configure.
+
+Both use the same environment variables, the same Turnstile widget, and the same Postmark
+server. `referral.js` is a deliberate near-copy of `contact.js` — Pages Functions have no
+shared-module story worth the indirection for two files. **If you change the bot checks, the
+Turnstile call, or the Postmark call in one, change the other too.**
+
+Referral email differs in three ways: the subject is prefixed `External Referral - `, the
+Postmark `Tag` is `external-referral`, and `ReplyTo` is the *referrer* rather than the
+candidate — the candidate has not asked to hear from us. Referrals go to `CONTACT_TO_EMAIL`
+unless the optional `REFERRAL_TO_EMAIL` is set (e.g. a recruiting mailbox).
 
 ## What happens on submit
 
@@ -32,6 +48,7 @@ them to *both* Production and Preview if you want the form working on preview de
 | `CONTACT_FROM_EMAIL` | Plaintext | Must be a verified Postmark sender signature, or an address on a verified domain |
 | `POSTMARK_MESSAGE_STREAM` | Plaintext | Optional; defaults to `outbound` |
 | `CONTACT_BCC_EMAIL` | Plaintext | Optional archive copy |
+| `REFERRAL_TO_EMAIL` | Plaintext | Optional; routes referrals somewhere other than `CONTACT_TO_EMAIL` |
 
 If any of the four required variables is missing, the endpoint returns HTTP 503 with a
 generic message and logs the names of the missing variables. Check
@@ -110,10 +127,26 @@ the guard is active. A `503` instead means environment variables are missing.
 
 Three places must agree, or you will get confusing validation failures:
 
-1. `_src/pages/contact.html` — the input's `name` attribute.
+1. The page — `_src/pages/contact.html` or `_src/pages/careers.html` — the input's `name`.
 2. `assets/js/site.js` — only if the field needs custom client-side validation.
-3. `functions/api/contact.js` — the `LIMITS` object, the loop in `validate()`, and the
-   `rows` array in `buildEmail()` so the value actually appears in the email.
+3. The Function — the `LIMITS` object, the checks in `validate()`, and the `rows` array in
+   `buildEmail()` so the value actually appears in the email.
+
+### How the shared client-side layer works
+
+Any `<form data-async>` is enhanced by `initAsyncForm()` in `site.js`: inline validation on
+blur, JSON submit, and a status line. It is generic — there is nothing contact-specific left
+in it. A form opts in with:
+
+- `data-async` on the `<form>` — required, this is the selector
+- `data-error-message` — the fallback shown if the request itself fails
+- `.form-status` on a `<p>` **inside the form** — scoped, so two forms cannot collide
+- `data-label` on each control — used in "… is required." messages
+- `data-minlen="10"` for a minimum length
+- `type="url"` gets URL-shape validation automatically
+
+Without JavaScript the same form posts normally and the Function returns a readable HTML
+confirmation page, so both forms work with JS disabled.
 
 The `region` field additionally has an allow-list (`REGIONS`) in the Function that must match
 the `<option>` values in the page.

@@ -225,12 +225,21 @@ GSA 8(a) STARS III `47QTCB22D0131`, SeaPort NxG.
 
 ---
 
-## 9. Contact form
+## 9. Forms
 
-`/contact/` posts to `functions/api/contact.js`, a Cloudflare Pages Function that layers:
-honeypot field (`website`) → submit-timing check (`started_at`) → Turnstile verification →
-server-side validation (authoritative; the client-side copy in `site.js` is only UX) →
-Postmark send.
+**Two forms, same machinery.** `/contact/` posts to `functions/api/contact.js`;
+`/careers/#referral` posts to `functions/api/referral.js`. Each layers: honeypot field
+(`website`) → submit-timing check (`started_at`) → Turnstile verification → server-side
+validation (authoritative; the client-side copy in `site.js` is only UX) → Postmark send.
+
+`referral.js` is a deliberate near-copy of `contact.js`. **Change the bot checks, the
+Turnstile call, or the Postmark call in one and you must change the other.**
+
+Client-side, both are driven by the same generic `initAsyncForm()` in `site.js`, which picks
+up any `<form data-async>`. A form opts in with `data-async`, a `.form-status` paragraph
+*inside* the form, `data-label` on each control, and optionally `data-minlen` /
+`data-error-message`. Nothing in that layer is form-specific — do not reintroduce an id-based
+lookup.
 
 Environment variables, set in Cloudflare Pages, **never committed**:
 `POSTMARK_SERVER_TOKEN`, `TURNSTILE_SECRET_KEY`, `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL`,
@@ -241,9 +250,13 @@ live widget for `vidoori.com`. Because it is a real widget, verification fails o
 not on the widget's list — `localhost` is not, so the form cannot be validated under a plain
 local server. Test on a preview deployment or `test.vidoori.com`.
 
-If you change form fields, change them in three places or the form breaks: the markup in
-`_src/pages/contact.html`, the client validation in `assets/js/site.js`, and the
-server validation in `functions/api/contact.js`.
+If you change form fields, change them in three places or the form breaks: the markup in the
+page, the client validation in `assets/js/site.js`, and the server validation in the Function
+(`LIMITS`, `validate()`, and the `rows` array in `buildEmail()`).
+
+Any page carrying a form needs the Turnstile script via `head:` front matter — `careers.html`
+and `contact.html` both declare it. Add a form to a third page and you must add that too, or
+the widget never renders and every submission fails verification.
 
 ---
 

@@ -116,7 +116,8 @@
         <h2>Send us a message</h2>
         <p class="muted mt-5">Fields marked <span class="req" aria-hidden="true">*</span> are required.</p>
 
-        <form id="contact-form" action="/api/contact" method="post" novalidate class="mt-6">
+        <form id="contact-form" action="/api/contact" method="post" novalidate class="mt-6" data-async
+              data-error-message="Sorry — we could not send your message. Please email info@vidoori.com instead.">
 
           <div class="field-grid">
             <div class="field">
@@ -173,7 +174,7 @@
             <div class="field field--full">
               <label for="message">How can we help you? <span class="req" aria-hidden="true">*</span></label>
               <textarea class="textarea" id="message" name="message" required maxlength="5000"
-                        data-label="Message"></textarea>
+                        data-minlen="10" data-label="Message"></textarea>
               <p class="hint">5,000 character limit.</p>
               <p class="field__error" id="message-error" role="alert"></p>
             </div>

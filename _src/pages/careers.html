@@ -3,6 +3,7 @@ description: Join Vidoori to make an impact, grow your career, and shape the fut
 path: /careers/
 nav: careers
 schema: WebPage
+head: <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 ---
 <section class="page-hero">
   <div class="container">
@@ -54,9 +55,8 @@ schema: WebPage
         <h2>Refer and earn up to $2,000</h2>
         <hr class="rule">
         <p class="lede mt-5">Great people know great people. Refer someone to Vidoori &mdash; if we hire them, you could earn $2,000 through our External Referral Program.</p>
-        <div class="btn-row">
-          <a class="btn btn--accent" href="mailto:info@vidoori.com?subject=External%20Referral">Submit a referral</a>
-        </div>
+        <p class="mt-5 muted">Complete the form below and our talent team will take it from
+          there. Fields marked <span class="req" aria-hidden="true">*</span> are required.</p>
       </div>
       <div>
         <h3>Program rules</h3>
@@ -65,6 +65,139 @@ schema: WebPage
         <p class="mt-5">To ensure your referral is considered for the most appropriate position, please provide a resume and job title.</p>
         <div class="callout mt-6">Current Vidoori employees should continue to refer through the internal Employee Referral Program, not this one.</div>
       </div>
+    </div>
+
+    <div class="form-shell mt-7">
+      <form id="referral-form" action="/api/referral" method="post" novalidate data-async
+            data-error-message="Sorry — we could not submit your referral. Please email info@vidoori.com instead.">
+
+        <h3>Your details</h3>
+        <div class="field-grid mt-5">
+          <div class="field">
+            <label for="referrerFirstName">Your first name <span class="req" aria-hidden="true">*</span></label>
+            <input class="input" type="text" id="referrerFirstName" name="referrerFirstName" required
+                   maxlength="120" autocomplete="given-name" data-label="Your first name">
+            <p class="field__error" id="referrerFirstName-error" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="referrerLastName">Your last name <span class="req" aria-hidden="true">*</span></label>
+            <input class="input" type="text" id="referrerLastName" name="referrerLastName" required
+                   maxlength="120" autocomplete="family-name" data-label="Your last name">
+            <p class="field__error" id="referrerLastName-error" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="referrerEmail">Your email address <span class="req" aria-hidden="true">*</span></label>
+            <input class="input" type="email" id="referrerEmail" name="referrerEmail" required
+                   maxlength="200" autocomplete="email" data-label="Your email address">
+            <p class="field__error" id="referrerEmail-error" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="referrerPhone">Your phone number</label>
+            <input class="input" type="tel" id="referrerPhone" name="referrerPhone"
+                   maxlength="60" autocomplete="tel" data-label="Your phone number">
+            <p class="field__error" id="referrerPhone-error" role="alert"></p>
+          </div>
+        </div>
+
+        <h3 class="mt-7">Who you are referring</h3>
+        <div class="field-grid mt-5">
+          <div class="field">
+            <label for="candidateFirstName">Candidate first name <span class="req" aria-hidden="true">*</span></label>
+            <input class="input" type="text" id="candidateFirstName" name="candidateFirstName" required
+                   maxlength="120" autocomplete="off" data-label="Candidate first name">
+            <p class="field__error" id="candidateFirstName-error" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="candidateLastName">Candidate last name <span class="req" aria-hidden="true">*</span></label>
+            <input class="input" type="text" id="candidateLastName" name="candidateLastName" required
+                   maxlength="120" autocomplete="off" data-label="Candidate last name">
+            <p class="field__error" id="candidateLastName-error" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="candidateEmail">Candidate email address <span class="req" aria-hidden="true">*</span></label>
+            <input class="input" type="email" id="candidateEmail" name="candidateEmail" required
+                   maxlength="200" autocomplete="off" data-label="Candidate email address">
+            <p class="field__error" id="candidateEmail-error" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="candidatePhone">Candidate phone number</label>
+            <input class="input" type="tel" id="candidatePhone" name="candidatePhone"
+                   maxlength="60" autocomplete="off" data-label="Candidate phone number">
+            <p class="field__error" id="candidatePhone-error" role="alert"></p>
+          </div>
+
+          <div class="field field--full">
+            <label for="jobTitle">Job title or role <span class="req" aria-hidden="true">*</span></label>
+            <input class="input" type="text" id="jobTitle" name="jobTitle" required
+                   maxlength="200" data-label="Job title or role">
+            <p class="hint">Review the <a href="https://vidoori.teamtailor.com/jobs" target="_blank" rel="noopener noreferrer">open roles</a> and name the one that fits best.</p>
+            <p class="field__error" id="jobTitle-error" role="alert"></p>
+          </div>
+
+          <div class="field field--full">
+            <label for="resumeUrl">Link to their resume or LinkedIn profile</label>
+            <input class="input" type="url" id="resumeUrl" name="resumeUrl"
+                   maxlength="500" placeholder="https://" data-label="Resume or profile link">
+            <p class="hint">Optional. This form cannot accept file attachments &mdash; if you have a resume
+              file, email it to <a href="mailto:info@vidoori.com">info@vidoori.com</a> after submitting.</p>
+            <p class="field__error" id="resumeUrl-error" role="alert"></p>
+          </div>
+
+          <div class="field field--full">
+            <label for="notes">Anything else we should know?</label>
+            <textarea class="textarea" id="notes" name="notes" maxlength="3000"
+                      data-label="Notes"></textarea>
+            <p class="hint">3,000 character limit.</p>
+            <p class="field__error" id="notes-error" role="alert"></p>
+          </div>
+        </div>
+
+        <div class="stack mt-6">
+          <div class="field">
+            <label class="check">
+              <input type="checkbox" name="eligibilityConfirm" value="yes" required data-label="Eligibility confirmation">
+              <span>I confirm that I am an individual (not a business entity), a legal resident of the
+                United States, at least 18 years of age, and not a current Vidoori employee.
+                <span class="req" aria-hidden="true">*</span></span>
+            </label>
+            <p class="field__error" id="eligibilityConfirm-error" role="alert"></p>
+          </div>
+
+          <div class="field">
+            <label class="check">
+              <input type="checkbox" name="privacyConsent" value="yes" required data-label="Privacy consent">
+              <span>I confirm the candidate is aware of this referral, and I agree to the use and
+                processing of the information above by Vidoori for recruitment purposes, in accordance
+                with <a href="/privacy-policy/">Vidoori&rsquo;s Privacy Policy</a>.
+                <span class="req" aria-hidden="true">*</span></span>
+            </label>
+            <p class="field__error" id="privacyConsent-error" role="alert"></p>
+          </div>
+        </div>
+
+        <!-- Bot traps. Real users never see or fill these. -->
+        <div class="hp" aria-hidden="true">
+          <label for="referral-website">Website</label>
+          <input type="text" id="referral-website" name="website" tabindex="-1" autocomplete="off">
+        </div>
+        <input type="hidden" name="started_at" value="">
+
+        <div class="cf-turnstile mt-6" data-sitekey="{{TURNSTILE_SITEKEY}}" data-theme="light"></div>
+
+        <div class="btn-row">
+          <button class="btn btn--accent" type="submit">Submit referral</button>
+        </div>
+
+        <p class="form-status" role="status" aria-live="polite" hidden></p>
+
+        <noscript>
+          <p class="form-status is-pending" style="display:block">
+            JavaScript is disabled, so this form will submit the ordinary way and load a
+            confirmation page. Alternatively, email
+            <a href="mailto:info@vidoori.com">info@vidoori.com</a> directly.
+          </p>
+        </noscript>
+      </form>
     </div>
   </div>
 </section>

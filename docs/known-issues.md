@@ -88,22 +88,30 @@ content back, it needs re-authoring as text or a real SVG chart.
 
 **18 of 19 posts were imported.**
 
-### 7. Two referral forms were consolidated
+### 7. ~~Two referral forms were consolidated~~ (resolved 2026-09-01)
 
 `/referral-program-form/` and `/referral-form-non-vpn-test/` were separate WordPress form
-pages. The rebuild replaces them with a referral section at `/careers/#referral`, and both
-old URLs redirect there.
+pages. Both redirect to `/careers/#referral`.
 
-**The referral submit button is currently a `mailto:` link**, not a form. The legacy form was
-a Contact Form 7 instance we did not reimplement. Options:
+**Resolved:** that section is now a real form posting to `/api/referral`, implemented by
+`functions/api/referral.js` and modelled on the contact form — same Turnstile widget, same
+Postmark server, same honeypot and submit-timing bot checks, same no-JS fallback. It replaces
+a `mailto:` link that captured nothing.
 
-- keep `mailto:` (simplest),
-- point it at the ATS if TeamTailor can capture referrals,
-- or build a second Pages Function modelled on `functions/api/contact.js`.
+Captured fields: referrer name / email / phone, candidate name / email / phone, job title, an
+optional resume-or-profile URL, free-text notes, an eligibility confirmation, and privacy
+consent. Both checkboxes are recorded in the email so there is a record of what the referrer
+agreed to. Email subject: `External Referral - <Candidate> for <Role>`.
 
-Also note the legacy referral terms & conditions PDF link was already dead — it pointed at
-`vidooridigital.wpcomstaging.com`, a staging domain that returns a WordPress 404 page. That
-link is **not** reproduced. Supply a working PDF if the terms should be linked.
+**Deliberate omission — file upload.** The form takes a *link* to a resume, not a file.
+Multipart parsing plus Postmark attachment encoding is a significant addition, and Postmark
+caps attachments at 10 MB. The page tells referrers to email a resume file separately. Say so
+if you want real uploads and it can be added.
+
+**Still open:** the legacy referral terms & conditions PDF link was already dead before the
+rebuild — it pointed at `vidooridigital.wpcomstaging.com`, a staging domain returning a
+WordPress 404. It is not reproduced. The page states the program rules in prose, but for a
+cash-incentive programme you probably want real linked T&Cs. Supply a PDF and it can be added.
 
 ---
 

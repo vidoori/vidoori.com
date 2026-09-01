@@ -118,11 +118,15 @@
   }
 
   /* ========================================================================
-     3. Contact form
+     3. Async forms (contact, referral)
 
-     Validation mirrors the server's rules in functions/api/contact.js.
-     The server is authoritative; this layer exists purely so people get
-     feedback without a round trip.
+     Any <form data-async> is enhanced: inline validation, JSON submit, and a
+     status line. Without JavaScript the same form posts normally and the
+     Function returns a readable HTML confirmation page.
+
+     Validation mirrors the server's rules in functions/api/contact.js and
+     functions/api/referral.js. The server is authoritative; this layer exists
+     purely so people get feedback without a round trip.
      ======================================================================== */
 
   var VALIDATORS = {
@@ -160,21 +164,27 @@
       setError(el, 'Enter a valid email address.');
       return false;
     }
-    if (value.trim() && el.name === 'message' && !VALIDATORS.minlen(value, 10)) {
-      setError(el, 'Please give us a little more detail (at least 10 characters).');
+    var min = parseInt(el.getAttribute('data-minlen'), 10);
+    if (value.trim() && min > 0 && !VALIDATORS.minlen(value, min)) {
+      setError(el, 'Please give us a little more detail (at least ' + min + ' characters).');
+      return false;
+    }
+    if (value.trim() && el.type === 'url' && !/^https?:\/\/[^\s]+\.[^\s]{2,}/i.test(value.trim())) {
+      setError(el, 'Enter a full URL starting with http:// or https://.');
       return false;
     }
     setError(el, '');
     return true;
   }
 
-  function initContactForm() {
-    var form = document.getElementById('contact-form');
+  function initAsyncForm(form) {
     if (!form) return;
 
-    var status = document.getElementById('form-status');
+    var status = form.querySelector('.form-status');
     var submit = form.querySelector('[type="submit"]');
-    var submitLabel = submit ? submit.textContent : 'Send Message';
+    var submitLabel = submit ? submit.textContent : 'Send';
+    var fallbackError = form.getAttribute('data-error-message') ||
+      'Sorry — we could not send this. Please email info@vidoori.com instead.';
     var controls = form.querySelectorAll('.input, .select, .textarea, [type="checkbox"][required]');
 
     // Timestamp the render. The server rejects submissions faster than a
@@ -253,22 +263,14 @@
         .then(function (result) {
           if (result.ok && result.data.ok) {
             form.reset();
-            say(
-              'success',
-              result.data.message ||
-                'Thank you — your message has been sent. We aim to respond within three business days.'
-            );
+            say('success', result.data.message || 'Thank you — your submission has been sent.');
             // Remove the form controls from the tab order after success so
             // the confirmation is the end of the interaction.
             if (window.turnstile && typeof window.turnstile.reset === 'function') {
               try { window.turnstile.reset(); } catch (err) { /* non-fatal */ }
             }
           } else {
-            say(
-              'error',
-              (result.data && result.data.error) ||
-                'Sorry — we could not send your message. Please email info@vidoori.com instead.'
-            );
+            say('error', (result.data && result.data.error) || fallbackError);
           }
         })
         .catch(function () {
@@ -301,7 +303,8 @@
   function init() {
     initNav();
     initSubmenus();
-    initContactForm();
+    Array.prototype.forEach.call(
+      document.querySelectorAll('form[data-async]'), initAsyncForm);
     initYear();
   }
 
