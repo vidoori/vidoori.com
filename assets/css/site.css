@@ -1133,13 +1133,22 @@ a:hover { color: var(--navy-500); }
    14. Forms
    ========================================================================== */
 
+/* A panel that sets its own background MUST set its own foreground. Dropped
+   inside .section--brand* it would otherwise inherit --text-on-brand (near
+   white) over its own white background — invisible text. The link colour is
+   reset for the same reason: .section--brand a is pastel --green-400, which
+   fails contrast on white. */
 .form-shell {
   background: var(--white);
+  color: var(--text);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: clamp(var(--sp-5), 4vw, var(--sp-7));
   box-shadow: var(--shadow-sm);
 }
+.form-shell a:not(.btn) { color: var(--navy-700); }
+.form-shell a:not(.btn):hover { color: var(--navy-600); }
+.form-shell h2, .form-shell h3 { color: var(--text); }
 
 .field-grid {
   display: grid;
@@ -1165,6 +1174,10 @@ a:hover { color: var(--navy-500); }
   width: 100%;
   padding: 0.7em 0.9em;
   background: var(--white);
+  /* Explicit, never inherited: these controls hard-code a white background, so
+     inheriting a light --text-on-brand from an enclosing brand section renders
+     typed text at ~1.1:1 against it. */
+  color: var(--text);
   border: 1px solid var(--gray-300);
   border-radius: var(--radius);
   font-size: var(--step-0);
@@ -1178,6 +1191,9 @@ a:hover { color: var(--navy-500); }
   box-shadow: 0 0 0 3px rgba(65, 67, 114, 0.16);
 }
 .textarea { min-height: 9rem; resize: vertical; }
+
+/* Firefox dims placeholders by default; opacity:1 keeps the token honest. */
+.input::placeholder, .textarea::placeholder { color: var(--text-muted); opacity: 1; }
 
 .select {
   appearance: none;

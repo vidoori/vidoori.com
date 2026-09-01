@@ -17,6 +17,15 @@ authoritative brand source we control. Everything else is derived from them.
 Two derived ramps, `--navy-50` through `--navy-950` and `--green-50` through `--green-800`,
 plus a neutral grey ramp.
 
+### Panels must set foreground as well as background
+
+Any component that hard-codes a `background` must hard-code a `color`. The brand sections set
+a near-white `--text-on-brand` that inherits into children; a white-backgrounded panel dropped
+inside one renders near-white text on white. This is not hypothetical — the referral form
+shipped that way and measured 1.1:1 against a 4.5:1 requirement. `.form-shell` and the form
+controls now set `color` explicitly. Links need the same treatment: `.section--brand a` is
+pastel `--green-400`, which is unreadable on white.
+
 ### The one colour trap worth knowing
 
 `--brand-green` (`#9AD389`) is a pastel. It is **not** accessible as text on white — roughly

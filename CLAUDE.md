@@ -145,8 +145,17 @@ Full detail in `docs/design-system.md`; this is what you need to avoid mistakes.
 `#9AD389`. `site.css` derives full ramps (`--navy-50..950`, `--green-50..800`). **Always use
 tokens, never raw hex.**
 
-⚠️ **The one colour trap:** `--brand-green` (`#9ad389`) is a pastel. It passes for large
-graphic elements but **fails text contrast**. For text or icons use `--green-700` or darker.
+⚠️ **Two colour traps, both already shipped bugs once:**
+
+1. `--brand-green` (`#9ad389`) is a pastel. It passes for large graphic elements but **fails
+   text contrast**. For text or icons use `--green-700` or darker.
+2. **Anything that sets its own `background` must also set its own `color`.** The dark
+   sections (`.section--brand`, `.section--brand-figured`) set `color: var(--text-on-brand)`,
+   which is near-white and inherits into any light-backgrounded child. A form placed in a
+   brand section rendered typed text at **1.1:1** against its own white input background —
+   invisible. `.form-shell` and `.input/.select/.textarea` now set `color` explicitly, and
+   `.form-shell` resets link colour too (brand-section links are pastel green, unreadable on
+   white). Apply the same rule to any new panel component.
 
 **Asset URLs are version-stamped.** `tools/build.py` appends `?v=<content hash>` to the
 `site.css` and `site.js` references in every page, so changing either file changes its URL and
