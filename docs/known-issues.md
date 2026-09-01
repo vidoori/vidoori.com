@@ -73,16 +73,14 @@ Harrigan's bio no longer appears and there is no link or title to correct. Kept 
 record in case the section is ever restored &mdash; the legacy page's LinkedIn link pointed
 at **Suzan Zimmerman's** profile and his title field was empty.
 
-### 6. One post was not carried over
+### 6. ~~One post was not carried over~~ (won't do &mdash; owner decision, 2026-09-01)
 
 `/cybersecurity/2020-security-breach-statistics/` ("2020 Security Cyber and Data Breach
-Statistics", March 3 2021) had **no body text** — its entire content was a single infographic
-image. Given the image-light decision, there was nothing to port.
+Statistics", March 3 2021) had **no body text** &mdash; its entire content was a single
+infographic image. Given the image-light decision, there was nothing to port.
 
-The URL 301-redirects to `/insights/` so the inbound link does not 404. If you want the
-content back, it needs re-authoring as text or a real SVG chart.
-
-**18 of 19 posts were imported.**
+Owner has decided not to re-author it. The URL 301-redirects to `/insights/`, in both bare and
+trailing-slash spellings, so no inbound link 404s.
 
 ### 7. ~~Two referral forms were consolidated~~ (resolved 2026-09-01)
 
@@ -113,38 +111,40 @@ cash-incentive programme you probably want real linked T&Cs. Supply a PDF and it
 
 ## Lower priority
 
-### 8. Analytics: enabled, delivery unconfirmed
+### 8. ~~No analytics~~ (resolved 2026-09-01)
 
-Cloudflare Web Analytics is switched on for the Pages project. It is cookieless, so the
-privacy policy's "no tracking cookies" statement stays true and needs no change.
+Cloudflare Web Analytics is enabled and **confirmed reporting** &mdash; the dashboard shows
+visits, page views, and Core Web Vitals. It is cookieless, so the privacy policy's "no
+tracking cookies" statement stays true and needs no change.
 
-**Fixed:** enabling it in the dashboard was not sufficient. The beacon is injected at the edge
-from `static.cloudflareinsights.com`, which the CSP in `_headers` did not allow, so the browser
-blocked it outright and nothing was collected. `script-src` now allows
-`static.cloudflareinsights.com` and `connect-src` allows `cloudflareinsights.com`. The beacon
-script now loads — confirmed in the browser console.
+One fix was required to get there: enabling it in the dashboard was not sufficient. The beacon
+is injected at the edge from `static.cloudflareinsights.com`, which the CSP in `_headers` did
+not allow, so the browser blocked it and nothing was collected. `script-src` now allows
+`static.cloudflareinsights.com` and `connect-src` allows `cloudflareinsights.com`.
 
-**Unconfirmed:** the beacon's data POST to `https://cloudflareinsights.com/cdn-cgi/rum` is
-rejected by CORS in testing, and the same-origin `/cdn-cgi/rum` path returns 404 on this
-hostname. So it is not proven that page views actually land.
+**If you ever add another third-party script, embed, or font host, add it to the CSP in
+`_headers` in the same change** &mdash; it will work locally and be blocked in production
+otherwise.
 
-**How to settle it:** open the Web Analytics dashboard after some real traffic. If it shows no
-page views, the likely cause is that the Pages-project toggle does not wire up a same-origin
-RUM endpoint for this custom domain; enabling the site from the **Web Analytics** section of
-the dashboard instead yields a snippet that reports correctly. That snippet would go in
-`_src/partials/base.html`, and its origin would need adding to the CSP.
+### 9. ~~Twitter/X branding~~ (resolved 2026-09-01)
 
-### 9. Twitter/X branding
+**LinkedIn is now the only social property on the site.** Vidoori does not use X, so every
+reference was removed rather than rebranded: the footer icon and link, the `twitter:card` and
+`twitter:site` meta tags in `_src/partials/base.html`, the `external.twitter` entry in
+`_src/site.json`, and the entry in the JSON-LD `sameAs` array.
 
-The footer icon uses the current X glyph, but the account name (`@vidooriinc`) and URL
-(`twitter.com/vidooriinc`) are unchanged and still redirect correctly. Update to `x.com` if
-you prefer.
+Link previews are unaffected. They are driven by the Open Graph (`og:*`) tags, which every
+platform reads &mdash; including X, which falls back to them when no `twitter:*` tags are
+present.
 
-### 10. `logos/` and `assets/img/` hold duplicate SVGs
+`tools/build.py` builds `sameAs` from a filtered list rather than indexing `site.json`
+directly, so removing another social property cannot raise a `KeyError`.
 
-`logos/` contains the untouched originals — instructed not to edit. `assets/img/` holds
-copies, which is what the site serves. They are byte-identical today. If a logo is ever
-revised, update `logos/` and re-copy:
+### 10. `logos/` and `assets/img/` hold duplicate SVGs &mdash; accepted
+
+`logos/` contains the untouched originals &mdash; instructed not to edit. `assets/img/` holds
+copies, which is what the site serves. They are byte-identical today. Owner has reviewed and
+accepted this. If a logo is ever revised, update `logos/` and re-copy:
 
 ```bash
 cp logos/vidoori-logo.svg logos/vidoori-logo-badge.svg assets/img/

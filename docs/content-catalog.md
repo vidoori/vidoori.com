@@ -48,7 +48,7 @@ copy rather than the primary nav.
 - Corporate Office: 4000 Garden City Drive, Suite 808, Hyattsville, MD 20785
 - `info@vidoori.com` · `contracts@vidoori.com` · Phone (240) 608-6810 · Fax (240) 331-0304
 - HQ Hyattsville MD; satellite locations in Washington D.C., Maryland, Virginia
-- Twitter/X: `@vidooriinc` · LinkedIn: `company/vidoori-inc`
+- LinkedIn: `company/vidoori-inc` &mdash; the only social property in use
 - Careers ATS: `https://vidoori.teamtailor.com/jobs` (external)
 - VPT product: `https://vpt.vidoori.com/about` (external)
 

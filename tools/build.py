@@ -211,7 +211,10 @@ def organization_ld(site):
             "postalCode": c["zip"],
             "addressCountry": c["country"],
         },
-        "sameAs": [site["external"]["linkedin"], site["external"]["twitter"]],
+        # Only the social properties Vidoori actually uses. Built from a
+        # filtered list so removing one from site.json cannot raise KeyError.
+        "sameAs": [url for url in (site["external"].get("linkedin"),)
+                   if url],
     }
 
 

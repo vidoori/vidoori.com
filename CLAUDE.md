@@ -313,18 +313,20 @@ same change, not later:
 
 ## 12. Open items (as of 2026-09-01)
 
-Full list and detail in `docs/known-issues.md`. The ones that will bite you:
+`docs/known-issues.md` is the full list; almost everything in it is now closed. What remains:
 
-1. **Turnstile secret key is not set yet** — the real site key is in `_src/site.json`, but
-   until `TURNSTILE_SECRET_KEY` is set in Pages, `/api/contact` returns 503 and the form
-   cannot deliver. Same for `POSTMARK_SERVER_TOKEN`, `CONTACT_TO_EMAIL`,
-   `CONTACT_FROM_EMAIL`. Blocks go-live.
-2. **Legal pages need counsel review** — the privacy policy's address, privacy contact, and
-   Turnstile disclosure were changed during the rebuild.
-3. **No analytics.** If it is ever added, cookie-based tools contradict the privacy policy;
-   Cloudflare Web Analytics does not.
-
----
+1. **Apex → www redirect is not in place.** `origin` is `https://www.vidoori.com`, so
+   canonicals point at the www host. If both `vidoori.com` and `www.vidoori.com` are added as
+   Pages custom domains without a redirect, both serve the site. **`_redirects` cannot fix
+   this** — it is path-only and cannot redirect across hostnames. It must be a Cloudflare
+   Redirect Rule or Bulk Redirect at the zone level.
+2. **`CONTACT_TO_EMAIL` points at an individual**, not a shared mailbox. Worth changing before
+   the www cutover so inquiries and referrals do not depend on one person's inbox.
+3. **`test.vidoori.com` is publicly crawlable.** Canonicals point at production, which covers
+   most of the risk. A `X-Robots-Tag: noindex` Transform Rule scoped to that hostname would
+   close it; the owner has decided against Cloudflare Access.
+4. **`logos/` and `assets/img/` hold byte-identical SVGs.** Accepted. If a logo changes,
+   update `logos/` then `cp logos/*.svg assets/img/`.
 
 ## 13. Working expectations
 
