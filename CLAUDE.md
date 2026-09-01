@@ -152,7 +152,9 @@ graphic elements but **fails text contrast**. For text or icons use `--green-700
 `site.css` and `site.js` references in every page, so changing either file changes its URL and
 the new version reaches visitors immediately. Do not hand-write those references without the
 stamp. This exists because Cloudflare was observed serving a five-day-old `site.js` from the
-edge — the zone's Browser Cache TTL overrode the `max-age` in `_headers`.
+edge: the zone's Browser Cache TTL was set to 5 days and silently overrode `_headers`. That
+setting is now "Respect Existing Headers" and the served TTLs match the file — but the stamp
+is the guarantee, since images and PDFs carry no version.
 
 Locally there is still no cache busting for a file you edit *without* rebuilding:
 `python3 -m http.server` sends no cache headers, so browsers cache heuristically. **If a JS

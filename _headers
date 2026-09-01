@@ -28,9 +28,13 @@
   Cache-Control: public, max-age=0, must-revalidate
 
 # Asset URLs carry a ?v=<content hash> stamp injected by tools/build.py, so a
-# changed file is a new URL and these TTLs are safe. Note the zone's Browser
-# Cache TTL setting can override the max-age below (it was observed rewriting
-# 3600 to 432000); the version stamp is what actually guarantees freshness.
+# changed file is a new URL and these TTLs are safe.
+#
+# These values only hold while the zone's Browser Cache TTL is set to "Respect
+# Existing Headers" (Caching > Configuration). It was previously set to 5 days,
+# which silently rewrote the max-age below from 3600 to 432000 and served a
+# stale site.js from the edge. If caching ever misbehaves, check that setting
+# before trusting this file.
 /assets/css/*
   Cache-Control: public, max-age=3600, stale-while-revalidate=86400
 /assets/js/*
