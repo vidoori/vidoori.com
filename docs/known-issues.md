@@ -8,23 +8,19 @@ several items **do** block go-live.
 
 ## Blocking go-live
 
-### 1. Turnstile: site key is live, secret key still needs setting
+### 1. ~~Turnstile and Postmark configuration~~ (resolved 2026-09-01)
 
-**Done (2026-09-01):** `_src/site.json` now carries the real widget's site key
-`0x4AAAAAAEkCdhTn3knzXCzq`, and the site has been rebuilt. The widget is configured in
-Cloudflare for the `vidoori.com` hostname (which covers `test.vidoori.com`).
+`_src/site.json` carries the live widget's site key `0x4AAAAAAEkCdhTn3knzXCzq` (widget
+hostnames `vidoori.com`, which covers `test.vidoori.com`). All four required environment
+variables are set in Cloudflare Pages.
 
-**Still required before the form works:** set `TURNSTILE_SECRET_KEY` in
-**Pages → project → Settings → Environment variables** (type Secret, in both Production and
-Preview) to the matching secret key from the same widget.
+**Verified end to end** on `test.vidoori.com`: a real contact-form submission was delivered to
+`CONTACT_TO_EMAIL`. The endpoint returns 403 to a request carrying no Turnstile token, which
+confirms the guard is active rather than merely configured.
 
-Until that variable is set, `/api/contact` returns **HTTP 503** and logs the missing variable
-names. The same is true of `POSTMARK_SERVER_TOKEN`, `CONTACT_TO_EMAIL`, and
-`CONTACT_FROM_EMAIL` — all four are required. See [contact-form.md](contact-form.md#environment-variables).
-
-Note the widget no longer always passes. Verification now genuinely fails on a hostname that
-is not on the widget's list, so test on a real hostname (a preview deployment or
-`test.vidoori.com`), not under `python3 -m http.server`.
+Note the widget no longer always passes. Verification genuinely fails on any hostname not on
+the widget's list — `localhost` is not on it, so forms cannot be exercised under
+`python3 -m http.server`. Test on a preview deployment or `test.vidoori.com`.
 
 ### 2. ~~One PDF exceeds Cloudflare Pages' file size limit~~ (resolved)
 
@@ -117,11 +113,26 @@ cash-incentive programme you probably want real linked T&Cs. Supply a PDF and it
 
 ## Lower priority
 
-### 8. No analytics
+### 8. Analytics: enabled, delivery unconfirmed
 
-None was requested, so none was added. If you want it, Cloudflare Web Analytics is the
-natural fit: no cookies, no client-side script, and it keeps the privacy policy's
-"no tracking cookies" statement true. Anything cookie-based means the policy must change.
+Cloudflare Web Analytics is switched on for the Pages project. It is cookieless, so the
+privacy policy's "no tracking cookies" statement stays true and needs no change.
+
+**Fixed:** enabling it in the dashboard was not sufficient. The beacon is injected at the edge
+from `static.cloudflareinsights.com`, which the CSP in `_headers` did not allow, so the browser
+blocked it outright and nothing was collected. `script-src` now allows
+`static.cloudflareinsights.com` and `connect-src` allows `cloudflareinsights.com`. The beacon
+script now loads — confirmed in the browser console.
+
+**Unconfirmed:** the beacon's data POST to `https://cloudflareinsights.com/cdn-cgi/rum` is
+rejected by CORS in testing, and the same-origin `/cdn-cgi/rum` path returns 404 on this
+hostname. So it is not proven that page views actually land.
+
+**How to settle it:** open the Web Analytics dashboard after some real traffic. If it shows no
+page views, the likely cause is that the Pages-project toggle does not wire up a same-origin
+RUM endpoint for this custom domain; enabling the site from the **Web Analytics** section of
+the dashboard instead yields a snippet that reports correctly. That snippet would go in
+`_src/partials/base.html`, and its origin would need adding to the CSP.
 
 ### 9. Twitter/X branding
 
