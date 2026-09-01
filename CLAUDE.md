@@ -148,6 +148,12 @@ tokens, never raw hex.**
 ⚠️ **The one colour trap:** `--brand-green` (`#9ad389`) is a pastel. It passes for large
 graphic elements but **fails text contrast**. For text or icons use `--green-700` or darker.
 
+**Assets are not fingerprinted.** `_headers` caches CSS/JS for an hour with
+`stale-while-revalidate`, so a returning visitor can run an old `site.js` against new HTML.
+Locally it is worse: `python3 -m http.server` sends no cache headers at all, so browsers
+cache heuristically. **If a JS change appears to have no effect, hard-reload before you doubt
+the code** — this has already cost one debugging session.
+
 **Reuse existing components — new CSS is a last resort.** The vocabulary:
 
 - Layout: `.container`, `.container--narrow`, `.section`, `.section--alt`, `.section--tight`,
