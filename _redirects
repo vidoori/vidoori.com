@@ -3,55 +3,86 @@
 #
 # Purpose: keep every URL the WordPress site had indexed alive, so the
 # rebuild does not shed search rankings or break inbound links.
-# Splats (:splat) capture the rest of the path.
+#
+# TWO ORDERING/MATCHING RULES THIS FILE DEPENDS ON — read before editing:
+#
+#  1. STATIC RULES FIRST, SPLATS AND PLACEHOLDERS LAST. Cloudflare resolves
+#     static rules with a fast lookup, but any static rule sitting *below* a
+#     splat or placeholder falls back to slow sequential matching. The build
+#     log says so explicitly ("could be made more performant by bringing it
+#     above any lines with splats or placeholders"). All dynamic rules are
+#     therefore grouped at the bottom of this file.
+#
+#  2. MATCHING IS LITERAL — TRAILING SLASHES ARE NOT NORMALISED. `/blog-2`
+#     and `/blog-2/` are different paths. WordPress served trailing-slash
+#     URLs, so those are the forms actually indexed; every retired page below
+#     carries both spellings. Omit one and the real legacy URL 404s.
+#
+# Splats (*) capture the rest of the path, including the empty string.
+# Placeholders (:name) match exactly one non-empty path segment.
 
-# --- Leadership bios: 10 individual pages consolidated onto one page ---
-/who-we-are/leadership/trong-bui-ceo      /who-we-are/leadership/  301
-/who-we-are/leadership/eric-huang         /who-we-are/leadership/  301
-/who-we-are/leadership/alan-heath-2       /who-we-are/leadership/  301
-/who-we-are/leadership/timothy-odom-2     /who-we-are/leadership/  301
-/who-we-are/leadership/thomas-george      /who-we-are/leadership/  301
-/who-we-are/leadership/joseph-stiers      /who-we-are/leadership/  301
-/who-we-are/leadership/bill-adamo         /who-we-are/leadership/  301
-/who-we-are/leadership/suzan-zimmerman    /who-we-are/leadership/  301
-/who-we-are/leadership/thomas-harrigan    /who-we-are/leadership/  301
-# NOTE: :person (a placeholder) not * (a splat). A splat matches the empty string, so
-# /who-we-are/leadership/* would match /who-we-are/leadership/ itself and redirect the
-# real page to itself forever. A placeholder requires a non-empty path segment.
-/who-we-are/leadership/:person            /who-we-are/leadership/  301
+# ==========================================================================
+# STATIC RULES — keep these above the dynamic block at the bottom
+# ==========================================================================
 
 # --- Legacy WordPress theme path that was still linked from /what-we-do/ ---
 /what-we-do-old/integration-test          /what-we-do/integration-test/  301
-/what-we-do-old/*                         /what-we-do/  301
+/what-we-do-old/integration-test/         /what-we-do/integration-test/  301
 
 # --- Retired pages ---
 # Infographic-only post; its content was a single image we did not carry over.
-/cybersecurity/2020-security-breach-statistics  /insights/  301
+/cybersecurity/2020-security-breach-statistics   /insights/  301
+/cybersecurity/2020-security-breach-statistics/  /insights/  301
 /blog-2                                   /insights/  301
+/blog-2/                                  /insights/  301
 # PIMS was never a real product; the legacy page is not carried over.
 /pims                                     /what-we-do/  301
+/pims/                                    /what-we-do/  301
 /tamela                                   /  301
+/tamela/                                  /  301
 
 # Referral forms replaced by the referral section on /careers/
 /referral-program-form                    /careers/  301
+/referral-program-form/                   /careers/  301
 /referral-form-non-vpn-test               /careers/  301
-
-# --- WordPress taxonomy and author archives (no equivalent) ---
-/category/*                               /insights/  301
-/tag/*                                    /insights/  301
-/author/*                                 /insights/  301
+/referral-form-non-vpn-test/              /careers/  301
 
 # --- WordPress plumbing: send crawlers away rather than 404 ---
-/wp-admin/*                               /  301
 /wp-login.php                             /  301
-/wp-json/*                                /  301
 /xmlrpc.php                               /  301
 /feed                                     /insights/  301
+/feed/                                    /insights/  301
 /comments/feed                            /insights/  301
+/comments/feed/                           /insights/  301
 
 # --- Old sitemap locations ---
 /wp-sitemap.xml                           /sitemap.xml  301
 /wp-sitemap-index.xsl                     /sitemap.xml  301
 
 # --- Legacy uploaded PDFs now served from /assets/docs/ ---
+# File paths, so no trailing-slash variant.
 /wp-content/uploads/2025/07/Vidoori_CapabilityStatement.pdf        /assets/docs/Vidoori_CapabilityStatement.pdf  301
+
+# ==========================================================================
+# DYNAMIC RULES — splats and placeholders. Everything static goes ABOVE this.
+# ==========================================================================
+
+# --- Leadership bios: 10 individual pages consolidated onto one page ---
+# :person, not *. A splat matches the empty string, so /who-we-are/leadership/*
+# would match /who-we-are/leadership/ itself and redirect the real page to
+# itself forever. A placeholder requires a non-empty segment. Both the bare and
+# trailing-slash spellings are listed because matching is literal.
+/who-we-are/leadership/:person            /who-we-are/leadership/  301
+/who-we-are/leadership/:person/           /who-we-are/leadership/  301
+
+# --- Legacy WordPress theme paths ---
+/what-we-do-old/*                         /what-we-do/  301
+
+# --- WordPress taxonomy and author archives (no equivalent) ---
+/category/*                               /insights/  301
+/tag/*                                    /insights/  301
+/author/*                                 /insights/  301
+
+# --- WordPress plumbing ---
+/wp-admin/*                               /  301
+/wp-json/*                                /  301

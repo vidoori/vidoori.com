@@ -82,6 +82,44 @@ def redirect_loops(rules):
     return out
 
 
+def redirect_ordering(rules):
+    """Static rules must sit above every splat and placeholder.
+
+    Cloudflare resolves static rules with a fast lookup, but a static rule
+    below a dynamic one falls back to sequential matching. The Pages build log
+    reports each offender as an Info line; this turns that into a local failure.
+    """
+    out, seen_dynamic = [], None
+    for src, _dst in rules:
+        dynamic = src.endswith("*") or ":" in src
+        if dynamic:
+            seen_dynamic = seen_dynamic or src
+        elif seen_dynamic:
+            out.append("static rule %s is below the dynamic rule %s "
+                       "(move it above)" % (src, seen_dynamic))
+    return out
+
+
+def redirect_trailing_slash(rules):
+    """Every static page rule needs both spellings.
+
+    Matching is literal: /blog-2 and /blog-2/ are different paths. WordPress
+    served trailing-slash URLs, so omitting one spelling 404s the form that is
+    actually indexed. File paths (with an extension) are exempt.
+    """
+    srcs = {src.rstrip("/") for src, _ in rules}
+    have_slash = {src for src, _ in rules if src.endswith("/")}
+    out = []
+    for src, _dst in rules:
+        if src.endswith("*") or ":" in src or src.endswith("/"):
+            continue
+        if os.path.splitext(src)[1]:      # a file, not a page
+            continue
+        if src + "/" not in have_slash:
+            out.append("%s has no trailing-slash companion (%s/)" % (src, src))
+    return out
+
+
 def resolves(link, redirect_exact, redirect_globs, redirect_patterns=()):
     """Does this root-relative path resolve to a file, index, or redirect?"""
     clean = link.split("#")[0].split("?")[0]
@@ -107,7 +145,10 @@ def resolves(link, redirect_exact, redirect_globs, redirect_patterns=()):
 
 def main():
     redirect_exact, redirect_globs, redirect_patterns, redirect_rules = load_redirects()
-    problems = ["_redirects: " + p for p in redirect_loops(redirect_rules)]
+    problems = ["_redirects: " + p for p in
+                redirect_loops(redirect_rules)
+                + redirect_ordering(redirect_rules)
+                + redirect_trailing_slash(redirect_rules)]
 
     external = 0
     checked = 0
