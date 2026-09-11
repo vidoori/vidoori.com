@@ -92,10 +92,10 @@
     {
       "heading": "What We Do",
       "links": [
-        { "label": "Integration & Test", "href": "/what-we-do/integration-test/" },
+        { "label": "Strategy", "href": "/what-we-do/strategy-consulting/" },
+        { "label": "Software Development", "href": "/what-we-do/software-development/" },
         { "label": "DevSecOps", "href": "/what-we-do/devsecops/" },
-        { "label": "Cloud-Native", "href": "/what-we-do/cloud-native/" },
-        { "label": "Data Management", "href": "/what-we-do/data/" },
+        { "label": "Integration & Test", "href": "/what-we-do/integration-test/" },
         { "label": "All Capabilities", "href": "/what-we-do/" }
       ]
     },

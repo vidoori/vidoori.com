@@ -232,8 +232,10 @@ what the site says and where each fact lives. Check it before hunting through fi
 
 **Practices:** Strategy, Software Development, DevSecOps, Integration & Test (the four core,
 shown in that order on `/what-we-do/`), plus Cloud-Native, Data Management, Cybersecurity,
-Intelligence as supporting practices. The core/supporting split is a presentation choice on
-`/what-we-do/` only — all eight have equal-weight service pages, and the nav lists all eight.
+Intelligence as supporting practices. The core four appear in that order in three places that
+must agree: the homepage cards, `/what-we-do/`, and the footer's What We Do column in
+`_src/site.json`. The split is presentation only — all eight have equal-weight service pages,
+and the header nav still lists all eight.
 
 **Leadership:** Trong Khuong Bui (Founder & CEO) and Eric Huang (Chief Strategy Officer).
 There is no Board of Advisors. The ten legacy per-person bio URLs all 301 to the single page.
