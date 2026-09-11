@@ -250,8 +250,13 @@ p { text-wrap: pretty; }
   color: var(--accent);
   margin-bottom: var(--sp-3);
 }
+/* --accent is --green-700, which is correct on light grounds but measures
+   only ~3.4:1 on the dark ones — below AA for text this size. Every dark
+   ground takes the pastel instead, which clears 8:1 there. */
 .section--brand .eyebrow,
-.section--brand-figured .eyebrow { color: var(--green-400); }
+.section--brand-figured .eyebrow,
+.hero .eyebrow,
+.page-hero .eyebrow { color: var(--green-400); }
 
 .lede {
   font-size: var(--step-1);
@@ -263,6 +268,9 @@ p { text-wrap: pretty; }
 .section--brand-figured .lede { color: rgba(255, 255, 255, 0.82); }
 
 .section-head { max-width: 62ch; margin-bottom: var(--sp-7); }
+/* Inside a .split the head sits in a centred row beside a figure, so its own
+   bottom margin would push it off-centre against that figure. */
+.split > .section-head { margin-bottom: 0; }
 .section-head.is-centered { margin-inline: auto; text-align: center; }
 
 /* Short accent rule used under section headings. */
@@ -711,16 +719,87 @@ a:hover { color: var(--navy-500); }
   color: var(--white);
   letter-spacing: -0.03em;
 }
-.hero h1 em {
-  font-style: normal;
-  color: var(--brand-green);
-}
 
 .hero .lede {
   margin-top: var(--sp-5);
   font-size: var(--step-1);
   color: rgba(255, 255, 255, 0.85);
   max-width: 46ch;
+}
+
+/* --- Animated badge beside the hero copy --------------------------------
+   Two columns, copy left and badge right, both inside the page grid. The badge
+   traces itself as an outline and then floods with the brand fills; the strokes
+   fade at the end, so the resting state is the static logo exactly.
+
+   It sits on a frosted plate because the badge's largest lobe is filled
+   --navy-700, the same value the hero gradient reaches, and on the bare hero
+   that shape disappears. Re-inking it would mean altering the mark.
+
+   No JS. The keyframes run once on load, and because they end on the finished
+   logo, section 16's blanket prefers-reduced-motion duration collapse lands on
+   the correct resting state rather than on an empty plate. */
+
+/* Lift .hero__inner's 52rem cap to the container width — NOT to none, which
+   would drop the .container max-width too and let the hero run wider than every
+   other section. This is what puts the copy on the same left margin as the rest
+   of the page. */
+.hero__inner--split { max-width: var(--container); }
+
+/* Hidden by default and shown only where there is room for two columns. Stated
+   this way round rather than as a max-width query so the two rules cannot both
+   apply at the breakpoint. */
+.hero__plate {
+  display: none;
+  width: clamp(16rem, 26vw, 25rem);
+  padding: 2.2rem;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+@media (min-width: 64rem) {
+  .hero__inner--split {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: clamp(var(--sp-6), 4vw, var(--sp-8));
+    align-items: center;
+  }
+  .hero__plate { display: grid; place-items: center; }
+}
+
+/* The SVG carries width/height attributes purely for the intrinsic ratio —
+   without them it has no natural size and the plate sizes against the browser's
+   300x150 default. */
+.mark-draw {
+  display: block;
+  width: 100%;
+  height: auto;
+  opacity: 0.7;
+}
+
+.mark-draw__pc {
+  stroke-width: 2;
+  stroke-dasharray: 1;      /* pathLength="1" normalises every path to one unit */
+  stroke-dashoffset: 1;
+  fill-opacity: 0;
+  animation: mark-trace 4s ease-in-out both;
+}
+
+.mark-draw__pc--green { fill: var(--brand-green);      stroke: var(--green-600); }
+.mark-draw__pc--peri  { fill: var(--brand-periwinkle); stroke: var(--navy-400);
+                        animation-delay: 0.3s; }
+.mark-draw__pc--navy  { fill: var(--navy-700);         stroke: var(--navy-700);
+                        animation-delay: 0.6s; }
+.mark-draw__pc--vee   { fill: var(--white);            stroke: var(--navy-700);
+                        animation-delay: 0.9s; }
+
+@keyframes mark-trace {
+  0%   { stroke-dashoffset: 1; stroke-opacity: 1; fill-opacity: 0; }
+  68%  { stroke-dashoffset: 0; stroke-opacity: 1; fill-opacity: 0; }
+  100% { stroke-dashoffset: 0; stroke-opacity: 0; fill-opacity: 1; }
 }
 
 /* Compact hero used on interior pages. */
@@ -788,37 +867,6 @@ a:hover { color: var(--navy-500); }
     linear-gradient(145deg, var(--navy-800), var(--navy-950));
   border-color: var(--navy-800);
 }
-.figure-panel svg { width: min(100%, 22rem); height: auto; }
-
-/* Callout band — a single strong statement across the page. */
-.callout {
-  border-left: 4px solid var(--brand-green);
-  padding: var(--sp-2) 0 var(--sp-2) var(--sp-5);
-  font-size: var(--step-1);
-  line-height: 1.5;
-  color: var(--navy-800);
-}
-.section--brand .callout,
-.section--brand-figured .callout { color: rgba(255, 255, 255, 0.9); }
-
-/* Final call-to-action strip that closes most pages. */
-.cta-band {
-  background:
-    radial-gradient(40rem 24rem at 88% 120%, rgba(154, 211, 137, 0.20), transparent 60%),
-    linear-gradient(120deg, var(--navy-800), var(--navy-700));
-  color: var(--text-on-brand);
-  border-radius: var(--radius-lg);
-  padding: clamp(var(--sp-6), 5vw, var(--sp-8));
-  display: grid;
-  gap: var(--sp-5);
-  align-items: center;
-}
-@media (min-width: 56rem) {
-  .cta-band { grid-template-columns: 1.4fr auto; gap: var(--sp-7); }
-}
-.cta-band h2 { color: var(--white); font-size: var(--step-2); }
-.cta-band p { color: rgba(255, 255, 255, 0.8); margin-top: var(--sp-3); max-width: 52ch; }
-.cta-band .btn-row { margin-top: 0; }
 
 /* ==========================================================================
    10. Cards & grids

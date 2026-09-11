@@ -230,8 +230,10 @@ what the site says and where each fact lives. Check it before hunting through fi
 **Nav:** Who We Are · What We Do · Solutions (VPT only, external) · Insights · Careers.
 `/contact/`, `/privacy-policy/`, `/terms-of-use/` are footer-only.
 
-**Practices:** Integration & Test, DevSecOps, Cloud-Native, Data Management (the four core),
-plus Software Development, Cybersecurity, Intelligence, Strategy.
+**Practices:** Strategy, Software Development, DevSecOps, Integration & Test (the four core,
+shown in that order on `/what-we-do/`), plus Cloud-Native, Data Management, Cybersecurity,
+Intelligence as supporting practices. The core/supporting split is a presentation choice on
+`/what-we-do/` only — all eight have equal-weight service pages, and the nav lists all eight.
 
 **Leadership:** Trong Khuong Bui (Founder & CEO) and Eric Huang (Chief Strategy Officer).
 There is no Board of Advisors. The ten legacy per-person bio URLs all 301 to the single page.

@@ -98,8 +98,33 @@ wider than the container — so they wrapped 3 + 1. Use `.grid--4` for exactly-f
   masked with a radial gradient. Zero image bytes.
 - **`.page-hero`** — every interior page. Same treatment, shorter.
 
-Inside either, use `.eyebrow`, `<h1>`, `.lede`, and `.btn-row`. On the homepage `<h1>`, wrap
-words in `<em>` to tint them brand green (the `<em>` is restyled, not italic).
+The homepage hero is two columns: `.hero__inner--split` on `.hero__inner`, with the copy in
+`.hero__copy` and a frosted `.hero__plate` beside it holding `.mark-draw` — the badge logo,
+inlined as its four paths, tracing itself as an outline and then flooding with the brand
+fills. The strokes fade at the end, so the resting state is the static logo exactly. Four
+things about it are load-bearing:
+
+- **The `--split` modifier lifts `.hero__inner`'s 52rem cap to `var(--container)`** — not to
+  `none`, which would drop the `.container` cap too and let the hero run wider than every other
+  section. This is what puts the copy on the same left margin as the rest of the page, and the
+  plate's right edge on the same right margin.
+- **It needs the plate.** The badge's largest lobe is filled `--navy-700`, the same value the
+  hero gradient reaches, so on the bare hero that shape disappears. Re-inking it would mean
+  altering the mark.
+- **The plate is `display: none` by default** and turned on inside `@media (min-width: 64rem)`,
+  rather than switched off in a `max-width` query. Stated this way the two rules cannot both
+  apply at the breakpoint. Below 64rem the two columns would collide and squeeze the headline,
+  so the badge goes rather than the layout bending around it.
+- **The inline `<svg>` keeps its `width`/`height` attributes** purely for the intrinsic ratio.
+  Strip them and it has no natural size, and the plate sizes against the browser's
+  300&times;150 default.
+
+There is no JavaScript: the keyframes run once on load, and because they end on the finished
+logo, §16's blanket `prefers-reduced-motion` duration collapse lands on the correct resting
+state rather than on an empty plate. Any future draw-on animation should keep that property.
+
+The homepage `<h1>` is a single white phrase. It previously wrapped words in `<em>` to tint
+them `--brand-green`; that rule is gone, and so is the `<em>`.
 
 ### Cards
 
@@ -123,6 +148,8 @@ with `a::after { inset: 0 }`. The visible "More about…" is a `<span>`, marked
 |---|---|
 | `.split` | Two-column copy/figure. `--wide-start`, `--wide-end`, `--flip` for ratio and order. |
 | `.figure-panel` | Gradient panel holding an inline SVG. `--dark` for the navy variant. **This is the slot for real photography later.** |
+| `.split > .section-head` | A section head paired with a figure on one row; the modifier-free rule drops the head's bottom margin so the two stay centred against each other. |
+| `.hero__plate` / `.mark-draw` | The badge logo animating itself beside the homepage hero copy. See Heroes above. |
 | `.caps` | Capability checklist. Green ticks drawn with a rotated CSS border — no icon font, no per-item SVG. |
 | `.def-list` | Heading-plus-paragraph groups. `--3` for three columns. |
 | `.stats` / `.stat` | Figures with a green top rule. |
