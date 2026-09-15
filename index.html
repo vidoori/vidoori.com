@@ -28,7 +28,7 @@
 <!-- Swap .no-js for .js before first paint so the nav never flashes open. -->
 <script>document.documentElement.className=document.documentElement.className.replace('no-js','js');</script>
 
-<link rel="stylesheet" href="/assets/css/site.css?v=dceff77856">
+<link rel="stylesheet" href="/assets/css/site.css?v=4e3375ec52">
 <script src="/assets/js/site.js?v=c60ce4d013" defer></script>
 
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.vidoori.com/#organization","name":"Vidoori","legalName":"Vidoori, Inc.","url":"https://www.vidoori.com/","logo":"https://www.vidoori.com/assets/img/vidoori-logo.svg","description":"Vidoori is a consulting firm that provides high quality information technology services and products to solve business problems for Government and Commercial clients.","foundingDate":"2008","email":"info@vidoori.com","telephone":"(240) 608-6810","faxNumber":"(240) 331-0304","address":{"@type":"PostalAddress","streetAddress":"4000 Garden City Drive, Suite 808","addressLocality":"Hyattsville","addressRegion":"MD","postalCode":"20785","addressCountry":"US"},"sameAs":["https://www.linkedin.com/company/vidoori-inc/"]},{"@type":"WebSite","@id":"https://www.vidoori.com/#page","url":"https://www.vidoori.com/","name":"Vidoori \u2014 IT Consulting for Government and Commercial Clients","description":"Vidoori is a CMMI Level 3, ISO-certified IT consulting firm delivering integration and test, DevSecOps, cloud-native, and data management services to federal and commercial clients.","isPartOf":{"@id":"https://www.vidoori.com/#organization"}}]}</script>
@@ -59,7 +59,7 @@
           <button class="nav__disclosure" type="button" aria-expanded="false" aria-controls="menu-who-we-are">Who We Are</button>
           <ul class="nav__sublist" id="menu-who-we-are">
             <li><a class="nav__sublink" href="/who-we-are/">Our Company</a></li>
-            <li><a class="nav__sublink" href="/who-we-are/leadership/">Leadership</a></li>
+            <li><a class="nav__sublink" href="/who-we-are/leadership/">Vidoori Team</a></li>
             <li><a class="nav__sublink" href="/who-we-are/our-values/">Our Values</a></li>
             <li><a class="nav__sublink" href="/who-we-are/corporate-culture/">Corporate Culture</a></li>
             <li><a class="nav__sublink" href="/who-we-are/certifications/">Certifications</a></li>
@@ -84,6 +84,7 @@
         <li class="nav__item">
           <button class="nav__disclosure" type="button" aria-expanded="false" aria-controls="menu-solutions">Solutions</button>
           <ul class="nav__sublist" id="menu-solutions">
+            <li><a class="nav__sublink" href="/vail/">Applied Innovation Lab (VAIL)</a></li>
             <li><a class="nav__sublink" href="https://vpt.vidoori.com/about" target="_blank" rel="noopener noreferrer">VPT Performance Testing</a></li>
           </ul>
         </li>
@@ -101,9 +102,9 @@
 <section class="hero">
   <div class="container hero__inner hero__inner--split">
     <div class="hero__copy">
-      <p class="eyebrow">Delivering Excellence Since 2008</p>
-      <h1>We are dedicated to our&nbsp;client's mission.</h1>
-      <p class="lede">Vidoori is a consulting firm providing high quality information technology services and products that solve real business problems for Government and Commercial clients.</p>
+      <p class="eyebrow">Federal and commercial IT consulting</p>
+      <h1>Modernize mission-critical systems. Deliver with confidence.</h1>
+      <p class="lede">Vidoori helps government and commercial teams modernize software, integrate security, and test complex systems with confidence.</p>
       <div class="btn-row">
         <a class="btn btn--accent" href="/what-we-do/">Explore Our Capabilities</a>
         <a class="btn btn--onbrand" href="/contact/">Talk to Our Team</a>
@@ -121,18 +122,26 @@
   </div>
 </section>
 
-<section class="section section--tight section--alt">
+<section class="section section--tight section--alt credentials-section">
   <div class="container">
-    <h2 class="visually-hidden">Certifications and credentials</h2>
-    <div class="badge-row">
-      <span class="badge">CMMI&reg; V3.0 Maturity Level&nbsp;3 &mdash; Development &amp; Services</span>
-      <span class="badge">ISO 9001:2015</span>
-      <span class="badge">ISO/IEC 20000-1:2018</span>
-      <span class="badge">DCAA-Compliant Accounting</span>
-      <span class="badge">GSA MAS</span>
-      <span class="badge">8(a) STARS III</span>
-      <span class="badge">SeaPort NxG</span>
+    <p class="eyebrow">Credentials you can build on</p>
+    <h2 class="credentials-heading" id="quality-standards">Quality Standards</h2>
+    <ul class="credential-grid" aria-labelledby="quality-standards">
+      <li class="credential-card"><span class="credential-card__type">Process maturity</span><strong>CMMI&reg; Level 3</strong><span>V3.0 &middot; Development &amp; Services</span></li>
+      <li class="credential-card"><span class="credential-card__type">Quality management</span><strong>ISO 9001:2015</strong><span>Quality management systems</span></li>
+      <li class="credential-card"><span class="credential-card__type">Service management</span><strong>ISO/IEC 20000-1:2018</strong><span>IT service management systems</span></li>
+      <li class="credential-card"><span class="credential-card__type">Accounting</span><strong>DCAA-Compliant</strong><span>Accounting practices</span></li>
+    </ul>
+    <div class="credential-divider">
+      <p class="eyebrow">Contract vehicles</p>
+      <h2 class="credentials-heading" id="federal-access">Federal Access</h2>
     </div>
+    <ul class="credential-grid" aria-labelledby="federal-access">
+      <li class="credential-card"><span class="credential-card__type">Contract vehicle</span><strong>GSA MAS</strong><span>Multiple Award Schedule</span></li>
+      <li class="credential-card"><span class="credential-card__type">Contract vehicle</span><strong>8(a) STARS III</strong><span>Federal IT services</span></li>
+      <li class="credential-card"><span class="credential-card__type">Contract vehicle</span><strong>SeaPort NxG</strong><span>Navy services contracting</span></li>
+      <li class="credential-card"><span class="credential-card__type">Contract vehicle</span><strong>OASIS 4</strong><span>Federal contracting</span></li>
+    </ul>
   </div>
 </section>
 
@@ -141,9 +150,9 @@
     <div class="split split--wide-start">
       <div class="section-head">
         <p class="eyebrow">What We Do</p>
-        <h2>Best in class services and solutions</h2>
+        <h2>From strategy to tested software</h2>
         <hr class="rule">
-        <p class="lede mt-5">The Vidoori approach uses an unyielding focus on innovation, quality delivery, and the effective integration of industry best practices.</p>
+        <p class="lede mt-5">Plan your next step, build the right software, and make security and testing part of delivery from the start.</p>
       </div>
       <div class="figure-panel">
         <svg viewBox="0 0 320 240" role="img" aria-label="The four core practices as a continuous delivery cycle: strategy, software development, DevSecOps, then integration and test, feeding back to the start">
@@ -238,8 +247,8 @@
           <span class="stat__label">CMMI V3.0 Maturity Level 3, appraised for both Development and Services</span>
         </div>
         <div class="stat">
-          <span class="stat__value">3</span>
-          <span class="stat__label">Federal contract vehicles: GSA MAS, 8(a) STARS III, and SeaPort NxG</span>
+          <span class="stat__value">4</span>
+          <span class="stat__label">Federal contract vehicles: GSA MAS, 8(a) STARS III, SeaPort NxG, and OASIS 4</span>
         </div>
       </div>
     </div>
@@ -250,11 +259,11 @@
   <div class="container">
     <div class="section-head">
       <p class="eyebrow">Insights</p>
-      <h2>News and perspectives</h2>
+      <h2 id="news">News and perspectives</h2>
       <hr class="rule">
     </div>
 
-    <div class="grid grid--2">
+    <div class="grid news-grid">
       <article class="teaser">
         <p class="teaser__meta">News</p>
         <h3><a href="/news/vidoori-resumes-work-on-173m-contract-award-for-enterprise-testing-support-services/">Vidoori Resumes Work on $173M Contract Award for Enterprise Testing Support Services</a></h3>
@@ -332,7 +341,7 @@
     <div class="split">
       <div>
         <p class="eyebrow">Join Our Team</p>
-        <h2>Solution focused, people driven</h2>
+        <h2 id="join-our-team">Solution focused, people driven</h2>
         <hr class="rule">
         <p class="lede mt-5">We take pride in our collaborative and supportive culture, where professionals from different backgrounds and career paths work together toward a common goal. Vidoori is a diverse family where everyone adds value and each voice is heard.</p>
         <p class="mt-5 muted">At Vidoori, we strive to put our people first and support their career growth.</p>
@@ -341,24 +350,7 @@
           <a class="btn btn--ghost" href="/who-we-are/corporate-culture/">Learn about our culture</a>
         </div>
       </div>
-      <div class="figure-panel figure-panel--dark">
-        <svg viewBox="0 0 320 240" role="img" aria-label="Abstract network of connected team nodes">
-          <g stroke="#9ad389" stroke-width="1.5" stroke-opacity="0.45">
-            <line x1="160" y1="120" x2="80" y2="62"/>
-            <line x1="160" y1="120" x2="243" y2="70"/>
-            <line x1="160" y1="120" x2="70" y2="170"/>
-            <line x1="160" y1="120" x2="250" y2="176"/>
-            <line x1="80" y1="62" x2="243" y2="70"/>
-            <line x1="70" y1="170" x2="250" y2="176"/>
-          </g>
-          <g fill="#bac0d1">
-            <circle cx="80" cy="62" r="13"/><circle cx="243" cy="70" r="13"/>
-            <circle cx="70" cy="170" r="13"/><circle cx="250" cy="176" r="13"/>
-          </g>
-          <circle cx="160" cy="120" r="24" fill="#9ad389"/>
-          <circle cx="160" cy="120" r="34" fill="none" stroke="#9ad389" stroke-opacity="0.35" stroke-width="1.5"/>
-        </svg>
-      </div>
+      <img class="team-image" src="/assets/img/team-game.png" width="1448" height="1086" loading="lazy" decoding="async" alt="Illustration of coworkers laughing together over a tabletop game in an office lounge.">
     </div>
   </div>
 </section>
@@ -403,7 +395,7 @@
         <h2>Who We Are</h2>
         <ul>
           <li><a href="/who-we-are/">Our Company</a></li>
-          <li><a href="/who-we-are/leadership/">Leadership</a></li>
+          <li><a href="/who-we-are/leadership/">Vidoori Team</a></li>
           <li><a href="/who-we-are/certifications/">Certifications</a></li>
           <li><a href="/who-we-are/awards/">Awards</a></li>
           <li><a href="/who-we-are/contract-vehicles/">Contract Vehicles</a></li>

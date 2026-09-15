@@ -18,7 +18,7 @@ at the bottom — it is the rationale for the rules in `_redirects` and should n
 | Periwinkle | `#BAC0D1` | Secondary / muted accent |
 | Green | `#9AD389` | Accent highlight |
 
-## Site structure (41 pages: 23 pages + 18 posts)
+## Site structure (42 pages: 24 pages + 18 posts)
 
 ### Primary nav (`_src/site.json`)
 - **Who We Are** — `/who-we-are/`
@@ -28,17 +28,32 @@ at the bottom — it is the rationale for the rules in `_redirects` and should n
   - All Capabilities, Integration & Test, DevSecOps, Cloud-Native, Data Management,
     Software Development, Cybersecurity, Intelligence, Strategy
 - **Solutions** — VPT Performance Testing (`https://vpt.vidoori.com/about`, external) — the
-  only entry in this group
+  external platform in this group; VAIL (`/vail/`) is the internal lab page
 - **Insights** — `/insights/`
 - **Careers** — `/careers/`
 
 `/contact/`, `/privacy-policy/`, and `/terms-of-use/` are reachable from the footer and body
 copy rather than the primary nav.
 
+### Applied Innovation Lab (`/vail/`)
+- Internal R&D and applied-AI lab focused on client innovation and developing college graduates for government contract roles.
+- Three outputs: Research & Design, reusable intellectual property, and engineers ready for delivery.
+- Senior staff train graduates in Vidoori's environment, SDLC, and tools.
+- Six-stage cycle: bring in talent, train with senior staff, research new products, support government customers, transition engineers to contracts, repeat.
+- AI Center of Excellence and Vidoori AI SDLC remain the capability core. Funding and bid discussion removed at the owner's request.
+- Linked from Solutions. Content supplied by the site owner.
+
 ## Key content
 
+### Homepage presentation
+- Join Our Team uses a generated illustration of coworkers enjoying a tabletop game, replacing the abstract network diagram at the owner's request.
+- News and perspectives uses three compact columns on desktop and stacked stories on smaller screens.
+
 ### Positioning
-- Tagline: **"We are dedicated to our client's mission."** (`_src/site.json`, and the home `<h1>`)
+- Homepage headline: "Modernize mission-critical systems. Deliver with confidence."
+- Homepage credentials include an OASIS 4 contract vehicle card (name supplied by the site owner).
+- Homepage hero pairs the headline with the animated Vidoori logo. Responsive credential cards are grouped under Quality Standards (CMMI, ISO, accounting) and Federal Access (contract vehicles), separated by spacing and a divider.
+- Tagline: **"We are dedicated to our client's mission."** (`_src/site.json`)
 - Boilerplate: "Vidoori is a consulting firm providing high quality information technology
   services and products that solve real business problems for Government and Commercial clients."
 - Secondary: "We are solution focused and people driven." (the `/who-we-are/` `<h1>`) / "Delivering Excellence"
@@ -109,11 +124,16 @@ Learning opportunities
   management.
 - **Strategy**: consulting narrative only, no capability list.
 
-### Leadership (`/who-we-are/leadership/`)
+### Vidoori Team (`/who-we-are/leadership/`)
+
+The page is intended to include all employees; the current roster contains five people. All profiles use compact circular initials with names and titles below; click/keyboard expansion reveals the biography beneath the selected circle within its original column. Sahar's summary uses public LinkedIn About and credential information (https://www.linkedin.com/in/saharyamini). David and Tim retain role-based summaries pending access to their profile text.
 | Name | Title |
 |---|---|
 | Trong Khuong Bui | Founder & Chief Executive Officer |
 | Eric Huang | Chief Strategy Officer |
+| David Lieberman | Chief Information Officer |
+| Sahar Yamini | VP Enterprise Transformation & Applied AI |
+| Tim Withum | Chief Technology Officer |
 
 There is no Board of Advisors section. Individual bio URLs do not exist; the ten legacy
 `/who-we-are/leadership/<name>` paths all 301 to the single page.

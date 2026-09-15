@@ -20,7 +20,7 @@ Everything below follows from those five.
 
 **Status:** accepted, with a caveat worth re-reading before you change it.
 
-**Context.** The site is 41 pages. Every page needs the same `<head>`, header, nav, and
+**Context.** The site is 42 pages. Every page needs the same `<head>`, header, nav, and
 four-column footer. The brief said "basic HTML/CSS/JS website," which most directly implies
 writing each page as a complete standalone file.
 
@@ -209,5 +209,5 @@ Both are derived in `tools/build.py` from page front matter:
   Cloudflare Web Analytics needs no cookies and no client script, which keeps the privacy
   policy accurate. Note that the policy currently states the site does not use tracking
   cookies — any analytics choice must keep that true or the policy must change.
-- **A search feature.** At 41 pages it would cost more than it returns.
+- **A search feature.** At 42 pages it would cost more than it returns.
 - **Image optimisation tooling.** There are no images to optimise. See ADR 2.

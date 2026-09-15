@@ -742,6 +742,38 @@ a:hover { color: var(--navy-500); }
   max-width: 46ch;
 }
 
+/* Compact homepage credential groups. */
+.credentials-section { padding-block: var(--sp-5); }
+.credentials-section .eyebrow { margin-bottom: var(--sp-2); }
+.credential-divider { margin-top: var(--sp-5); padding-top: var(--sp-4); border-top: 1px solid var(--navy-100); }
+.credentials-heading { margin-bottom: var(--sp-4); font-size: var(--step-1); }
+.credential-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  gap: var(--sp-3);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.credential-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  padding: var(--sp-4);
+  border: 1px solid var(--navy-100);
+  border-top: 2px solid var(--brand-green);
+  border-radius: var(--radius-lg);
+  background: var(--white);
+  color: var(--text-muted);
+  box-shadow: var(--shadow-sm);
+  font-size: var(--step--1);
+}
+.credential-card strong { color: var(--navy-800); font-size: var(--step-0); }
+.credential-card__type { color: var(--green-700); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+.credential-card--featured { background: var(--navy-800); color: var(--text-on-brand); border-color: var(--navy-800); border-top-color: var(--brand-green); }
+.credential-card--featured strong { color: var(--white); }
+.credential-card--featured .credential-card__type { color: var(--green-400); }
+
 /* --- Animated badge beside the hero copy --------------------------------
    Two columns, copy left and badge right, both inside the page grid. The badge
    traces itself as an outline and then floods with the brand fills; the strokes
@@ -765,8 +797,11 @@ a:hover { color: var(--navy-500); }
    this way round rather than as a max-width query so the two rules cannot both
    apply at the breakpoint. */
 .hero__plate {
-  display: none;
-  width: clamp(16rem, 26vw, 25rem);
+  display: grid;
+  place-items: center;
+  margin: var(--sp-7) auto 0;
+  color: var(--text-on-brand);
+  width: min(100%, 20rem);
   padding: 2.2rem;
   border-radius: 20px;
   background: rgba(255, 255, 255, 0.10);
@@ -782,7 +817,7 @@ a:hover { color: var(--navy-500); }
     gap: clamp(var(--sp-6), 4vw, var(--sp-8));
     align-items: center;
   }
-  .hero__plate { display: grid; place-items: center; }
+  .hero__plate { display: grid; place-items: center; margin: 0; width: clamp(16rem, 26vw, 25rem); }
 }
 
 /* The SVG carries width/height attributes purely for the intrinsic ratio —
@@ -974,6 +1009,17 @@ a:hover { color: var(--navy-500); }
 .teaser:hover h3 { color: var(--navy-600); }
 .teaser p { color: var(--text-muted); margin-top: var(--sp-3); }
 .teaser__more { margin-top: var(--sp-4); font-weight: 600; color: var(--navy-700); }
+
+/* Three compact homepage stories, with comfortable reading widths on mobile. */
+.news-grid { grid-template-columns: 1fr; gap: var(--sp-5); }
+.news-grid .teaser { display: flex; flex-direction: column; padding: var(--sp-4) 0 0; }
+.news-grid .teaser__meta { margin: 0 0 var(--sp-2); }
+.news-grid .teaser h3 { font-size: var(--step-0); line-height: 1.4; }
+.news-grid .teaser > p:not(.teaser__meta) { font-size: var(--step--1); margin-top: var(--sp-3); }
+.news-grid .teaser__more { padding-top: var(--sp-4); margin-top: auto; font-size: var(--step--1); }
+@media (min-width: 56rem) {
+  .news-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--sp-6); }
+}
 
 /* Profile card for the leadership page. Initials stand in for headshots. */
 .profile {
@@ -1412,4 +1458,47 @@ a:hover { color: var(--navy-500); }
   .hero h1, .page-hero h1, .section--brand h2 { color: #000 !important; }
   a { text-decoration: underline; }
   a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 9pt; word-break: break-all; }
+}
+
+.team-image { display: block; width: 100%; height: auto; border-radius: var(--radius-lg); }
+
+/* Compact circular leadership selectors with expandable biographies. */
+.leadership-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: start; gap: var(--sp-4); }
+.leadership-grid .profile { padding: 0; border: 0; background: transparent; color: var(--text); }
+.profile--expandable > summary { display: flex; flex-direction: column; align-items: center; gap: var(--sp-3); padding: var(--sp-3); margin: 0; cursor: pointer; list-style: none; text-align: center; }
+.profile--expandable > summary::-webkit-details-marker { display: none; }
+.profile--expandable > summary:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; border-radius: var(--radius-lg); }
+.profile--expandable .profile__avatar { width: 5rem; height: 5rem; font-size: var(--step-1); flex-shrink: 0; border: 3px solid var(--green-100); transition: transform 0.2s ease; }
+.profile--expandable > summary:hover .profile__avatar { transform: translateY(-3px); border-color: var(--brand-green); }
+.profile--expandable .profile__name { font-size: var(--step--1); }
+.profile--expandable .profile__role { font-size: 0.65rem; letter-spacing: 0.02em; margin-top: var(--sp-2); }
+.profile__toggle { font-size: 0.75rem; color: var(--navy-700); margin-top: auto; }
+.profile__hide { display: none; }
+.profile--expandable[open] .profile__show { display: none; }
+.profile--expandable[open] .profile__hide { display: inline; }
+.profile--expandable[open] { background: var(--white); color: var(--text); box-shadow: var(--shadow-sm); border-radius: var(--radius-lg); }
+.profile--expandable[open] > summary { flex-direction: column; text-align: center; }
+.profile--expandable[open] .profile__toggle { margin: 0; }
+.profile--expandable .profile__bio { padding: var(--sp-3); font-size: var(--step--1); max-width: 80ch; }
+.profile--expandable .profile__link { margin: var(--sp-3); font-size: var(--step--1); }
+@media (max-width: 56rem) { .leadership-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 34rem) { .leadership-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* VAIL cycle: native SVG on wide screens, readable sequential steps on mobile. */
+.vail-cycle-shell { background: var(--navy-50); color: var(--navy-700); border-radius: var(--radius-lg); padding: var(--sp-4); }
+.vail-cycle { display: block; width: 100%; height: auto; text-anchor: middle; font-family: inherit; }
+.vail-cycle__arrow { stroke: var(--green-700); color: var(--green-700); stroke-width: 3; fill: none; }
+.vail-cycle__node { fill: var(--white); stroke: var(--navy-100); stroke-width: 2; }
+.vail-cycle__number { fill: var(--navy-700); }
+.vail-cycle__digit { fill: var(--white); font-size: 20px; font-weight: 700; }
+.vail-cycle__label { fill: var(--navy-900); font-size: 20px; font-weight: 700; }
+.vail-cycle__small { fill: var(--text-muted); font-size: 16px; }
+.vail-cycle__center { fill: var(--navy-700); font-size: 44px; font-weight: 800; }
+.vail-cycle__subtitle { fill: var(--green-700); font-size: 20px; }
+.vail-cycle-mobile { display: none; }
+@media (max-width: 42rem) {
+ .vail-cycle { display: none; }
+ .vail-cycle-mobile { display: grid; gap: var(--sp-4); padding-left: var(--sp-5); margin: var(--sp-3); }
+ .vail-cycle-mobile li { padding: var(--sp-2); }
+ .vail-cycle-mobile span { display: block; color: var(--text-muted); font-size: var(--step--1); }
 }
