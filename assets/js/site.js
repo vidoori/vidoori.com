@@ -11,12 +11,14 @@
      2. Desktop submenu keyboard support
      3. Contact form (validation + async submit + Turnstile)
      4. Footer year
+     5. Leadership strip
    ========================================================================== */
 
 (function () {
   'use strict';
 
   var DESKTOP = window.matchMedia('(min-width: 60rem)');
+  var REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   /* ========================================================================
      1. Mobile nav
@@ -291,11 +293,171 @@
 
   /* ========================================================================
      4. Footer year
+     5. Leadership strip
      ======================================================================== */
 
   function initYear() {
     var el = document.getElementById('year');
     if (el) el.textContent = String(new Date().getFullYear());
+  }
+
+  /* ========================================================================
+     5. Leadership strip
+
+     /who-we-are/leadership/ ships five <details> profiles. They work on their
+     own: with JS off each bio opens in place, which is what a disclosure is
+     for. When JS is available they are upgraded into one strip of buttons
+     sharing a single full-width panel, so a bio reads across the row instead
+     of down a 200px grid cell.
+
+     The panel is a grid child, re-inserted after the last person in the
+     selected person's row. That keeps the caret pointing at the person it
+     belongs to whatever the column count — and at the narrowest width, where
+     the grid is two columns, the panel still sits directly beneath the pair
+     it describes.
+     ======================================================================== */
+
+  function initLeadershipStrip() {
+    var grid = document.querySelector('.leadership-grid');
+    if (!grid) return;
+
+    var items = Array.prototype.slice.call(
+      grid.querySelectorAll('details.profile--expandable'));
+    if (items.length < 2) return;
+
+    function el(tag, cls, text) {
+      var node = document.createElement(tag);
+      node.className = cls;
+      if (text) node.textContent = text;
+      return node;
+    }
+
+    var panel = document.createElement('div');
+    panel.className = 'leadership-panel';
+    panel.id = 'leadership-panel';
+    panel.hidden = true;
+
+    var people = items.map(function (item, i) {
+      var avatar = item.querySelector('.profile__avatar');
+      var nameEl = item.querySelector('.profile__name');
+      var roleEl = item.querySelector('.profile__role');
+      var bio = item.querySelector('.profile__bio');
+      var link = item.querySelector('.profile__link');
+      var name = nameEl ? nameEl.textContent : '';
+      var role = roleEl ? roleEl.textContent : '';
+
+      // The trigger. A heading may live inside <summary>, but not inside a
+      // <button>, so the name is rebuilt as a span here and the real heading
+      // moves into the panel, where the biography it titles actually is.
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'profile-tab';
+      btn.id = 'profile-tab-' + i;
+      btn.setAttribute('aria-expanded', 'false');
+      btn.setAttribute('aria-controls', 'leadership-panel');
+      if (avatar) btn.appendChild(avatar.cloneNode(true));
+      btn.appendChild(el('span', 'profile__name', name));
+      btn.appendChild(el('span', 'profile__role', role));
+      btn.appendChild(el('span', 'profile__toggle', 'Read bio'));
+
+      var body = el('div', 'leadership-panel__person');
+      body.hidden = true;
+      body.appendChild(el('h3', 'profile__name', name));
+      body.appendChild(el('p', 'profile__role', role));
+      if (bio) body.appendChild(bio);
+      if (link) body.appendChild(link);
+      panel.appendChild(body);
+
+      return { btn: btn, body: body };
+    });
+
+    items.forEach(function (item, i) { grid.replaceChild(people[i].btn, item); });
+    grid.classList.add('leadership-grid--enhanced');
+
+    var openIndex = -1;
+
+    function columnCount() {
+      var cols = window.getComputedStyle(grid).gridTemplateColumns;
+      return cols ? cols.split(' ').filter(Boolean).length : 1;
+    }
+
+    // Put the panel immediately after the row holding person i.
+    function placePanel(i) {
+      var cols = columnCount();
+      var next = (Math.floor(i / cols) + 1) * cols;
+      grid.insertBefore(panel, people[next] ? people[next].btn : null);
+    }
+
+    // Point the caret at the selected avatar, clamped clear of the corners.
+    function placeCaret(i) {
+      var b = people[i].btn.getBoundingClientRect();
+      var p = panel.getBoundingClientRect();
+      if (!p.width) return;
+      var edge = 28;
+      var x = b.left + b.width / 2 - p.left;
+      panel.style.setProperty(
+        '--caret-x', Math.max(edge, Math.min(p.width - edge, x)) + 'px');
+    }
+
+    // Only scroll when the panel actually landed out of sight — an
+    // unconditional scroll is jarring on a wide screen where it never moved.
+    function nudgeIntoView() {
+      var r = panel.getBoundingClientRect();
+      var h = window.innerHeight || document.documentElement.clientHeight;
+      if (r.top >= 0 && r.bottom <= h) return;
+      panel.scrollIntoView({
+        block: 'nearest',
+        behavior: REDUCED_MOTION.matches ? 'auto' : 'smooth'
+      });
+    }
+
+    function setState(i) {
+      people.forEach(function (person, n) {
+        var on = n === i;
+        person.btn.setAttribute('aria-expanded', on ? 'true' : 'false');
+        person.btn.querySelector('.profile__toggle').textContent =
+          on ? 'Close bio' : 'Read bio';
+        person.body.hidden = !on;
+      });
+    }
+
+    function show(i) {
+      openIndex = i;
+      setState(i);
+      panel.hidden = false;
+      placePanel(i);
+      placeCaret(i);
+      nudgeIntoView();
+    }
+
+    function hide() {
+      openIndex = -1;
+      setState(-1);
+      panel.hidden = true;
+    }
+
+    grid.addEventListener('click', function (e) {
+      var btn = e.target.closest('.profile-tab');
+      if (!btn) return;
+      var i = -1;
+      people.forEach(function (person, n) { if (person.btn === btn) i = n; });
+      if (i < 0) return;
+      if (i === openIndex) { hide(); } else { show(i); }
+    });
+
+    // Crossing a breakpoint changes the column count, which changes which row
+    // the panel belongs to — so it is re-placed, not merely re-measured.
+    var queued = false;
+    window.addEventListener('resize', function () {
+      if (openIndex < 0 || queued) return;
+      queued = true;
+      window.requestAnimationFrame(function () {
+        queued = false;
+        if (openIndex < 0) return;
+        placePanel(openIndex);
+        placeCaret(openIndex);
+      });
+    });
   }
 
   /* ======================================================================== */
@@ -306,6 +468,7 @@
     Array.prototype.forEach.call(
       document.querySelectorAll('form[data-async]'), initAsyncForm);
     initYear();
+    initLeadershipStrip();
   }
 
   if (document.readyState === 'loading') {

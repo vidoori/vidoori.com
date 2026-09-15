@@ -1462,27 +1462,111 @@ a:hover { color: var(--navy-500); }
 
 .team-image { display: block; width: 100%; height: auto; border-radius: var(--radius-lg); }
 
-/* Compact circular leadership selectors with expandable biographies. */
+/* Leadership: five profiles sharing one full-width biography panel.
+
+   The page ships <details> elements, which work unaided — with JavaScript off
+   each bio opens in place, which is what a disclosure should do. site.js
+   upgrades them into .profile-tab buttons plus a single .leadership-panel, so
+   a bio reads across the row instead of down a 200px column.
+
+   The panel is a grid child re-inserted after the last person in the selected
+   person's row, so the caret points at the right person whatever the column
+   count. At two columns that keeps the panel adjacent to the pair above it.
+   Rules scoped to .leadership-grid--enhanced apply only once JS has run. */
 .leadership-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: start; gap: var(--sp-4); }
 .leadership-grid .profile { padding: 0; border: 0; background: transparent; color: var(--text); }
-.profile--expandable > summary { display: flex; flex-direction: column; align-items: center; gap: var(--sp-3); padding: var(--sp-3); margin: 0; cursor: pointer; list-style: none; text-align: center; }
+
+/* The trigger, shared by the <details> summary and the enhanced button. */
+.profile--expandable > summary,
+.profile-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-3);
+  margin: 0;
+  padding: var(--sp-3);
+  background: none;
+  border: 0;
+  border-radius: var(--radius-lg);
+  font: inherit;
+  color: var(--text);
+  text-align: center;
+  cursor: pointer;
+  list-style: none;
+}
 .profile--expandable > summary::-webkit-details-marker { display: none; }
-.profile--expandable > summary:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; border-radius: var(--radius-lg); }
-.profile--expandable .profile__avatar { width: 5rem; height: 5rem; font-size: var(--step-1); flex-shrink: 0; border: 3px solid var(--green-100); transition: transform 0.2s ease; }
-.profile--expandable > summary:hover .profile__avatar { transform: translateY(-3px); border-color: var(--brand-green); }
-.profile--expandable .profile__name { font-size: var(--step--1); }
-.profile--expandable .profile__role { font-size: 0.65rem; letter-spacing: 0.02em; margin-top: var(--sp-2); }
+.profile--expandable > summary:focus-visible,
+.profile-tab:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+.profile--expandable .profile__avatar,
+.profile-tab .profile__avatar {
+  width: 5rem;
+  height: 5rem;
+  font-size: var(--step-1);
+  flex-shrink: 0;
+  border: 3px solid var(--green-200);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.profile--expandable > summary:hover .profile__avatar,
+.profile-tab:hover .profile__avatar { transform: translateY(-3px); border-color: var(--brand-green); }
+.profile--expandable .profile__name,
+.profile-tab .profile__name { font-size: var(--step--1); }
+.profile--expandable .profile__role,
+.profile-tab .profile__role { font-size: 0.65rem; letter-spacing: 0.02em; margin-top: var(--sp-2); }
 .profile__toggle { font-size: 0.75rem; color: var(--navy-700); margin-top: auto; }
+
+/* Fallback only: the <details> path, used when JS has not run. */
 .profile__hide { display: none; }
 .profile--expandable[open] .profile__show { display: none; }
 .profile--expandable[open] .profile__hide { display: inline; }
 .profile--expandable[open] { background: var(--white); color: var(--text); box-shadow: var(--shadow-sm); border-radius: var(--radius-lg); }
-.profile--expandable[open] > summary { flex-direction: column; text-align: center; }
-.profile--expandable[open] .profile__toggle { margin: 0; }
-.profile--expandable .profile__bio { padding: var(--sp-3); font-size: var(--step--1); max-width: 80ch; }
+.profile--expandable .profile__bio { padding: var(--sp-3); font-size: var(--step--1); max-width: 68ch; }
 .profile--expandable .profile__link { margin: var(--sp-3); font-size: var(--step--1); }
+
+/* Enhanced: buttons plus the shared panel. */
+.leadership-grid--enhanced .profile-tab[aria-expanded="true"] .profile__avatar {
+  border-color: var(--brand-green);
+  box-shadow: 0 0 0 4px var(--green-50);
+}
+.leadership-grid--enhanced .profile-tab[aria-expanded="true"] .profile__toggle { color: var(--navy-800); font-weight: 600; }
+
+.leadership-panel {
+  grid-column: 1 / -1;
+  position: relative;
+  margin-top: var(--sp-5);
+  padding: var(--sp-6);
+  background: var(--navy-50);
+  color: var(--text);
+  border: 1px solid var(--navy-100);
+  border-radius: var(--radius-lg);
+}
+.leadership-panel[hidden] { display: none; }
+/* Caret. --caret-x is set by site.js and clamped clear of the rounded corners. */
+.leadership-panel::before {
+  content: "";
+  position: absolute;
+  top: -9px;
+  left: var(--caret-x, 50%);
+  width: 16px;
+  height: 16px;
+  margin-left: -8px;
+  background: var(--navy-50);
+  border-left: 1px solid var(--navy-100);
+  border-top: 1px solid var(--navy-100);
+  border-radius: 3px 0 0 0;
+  transform: rotate(45deg);
+  transition: left 0.22s ease;
+}
+.leadership-panel .profile__name { font-size: var(--step-1); margin: 0; }
+.leadership-panel .profile__role { margin: var(--sp-2) 0 var(--sp-4); }
+.leadership-panel .profile__bio { padding: 0; max-width: 68ch; font-size: var(--step--1); }
+.leadership-panel .profile__link { margin: var(--sp-5) 0 0; font-size: var(--step--1); }
+
 @media (max-width: 56rem) { .leadership-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-@media (max-width: 34rem) { .leadership-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 34rem) {
+  .leadership-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .leadership-panel { padding: var(--sp-5) var(--sp-4); }
+}
+@media (prefers-reduced-motion: reduce) { .leadership-panel::before { transition: none; } }
 
 /* VAIL cycle: native SVG on wide screens, readable sequential steps on mobile. */
 .vail-cycle-shell { background: var(--navy-50); color: var(--navy-700); border-radius: var(--radius-lg); padding: var(--sp-4); }
