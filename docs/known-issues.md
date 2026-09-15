@@ -159,3 +159,97 @@ generated HTML, a hand-edited root `.html` file, or a broken internal link fails
 Verified by deliberately editing `_src/` without rebuilding: `--check` exits 1 and names the
 stale file. No `setup-python` step is needed — GitHub's Ubuntu runners ship Python 3 and both
 scripts are stdlib-only.
+
+---
+
+## Open after the September 2026 branch review
+
+Raised on 2026-09-15 while reviewing `dave-sept-2026` before it became a pull request. The
+branch&rsquo;s technical work is sound &mdash; the build succeeds, `check_links.py` reports no broken
+internal links across 2267 references, every new CSS class is defined, and the new CSS uses
+tokens throughout without tripping either documented colour trap. Everything below is an
+editorial or factual decision for the owner rather than a defect.
+
+### 12. OASIS 4 is claimed on the homepage and nowhere else
+
+The homepage credentials block lists **OASIS 4** as a federal contract vehicle, and the stat
+band was changed from three vehicles to four. `/who-we-are/contract-vehicles/` was not
+updated and still lists three &mdash; GSA MAS `GS-35F-335CA`, GSA 8(a) STARS III
+`47QTCB22D0131`, and SeaPort NxG. `_src/site.json` is unchanged as well, so the corporate
+facts that feed the footer and JSON-LD still say three.
+
+The site contradicts itself either way. **Confirm whether Vidoori holds OASIS 4.** If it
+does, it needs its contract number, an entry on the contract-vehicles page, and a line in
+`site.json`. If it does not, remove it from the homepage and restore the count to three. An
+unheld vehicle advertised on the homepage of a federal contractor is a misrepresentation, so
+settle this before the branch merges.
+
+### 13. The homepage tagline was replaced
+
+The hero previously read *Delivering Excellence Since 2008* over the headline *We are
+dedicated to our client&rsquo;s mission.* &mdash; the company tagline. The branch replaces both with
+*Federal and commercial IT consulting* and *Modernize mission-critical systems. Deliver with
+confidence.*
+
+The new copy is serviceable and matches the site&rsquo;s register. The point is that dropping the
+tagline from the homepage is a brand decision, not a copy edit, and it should be made
+deliberately. The tagline still appears elsewhere in the site&rsquo;s positioning language.
+
+### 14. A raster image was added to the homepage &mdash; contradicts ADR 2
+
+`assets/img/team-game.png` (1.9 MB, 1448&times;1086) was added to the *Join Our Team* section of
+the homepage, replacing the inline SVG network diagram that was there. ADR 2 records that the
+site is image-light by design: no photography, no icon font, diagrams hand-written as inline
+SVG.
+
+Owner has decided to **keep it for now**. Two follow-ups if it stays:
+
+- **Resize and convert.** It renders far smaller than 1448px and PNG is the wrong format for
+  illustration-style artwork. Roughly 800px wide as WebP should land under 100 KB. At 1.9 MB
+  it is by a wide margin the heaviest asset the site serves, and unlike `site.css` and
+  `site.js` it carries no version stamp.
+- **Decide whether ADR 2 still holds.** If raster images are now acceptable, amend the ADR in
+  `docs/architecture.md` so the next person is not working from a rule the site no longer
+  follows.
+
+### 15. Three leadership profiles were added and need confirmation
+
+`/who-we-are/leadership/` gains David Lieberman (Chief Information Officer), Sahar Yamini (VP
+Enterprise Transformation &amp; Applied AI), and Tim Withum (Chief Technology Officer), each with
+a LinkedIn URL. The site previously listed two people.
+
+**Titles and LinkedIn links need owner confirmation** &mdash; per the standing rule, facts about
+the business are flagged rather than guessed. Two of the three bios are a single sentence and
+read thin next to the fuller entries for Trong Bui and Eric Huang.
+
+One structural note: profiles were converted from `<article>` to `<details>`/`<summary>`, so
+each person&rsquo;s LinkedIn link now sits inside the collapsed region and is hidden until the bio
+is expanded. It used to be visible at all times.
+
+### 16. &ldquo;Leadership&rdquo; was relabelled &ldquo;Vidoori Team&rdquo; but the URL did not change
+
+The nav, footer, page title, `<h1>`, and breadcrumb now read *Vidoori Team*; the path remains
+`/who-we-are/leadership/`. That is the correct trade &mdash; the URL contract in ADR 3 matters
+more than a tidy path, and changing it would cost a redirect rule for no benefit. Recorded
+only so the mismatch between label and path is not later mistaken for an oversight.
+
+### 17. Branch protection on `main` is not in place &mdash; blocked on the GitHub plan
+
+The repository was transferred from `nsvidoori/vidoori.com` to the `vidoori` organization on
+2026-09-15 so that rulesets could enforce a pull-request workflow on `main`. The org is on
+**GitHub Free**, where rulesets are configurable but not enforced on private repositories.
+Enforcement needs GitHub Team at $4/user/month, billed for every org member and every outside
+collaborator with access to private repos &mdash; not just the people touching this site.
+
+Open decision, three ways out:
+
+- **Upgrade to Team.** Cost scales with org headcount, not with this repo.
+- **Make this repository public.** Rulesets are free on public repos even in a free org, and
+  it would not affect the org&rsquo;s other private repos. Check the git history for anything
+  sensitive first; the site&rsquo;s secrets live in Cloudflare environment variables, not the repo.
+- **Stay on Free without enforcement.** Pull requests work fine by convention; they simply
+  cannot be required, so a direct push to `main` would deploy to production unchallenged.
+
+Until this is settled, `main` is protected by agreement only. Note that every push to `main`
+publishes to production, so an accidental push is a live change &mdash; recoverable by reverting,
+but not prevented.
