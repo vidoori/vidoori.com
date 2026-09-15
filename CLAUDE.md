@@ -315,9 +315,11 @@ same change, not later:
 
 ---
 
-## 12. Open items (as of 2026-09-01)
+## 12. Open items (as of 2026-09-15)
 
-`docs/known-issues.md` is the full list; almost everything in it is now closed. What remains:
+`docs/known-issues.md` is the full list and carries the detail. What remains:
+
+**Infrastructure and configuration**
 
 1. **Apex → www redirect is not in place.** `origin` is `https://www.vidoori.com`, so
    canonicals point at the www host. If both `vidoori.com` and `www.vidoori.com` are added as
@@ -331,6 +333,26 @@ same change, not later:
    close it; the owner has decided against Cloudflare Access.
 4. **`logos/` and `assets/img/` hold byte-identical SVGs.** Accepted. If a logo changes,
    update `logos/` then `cp logos/*.svg assets/img/`.
+5. **`main` is not protected.** The repo moved to the `vidoori` org on 2026-09-15 so a
+   pull-request workflow could be enforced, but the org is on GitHub Free, where rulesets are
+   configurable and *not enforced* on private repos. Enforcement needs GitHub Team, billed per
+   org member. Until it is settled — upgrade, make the repo public, or rely on convention —
+   `main` is protected by agreement only, and every push to it deploys to production.
+   Issue 17.
+
+**Content decisions pending on `dave-sept-2026`** (not yet merged)
+
+6. **OASIS 4 is claimed on the homepage and nowhere else.** The credentials block and the stat
+   band say four contract vehicles; `/who-we-are/contract-vehicles/` and `_src/site.json` still
+   say three. Confirm whether Vidoori holds it before the branch merges — an unheld vehicle on
+   the homepage of a federal contractor is a misrepresentation, not a typo. Issue 12.
+7. **The homepage tagline was replaced.** *We are dedicated to our client's mission.* gave way
+   to *Modernize mission-critical systems.* A brand decision, not a copy edit. Issue 13.
+8. **A 1.9 MB PNG was added to the homepage**, contradicting ADR 2. Owner has decided to keep
+   it; it still wants resizing, and the ADR wants amending if raster assets are now allowed.
+   Issue 14.
+9. **Three leadership profiles were added** — Lieberman, Yamini, Withum. Titles and LinkedIn
+   links need owner confirmation. Issue 15.
 
 ## 13. Working expectations
 
