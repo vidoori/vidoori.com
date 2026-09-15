@@ -197,20 +197,23 @@ deliberately. The tagline still appears elsewhere in the site&rsquo;s positionin
 
 ### 14. A raster image was added to the homepage &mdash; contradicts ADR 2
 
-`assets/img/team-game.png` (1.9 MB, 1448&times;1086) was added to the *Join Our Team* section of
-the homepage, replacing the inline SVG network diagram that was there. ADR 2 records that the
-site is image-light by design: no photography, no icon font, diagrams hand-written as inline
-SVG.
+`assets/img/team-game.webp` (86 KB, 1200&times;900) sits in the *Join Our Team* section of the
+homepage, replacing the inline SVG network diagram that was there. ADR 2 records that the site
+is image-light by design: no photography, no icon font, diagrams hand-written as inline SVG.
 
-Owner has decided to **keep it for now**. Two follow-ups if it stays:
+Owner has decided to **keep it**. One follow-up remains.
 
-- **Resize and convert.** It renders far smaller than 1448px and PNG is the wrong format for
-  illustration-style artwork. Roughly 800px wide as WebP should land under 100 KB. At 1.9 MB
-  it is by a wide margin the heaviest asset the site serves, and unlike `site.css` and
-  `site.js` it carries no version stamp.
+- ~~**Resize and convert.**~~ (resolved 2026-09-15) It arrived as a 1.9 MB, 1448&times;1086 PNG
+  &mdash; the wrong format for flat-shaded illustration. Measured against the layout, the image
+  never renders wider than about 823 CSS px: the `.split` grid gives it a 504 px column on
+  desktop inside the 1152 px container, and its widest case is the single-column stack just
+  below the 56rem breakpoint. Re-encoded at 1200&times;900 WebP q80, which covers desktop at 2&times;
+  with room to spare. 1994 KB &rarr; 86 KB, a 95.7% reduction. The `width` and `height`
+  attributes were updated to match so the reserved space stays correct.
 - **Decide whether ADR 2 still holds.** If raster images are now acceptable, amend the ADR in
   `docs/architecture.md` so the next person is not working from a rule the site no longer
-  follows.
+  follows. Note that images carry no `?v=` version stamp, unlike `site.css` and `site.js`, so a
+  future revision to this file will need a new filename to bypass caches.
 
 ### 15. Three leadership profiles were added and need confirmation
 

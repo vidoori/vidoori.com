@@ -348,9 +348,9 @@ same change, not later:
    the homepage of a federal contractor is a misrepresentation, not a typo. Issue 12.
 7. **The homepage tagline was replaced.** *We are dedicated to our client's mission.* gave way
    to *Modernize mission-critical systems.* A brand decision, not a copy edit. Issue 13.
-8. **A 1.9 MB PNG was added to the homepage**, contradicting ADR 2. Owner has decided to keep
-   it; it still wants resizing, and the ADR wants amending if raster assets are now allowed.
-   Issue 14.
+8. **A raster image was added to the homepage**, contradicting ADR 2. Owner has decided to
+   keep it. Resized and re-encoded to 1200x900 WebP (1994 KB to 86 KB) on 2026-09-15; what
+   remains is amending the ADR if raster assets are now allowed. Issue 14.
 9. **Three leadership profiles were added** — Lieberman, Yamini, Withum. Titles and LinkedIn
    links need owner confirmation. Issue 15.
 
