@@ -374,6 +374,11 @@
     items.forEach(function (item, i) { grid.replaceChild(people[i].btn, item); });
     grid.classList.add('leadership-grid--enhanced');
 
+    // Attach the panel now, hidden, rather than on first open: the buttons
+    // point at it with aria-controls from the moment the page loads, and a
+    // dangling reference is worse than an empty one.
+    grid.appendChild(panel);
+
     var openIndex = -1;
 
     function columnCount() {
