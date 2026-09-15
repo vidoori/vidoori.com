@@ -1559,8 +1559,12 @@ a:hover { color: var(--navy-500); }
 /* The measure is capped for readability, then the whole block is centred in
    the panel so the spare width sits either side rather than all to the right.
    The cap is on the block, not the paragraph, so the heading and the link
-   share its edges and the text stays ranged left. */
-.leadership-panel__person { max-width: 68ch; margin-inline: auto; }
+   share its edges and the text stays ranged left. It is stated in rem, not
+   ch: the wrapper inherits --step-0 while the biography is set in the
+   smaller --step--1, so a ch value here would resolve against the wrong type
+   size and let the line run past 80 characters. 38rem is the measured width
+   of 68 characters at the biography's own size. */
+.leadership-panel__person { max-width: 38rem; margin-inline: auto; }
 .leadership-panel .profile__name { font-size: var(--step-1); margin: 0; }
 .leadership-panel .profile__role { margin: var(--sp-2) 0 var(--sp-4); }
 .leadership-panel .profile__bio { padding: 0; font-size: var(--step--1); }
