@@ -57,6 +57,25 @@
 /what-we-do/applied-intelligence          /what-we-do/  301
 /what-we-do/applied-intelligence/         /what-we-do/  301
 
+# --- Repository files that are not part of the published site ---
+# Cloudflare serves the whole repository (build output directory is "/"), so
+# working documentation, the generators and the page sources were all readable
+# over HTTP. These send them to the homepage instead. Bare paths here, the
+# matching splats in the dynamic block at the bottom.
+#
+# This is path-level suppression, not access control: it stops casual discovery
+# and search indexing, it does not make the repository private.
+/CLAUDE.md                                /  301
+/README.md                                /  301
+/docs                                     /  301
+/docs/                                    /  301
+/tools                                    /  301
+/tools/                                   /  301
+/_src                                     /  301
+/_src/                                    /  301
+/logos                                    /  301
+/logos/                                   /  301
+
 # --- Short link for the SEWP VI contract holder page ---
 /sewp                                     /who-we-are/contract-vehicles/nasa-sewp-vi/  301
 /sewp/                                    /who-we-are/contract-vehicles/nasa-sewp-vi/  301
@@ -100,3 +119,13 @@
 # --- WordPress plumbing ---
 /wp-admin/*                               /  301
 /wp-json/*                                /  301
+
+# --- Repository directories that are not part of the published site ---
+# See the note beside the bare paths in the static section. /assets/* is
+# deliberately not listed: /assets/docs/ holds the capability statement and the
+# SEWP ordering guide, which are published deliverables.
+/docs/*                                   /  301
+/tools/*                                  /  301
+/_src/*                                   /  301
+/logos/*                                  /  301
+/.github/*                                /  301
