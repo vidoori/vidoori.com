@@ -1256,6 +1256,29 @@ a:hover { color: var(--navy-500); }
   line-height: 1.5;
   color: var(--navy-800);
 }
+/* Contract text reproduced verbatim. Distinct from .prose blockquote, which is
+   sized as a pull quote; a clause runs to several hundred words and needs
+   body-sized type. Sets its own colour as well as its own background. */
+.clause {
+  margin: 0;
+  padding: var(--sp-5) var(--sp-6);
+  background: var(--navy-50);
+  color: var(--text);
+  border-left: 4px solid var(--brand-green);
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+.clause blockquote { margin: 0; }
+/* Reset first, then space siblings. Setting margin:0 on .clause p *after* the
+   sibling rule cancelled it at equal specificity and ran the paragraph after
+   the numbered list straight into it. */
+.clause blockquote > * { margin: 0; }
+.clause blockquote > * + * { margin-top: var(--sp-4); }
+.clause p { font-size: var(--step--1); color: var(--gray-700); }
+.clause .clause__title { font-weight: 700; color: var(--navy-900); letter-spacing: 0.01em; }
+.clause ol { margin: 0; padding-left: var(--sp-5); font-size: var(--step--1); color: var(--gray-700); }
+.clause li + li { margin-top: var(--sp-2); }
+.clause figcaption { margin-top: var(--sp-5); font-size: 0.78rem; color: var(--text-muted); }
+
 .prose hr { border: 0; border-top: 1px solid var(--border); margin-block: var(--sp-7); }
 .prose table { width: 100%; border-collapse: collapse; font-size: var(--step--1); }
 .prose th, .prose td { text-align: left; padding: var(--sp-3); border-bottom: 1px solid var(--border); }
