@@ -319,3 +319,39 @@ revision date.
   three drift cases before shipping: an extra vehicle on the sheet, a practice removed from the
   site, and a `CONTENT` edit without a regenerate.
 
+### 19. `build_capability_statement.py` has not migrated to `tools/pdfkit.py`
+
+`tools/pdfkit.py` was factored out on 2026-09-18 so the capability statement and the SEWP
+ordering guide would not become the kind of near-copy that `contact.js` and `referral.js`
+already are. The ordering guide uses it. The capability statement still carries its own inline
+copy of the same primitives &mdash; Helvetica metrics, wrapping, the object writer.
+
+Left deliberately rather than done in passing: migrating changes the committed PDF's bytes
+(the header version and object order differ), which `build_capability_statement.py --check`
+would correctly flag, so it wants its own change with its own regenerate rather than riding
+along with the SEWP work. Until then, a fix to the shared primitives has to be made twice.
+
+### 20. The SEWP ordering guide is a draft with eight open placeholders
+
+`assets/docs/Vidoori_SEWP_VI_Ordering_Guide.pdf` is linked from
+`/who-we-are/contract-vehicles/nasa-sewp-vi/` and carries a DRAFT banner. It is structurally
+complete and validates clean against PDF/UA-1, but eight values await the program manager:
+the contract number, the effective date, the guide's own version and effective date, and the
+name, title, direct telephone and direct email for each named contact.
+
+`python3 tools/build_sewp_ordering_guide.py --check` lists what is still outstanding. The
+banner disappears when none remain. **Do not issue to SEWP before then** &mdash; and note the
+contract requires the guide to be live before the first delivery order, and republished within
+ten business days of every contract modification.
+
+### 21. PDF/UA conformance is not checked in CI
+
+The ordering guide validates clean locally &mdash; veraPDF reports 106 rules passed, 0 failed,
+`isCompliant: true` &mdash; but veraPDF is a Java tool that is not installed on the GitHub
+runner, so CI only verifies the committed PDF matches the generator. A change to
+`tools/pdfkit.py` could break conformance without CI noticing. Re-run veraPDF by hand after
+touching the PDF code:
+
+```bash
+verapdf -f ua1 --format text assets/docs/Vidoori_SEWP_VI_Ordering_Guide.pdf
+```

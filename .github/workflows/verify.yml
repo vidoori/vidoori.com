@@ -26,3 +26,11 @@ jobs:
       # the vehicles, practices, UEI, CAGE and NAICS codes match the built site.
       - name: Capability statement is current and agrees with the site
         run: python3 tools/build_capability_statement.py --check
+
+      # The SEWP ordering guide is a contract deliverable with a maintenance
+      # clock on it, so a stale committed PDF is a compliance problem rather
+      # than an inconvenience. This only checks the file matches the
+      # generator; PDF/UA conformance needs verapdf, which is not installed
+      # on the runner - see the note in the script.
+      - name: SEWP ordering guide is current
+        run: python3 tools/build_sewp_ordering_guide.py --check

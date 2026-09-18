@@ -102,7 +102,23 @@ python3 tools/build_capability_statement.py               # rebuild the capabili
 
 ```bash
 python3 tools/build_capability_statement.py --check        # CI runs this
+python3 tools/build_sewp_ordering_guide.py                 # rebuild the SEWP ordering guide
+python3 tools/build_sewp_ordering_guide.py --check         # CI runs this too
 ```
+
+The SEWP ordering guide is a **contract deliverable**: it must be republished within ten
+business days of every contract modification. It is generated tagged to PDF/UA-1, which is
+what Section 508 maps to for documents, and validates clean &mdash; 106 rules passed, 0 failed.
+Re-validate after changing it:
+
+```bash
+verapdf -f ua1 --format text assets/docs/Vidoori_SEWP_VI_Ordering_Guide.pdf
+```
+
+That needs `brew install verapdf`; CI cannot run it, so CI only checks the committed PDF
+matches the generator. Note PDF/UA forbids the base-14 font shortcut, so the guide embeds
+Liberation Sans (SIL OFL, and metric-compatible with Helvetica so nothing reflows) &mdash;
+which is why it is 481 KB where the capability statement is 27 KB.
 
 `--check` is in `.github/workflows/verify.yml` alongside the other two. It fails if the
 committed PDF does not match the generator, if the contract vehicles or core competencies
