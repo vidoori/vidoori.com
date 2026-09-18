@@ -1169,6 +1169,7 @@ a:hover { color: var(--navy-500); }
 .kv dt { font-weight: 700; color: var(--navy-800); }
 .kv dd { margin: 0; color: var(--text-muted); font-family: var(--font-mono); font-size: 0.85em; }
 .kv dd.is-text { font-family: var(--font-sans); font-size: 1em; }
+.caps-codes { font-family: var(--font-mono); font-size: 0.85em; color: var(--text-muted); }
 
 .badge {
   display: inline-flex;

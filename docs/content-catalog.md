@@ -77,7 +77,7 @@ them there, not in page copy.
 | Vehicle | Contract # | Notes |
 |---|---|---|
 | GSA MAS | `GS-35F-335CA` | Contract Manager: Haley Kubal, contracts@vidoori.com |
-| SeaPort NxG | — | Navy; Engineering + Program Management Services |
+| SeaPort-NxG | — | Navy; Engineering + Program Management Services |
 | FAA eFAST | `693KA9-22-A-00186` | Master Ordering Agreement; CSD and CSS functional areas, rates through 2029 |
 
 UEI: `N37JST95C3S5` · CAGE: `6T0A7`
