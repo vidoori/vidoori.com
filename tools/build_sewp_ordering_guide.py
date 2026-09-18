@@ -277,10 +277,18 @@ GREEN_700 = (0.247, 0.478, 0.173)
 GRAY_600 = (0.357, 0.376, 0.439)
 WHITE = (1, 1, 1)
 
-# Liberation Sans, embedded because PDF/UA requires it. SIL Open Font
-# Licensed, so embedding is permitted, and metric-compatible with Helvetica,
-# so the layout is identical to the untagged base-14 output.
-FONT_DIR = os.path.expanduser("~/Library/Fonts")
+# Liberation Sans, embedded because PDF/UA requires the font program to be in
+# the file. SIL Open Font Licensed, so both embedding and redistribution are
+# permitted, and metric-compatible with Helvetica, so the layout is identical
+# to the untagged base-14 output.
+#
+# The faces are committed under tools/fonts/ rather than read from the system.
+# They are a build input like tools/sewp-badge-for-pdf.jpg: reading them from
+# ~/Library/Fonts worked on the machine that had the Homebrew cask installed
+# and broke CI immediately, because the runner is Ubuntu and has neither the
+# path nor the font. tools/fonts/LICENSE is the OFL text, which the licence
+# requires be distributed alongside.
+FONT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fonts")
 FONTS = {
     "F1": os.path.join(FONT_DIR, "LiberationSans-Regular.ttf"),
     "F2": os.path.join(FONT_DIR, "LiberationSans-Bold.ttf"),
