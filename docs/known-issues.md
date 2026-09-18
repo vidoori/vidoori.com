@@ -245,9 +245,14 @@ a LinkedIn URL. The site previously listed two people.
 further verification needed; treat the three as authoritative alongside Trong Bui and Eric
 Huang.
 
-One editorial note left open rather than resolved: the Lieberman and Withum bios are a single
-sentence each and read thin beside the fuller entries. Not wrong, just uneven &mdash; worth
-filling out when there is copy to do it with.
+**Accepted as they stand, 2026-09-18.** The Lieberman and Withum bios are a single sentence
+each against fuller entries for Bui and Huang. The owner has looked at it and is content with
+the imbalance; it is a deliberate state, not missing copy. Do not re-raise it.
+
+Related, and accepted on the same terms: `/vail/` describes who the lab is for in two ways
+&mdash; &ldquo;college graduates&rdquo; in the body copy and &ldquo;juniors and new hires&rdquo;
+in the flow diagram, which came from the owner&rsquo;s own artwork. Both readings are correct;
+no reconciliation wanted.
 
 Structural note for whoever next touches the page: each person&rsquo;s LinkedIn link lives in the
 shared biography panel, so it is visible only while that person is open. Before the September
