@@ -83,14 +83,14 @@ CONTACTS = {
     },
     "pm": {
         "role": "Program Manager",
-        "name": "[TBD: name]",
+        "name": "Gregory Gilleland",
         "title": "SEWP VI Program Manager",
         "phone": "[TBD: direct telephone]",
         "email": "[TBD: direct email]",
     },
     "dpm": {
         "role": "Deputy Program Manager",
-        "name": "[TBD: name]",
+        "name": "Haley Kubal",
         "title": "SEWP VI Deputy Program Manager",
         "phone": "[TBD: direct telephone]",
         "email": "[TBD: direct email]",
