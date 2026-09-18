@@ -64,7 +64,7 @@ copies the site serves. If a logo is revised, update `logos/` then
 _src/                      SOURCE — this is what you edit
   site.json                  nav, footer, contact block, Turnstile site key
   partials/base.html         page shell: <head>, header, nav, footer
-  pages/*.html               41 files: front matter + <main> content
+  pages/*.html               39 files: front matter + <main> content
 
 tools/                     Python 3 stdlib only, never runs on deploy
   build.py                   _src/ -> committed HTML + sitemap.xml
@@ -246,7 +246,7 @@ someone no longer listed is stale and should be repointed at `info@vidoori.com` 
 
 ## 8. Facts about the site
 
-38 pages: 20 pages + 18 posts. `docs/content-catalog.md` is the authoritative inventory —
+39 pages: 21 pages + 18 posts. `docs/content-catalog.md` is the authoritative inventory —
 what the site says and where each fact lives. Check it before hunting through files.
 
 **Nav:** Who We Are · What We Do · Solutions (VPT only, external) · Insights · Careers.
@@ -268,8 +268,11 @@ There is no Board of Advisors. The ten legacy per-person bio URLs all 301 to the
 **Corporate facts** live in `_src/site.json` and flow into the footer and JSON-LD — change
 them there, never in page copy: `info@vidoori.com`, `contracts@vidoori.com`,
 (240) 608-6810, 4000 Garden City Drive, Suite 808, Hyattsville, MD 20785.
-UEI `N37JST95C3S5`, CAGE `6T0A7`. Contract vehicles: GSA MAS `GS-35F-335CA`, SeaPort-NxG, and FAA eFAST
-`693KA9-22-A-00186` (Master Ordering Agreement; CSD and CSS functional areas).
+UEI `N37JST95C3S5`, CAGE `6T0A7`. Contract vehicles: GSA MAS `GS-35F-335CA`, SeaPort-NxG, FAA eFAST
+`693KA9-22-A-00186` (Master Ordering Agreement; CSD and CSS functional areas), and NASA SEWP VI
+(Category C &mdash; ITC/AV Mission-Based Services, awarded 2026-07-02). SEWP VI has its own page at
+`/who-we-are/contract-vehicles/nasa-sewp-vi/`, short link `/sewp`, because the contract requires a
+published contract-holder page; see §14.
 GSA 8(a) STARS III (`47QTCB22D0131`) and OASIS expired and were removed from the live site
 on 2026-09-18; the 2022 STARS III award announcement stays as a historical record.
 

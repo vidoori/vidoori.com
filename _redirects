@@ -57,6 +57,10 @@
 /what-we-do/applied-intelligence          /what-we-do/  301
 /what-we-do/applied-intelligence/         /what-we-do/  301
 
+# --- Short link for the SEWP VI contract holder page ---
+/sewp                                     /who-we-are/contract-vehicles/nasa-sewp-vi/  301
+/sewp/                                    /who-we-are/contract-vehicles/nasa-sewp-vi/  301
+
 # --- WordPress plumbing: send crawlers away rather than 404 ---
 /wp-login.php                             /  301
 /xmlrpc.php                               /  301

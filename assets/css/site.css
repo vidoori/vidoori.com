@@ -1736,3 +1736,42 @@ a:hover { color: var(--navy-500); }
   }
   .vail-flow__output { text-align: left; }
 }
+
+/* NASA SEWP VI page.
+
+   .tbd marks a placeholder the program manager still has to supply. It is
+   deliberately conspicuous — this page ships with real gaps in it (contract
+   number, effective date, named contacts) and a reviewer must be able to see
+   them at a glance. Uses neutrals rather than a new accent colour, since the
+   palette is fixed. Remove each span as the value arrives; when none remain,
+   the page is ready to go live. */
+.tbd {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  font-weight: 400;
+  color: var(--gray-600);
+  background: var(--gray-100);
+  border: 1px dashed var(--gray-300);
+  border-radius: var(--radius-sm);
+  padding: 0.1em 0.4em;
+  /* Must wrap: the longest placeholder is a full sentence, and nowrap pushed
+     the page into horizontal scroll at tablet width. box-decoration-break
+     keeps the dashed border closed on each line it breaks onto. */
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+.sewp-badge {
+  display: block;
+  width: 100%;
+  max-width: 21rem;
+  height: auto;
+  border-radius: var(--radius-lg);
+}
+/* The ordering steps are a genuine sequence, so they are an <ol>; the numbering
+   is carried visibly by the eyebrows, so the list markers are dropped. */
+.step-list { list-style: none; margin: 0; padding: 0; }
+.btn.is-disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  pointer-events: none;
+}
