@@ -28,11 +28,12 @@ this file in place means Cloudflare's edge may serve the old document for a
 while. Ship under a new filename if a revision has to reach people at once.
 """
 
+import html as html_mod
 import os
+import re
 import struct
 import sys
 import zlib
-from datetime import date
 
 # ---------------------------------------------------------------------------
 # Content. Edit this, not the drawing code below.
@@ -293,7 +294,7 @@ def jpeg_size(data):
     raise ValueError("no JPEG frame header found")
 
 
-def write_pdf(path, canvas, logo_bytes=None):
+def render_pdf(canvas, logo_bytes=None):
     objects = []
 
     def add(body):
@@ -342,9 +343,7 @@ def write_pdf(path, canvas, logo_bytes=None):
     out += (b"trailer\n<< /Size %d /Root %d 0 R /Info %d 0 R >>\nstartxref\n%d\n%%%%EOF\n"
             % (len(objects) + 1, catalog, info, xref_at))
 
-    with open(path, "wb") as fh:
-        fh.write(bytes(out))
-    return len(out)
+    return bytes(out)
 
 
 # ---------------------------------------------------------------------------
@@ -360,7 +359,7 @@ def band(c, x, y, w, label):
     c.text(x + 9, y + 4.5, label.upper(), 8.5, WHITE, bold=True)
 
 
-def build(out_path, logo_path=None):
+def build(logo_path=None):
     c = Canvas()
     M = 36.0
     RIGHT = c.w - M
@@ -475,21 +474,105 @@ def build(out_path, logo_path=None):
     c.text(M, fy - 8, "Revised %s" % REVISION, 7, GRAY_600)
     c.text(M, fy - 8, "Vidoori, Inc.", 7, GRAY_600, align="right", maxw=W)
 
-    size = write_pdf(out_path, c, logo_bytes)
-    return size, ly, ry
+    return render_pdf(c, logo_bytes), ly, ry
+
+
+# ---------------------------------------------------------------------------
+# Agreement with the site.
+#
+# The PDF and the website state the same facts in two places, which is exactly
+# how they drifted apart before: the sheet advertised a retired contract
+# vehicle and a capability page that no longer existed. These checks are what
+# stops that happening silently a second time. They read the *built* HTML, so
+# run tools/build.py first.
+# ---------------------------------------------------------------------------
+
+def check_against_site(root):
+    problems = []
+
+    def read(rel):
+        path = os.path.join(root, rel)
+        if not os.path.exists(path):
+            problems.append("missing built page %s - run tools/build.py first" % rel)
+            return ""
+        with open(path, encoding="utf-8") as fh:
+            return fh.read()
+
+    vehicles = read("who-we-are/contract-vehicles/index.html")
+    practices = read("what-we-do/index.html")
+
+    # Contract vehicles: one record per vehicle on the page, NAICS excluded.
+    site_v = [html_mod.unescape(m) for m in
+              re.findall(r'<div class="record">.*?<h3>(.*?)</h3>', vehicles, re.S)]
+    site_v = [v for v in site_v if v.strip().lower() != "naics codes"]
+    pdf_v = [v.split(" - ")[0].strip() for v in CONTRACT_VEHICLES]
+    if sorted(site_v) != sorted(pdf_v):
+        problems.append("contract vehicles disagree\n"
+                        "      PDF:  %s\n      site: %s"
+                        % (", ".join(pdf_v) or "(none)", ", ".join(site_v) or "(none)"))
+
+    # Core competencies must be the practices the site actually publishes.
+    site_p = [html_mod.unescape(m) for m in
+              re.findall(r'<h3><a href="/what-we-do/[^"]+/">(.*?)</a></h3>', practices)]
+    pdf_p = [title for title, _ in COMPETENCIES]
+    if sorted(site_p) != sorted(pdf_p):
+        problems.append("core competencies disagree with /what-we-do/\n"
+                        "      PDF:  %s\n      site: %s"
+                        % (", ".join(pdf_p) or "(none)", ", ".join(site_p) or "(none)"))
+
+    # Identifiers the sheet prints must be findable on the site.
+    for value in ("N37JST95C3S5", "6T0A7"):
+        if value not in vehicles:
+            problems.append("%s is on the PDF but not on /who-we-are/contract-vehicles/" % value)
+    for code in NAICS.replace(",", " ").split():
+        if code not in vehicles:
+            problems.append("NAICS %s is on the PDF but not on "
+                            "/who-we-are/contract-vehicles/" % code)
+
+    return problems
 
 
 def main():
     root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    out = sys.argv[1] if len(sys.argv) > 1 else os.path.join(
-        root, "assets", "docs", "Vidoori_CapabilityStatement.pdf")
-    logo = sys.argv[2] if len(sys.argv) > 2 else os.path.join(root, "tools", "logo-for-pdf.jpg")
-    size, ly, ry = build(out, logo)
-    print("Wrote %s (%.1f KB)" % (out, size / 1024.0))
+    default_out = os.path.join(root, "assets", "docs", "Vidoori_CapabilityStatement.pdf")
+    logo = os.path.join(root, "tools", "logo-for-pdf.jpg")
+    args = [a for a in sys.argv[1:] if a != "--check"]
+    checking = "--check" in sys.argv
+    out = args[0] if args else default_out
+    if len(args) > 1:
+        logo = args[1]
+
+    data, ly, ry = build(logo)
+    problems = check_against_site(root)
+
+    if checking:
+        if not os.path.exists(out):
+            problems.insert(0, "%s does not exist" % os.path.relpath(out, root))
+        else:
+            with open(out, "rb") as fh:
+                if fh.read() != data:
+                    problems.insert(0, "%s is out of date - run "
+                                    "python3 tools/build_capability_statement.py"
+                                    % os.path.relpath(out, root))
+        if min(ly, ry) < 58:
+            problems.append("content overruns the footer rule")
+        if problems:
+            print("%d problem(s):\n" % len(problems))
+            for p in problems:
+                print("  %s" % p)
+            return 1
+        print("Capability statement is current and agrees with the site.")
+        return 0
+
+    with open(out, "wb") as fh:
+        fh.write(data)
+    print("Wrote %s (%.1f KB)" % (out, len(data) / 1024.0))
     print("Column baselines: past performance %.1f pt, differentiators %.1f pt "
           "(footer rule sits at 56 pt)" % (ly, ry))
+    for p in problems:
+        print("  WARNING: %s" % p)
     if min(ly, ry) < 58:
-        print("WARNING: content overruns the footer — trim a bullet or reduce leading.")
+        print("WARNING: content overruns the footer - trim a bullet or reduce leading.")
         return 1
     return 0
 

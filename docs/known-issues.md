@@ -198,16 +198,21 @@ happen and stays, per the rule that historical content is not live content. And
 `assets/docs/Vidoori_CapabilityStatement.pdf` still lists STARS III &mdash; it is a binary the
 build does not touch, so it needs replacing by whoever maintains it. See issue 18.
 
-### 13. The homepage tagline was replaced
+### 13. ~~The homepage tagline was replaced~~ (accepted 2026-09-18)
 
-The hero previously read *Delivering Excellence Since 2008* over the headline *We are
-dedicated to our client&rsquo;s mission.* &mdash; the company tagline. The branch replaces both with
+The hero previously read *Delivering Excellence Since 2008* over *We are dedicated to our
+client&rsquo;s mission.* &mdash; the company tagline. The September rebuild replaced both with
 *Federal and commercial IT consulting* and *Modernize mission-critical systems. Deliver with
 confidence.*
 
-The new copy is serviceable and matches the site&rsquo;s register. The point is that dropping the
-tagline from the homepage is a brand decision, not a copy edit, and it should be made
-deliberately. The tagline still appears elsewhere in the site&rsquo;s positioning language.
+**Owner reviewed and accepted this.** Not an oversight; do not re-raise it. The tagline itself
+still lives in `_src/site.json` and continues to feed the site&rsquo;s positioning language.
+
+### 13b. VAIL rotation length &mdash; accepted 2026-09-18
+
+`/vail/` states a **6&ndash;9 month rotation**. The figure came from the owner&rsquo;s own
+diagram and appears nowhere else on the site. **Owner confirmed it and accepted publication.**
+Do not re-raise it.
 
 ### 14. A raster image was added to the homepage &mdash; contradicts ADR 2
 
@@ -300,7 +305,12 @@ revision date.
   NAICS 2017 and was reclassified in the 2022 revision. It was carried over from the previous
   PDF and now also appears on `/who-we-are/contract-vehicles/`, so a correction means both
   places. Check the SAM.gov registration.
-- **Nothing enforces agreement between the PDF and the site.** `build.py --check` and
-  `check_links.py` do not look at it, and CI does not run the generator. If a vehicle or
-  certification changes, someone has to remember. Worth wiring into CI if this drifts again.
+- ~~**Nothing enforces agreement between the PDF and the site.**~~ (resolved 2026-09-18)
+  `python3 tools/build_capability_statement.py --check` now runs in
+  `.github/workflows/verify.yml` beside the other two checks. It fails if the committed PDF
+  does not match the generator, if the contract vehicles or core competencies disagree with the
+  built site, if a UEI, CAGE or NAICS value on the sheet is missing from
+  `/who-we-are/contract-vehicles/`, or if the layout overruns the footer. Verified against all
+  three drift cases before shipping: an extra vehicle on the sheet, a practice removed from the
+  site, and a `CONTENT` edit without a regenerate.
 

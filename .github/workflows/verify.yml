@@ -18,3 +18,11 @@ jobs:
 
       - name: No broken internal links
         run: python3 tools/check_links.py
+
+      # The capability statement states the same facts as the site. It drifted
+      # once already — advertising a retired contract vehicle and a capability
+      # page that no longer existed — so agreement is enforced rather than
+      # remembered. Checks the committed PDF matches the generator, and that
+      # the vehicles, practices, UEI, CAGE and NAICS codes match the built site.
+      - name: Capability statement is current and agrees with the site
+        run: python3 tools/build_capability_statement.py --check
