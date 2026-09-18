@@ -116,7 +116,7 @@ build wraps it in `partials/base.html`.
 ```
 title:        <title> and the JSON-LD name
 description:  meta description and JSON-LD description
-path:         URL it builds to, e.g. /what-we-do/data/  (trailing slash)
+path:         URL it builds to, e.g. /what-we-do/cloud-native/  (trailing slash)
 nav:          which top-level nav item highlights as current
 schema:       WebPage | Article | Service | AboutPage | CollectionPage | ContactPage | none
 section:      Article only — category label shown on the card
@@ -175,7 +175,7 @@ has already cost one debugging session.
 - Layout: `.container`, `.container--narrow`, `.section`, `.section--alt`, `.section--tight`,
   `.section--brand`, `.split`, `.grid`, `.grid--2`, `.grid--4`, `.stack`
 - Blocks: `.card`, `.teaser`, `.profile`, `.record`, `.def-list`, `.caps`, `.callout`,
-  `.cta-band`, `.stat`, `.figure-panel`, `.table-wrap`, `.kv`
+  `.cta-band`, `.stat`, `.figure-panel`, `.table-wrap`, `.kv`, `.cred-chip` (in a `.chip-row`)
 - Type: `.lede`, `.eyebrow`, `.muted`, `.prose`, `.rule`, `.section-head`, `.breadcrumb`
 - Actions: `.btn` + `.btn--primary` / `--ghost` / `--accent` / `--onbrand`, `.btn-row`,
   `.link-arrow`
@@ -224,18 +224,21 @@ someone no longer listed is stale and should be repointed at `info@vidoori.com` 
 
 ## 8. Facts about the site
 
-41 pages: 23 pages + 18 posts. `docs/content-catalog.md` is the authoritative inventory —
+38 pages: 20 pages + 18 posts. `docs/content-catalog.md` is the authoritative inventory —
 what the site says and where each fact lives. Check it before hunting through files.
 
 **Nav:** Who We Are · What We Do · Solutions (VPT only, external) · Insights · Careers.
 `/contact/`, `/privacy-policy/`, `/terms-of-use/` are footer-only.
 
-**Practices:** Strategy, Software Development, DevSecOps, Integration & Test (the four core,
-shown in that order on `/what-we-do/`), plus Cloud-Native, Data Management, Cybersecurity,
-Intelligence as supporting practices. The core four appear in that order in three places that
-must agree: the homepage cards, `/what-we-do/`, and the footer's What We Do column in
-`_src/site.json`. The split is presentation only — all eight have equal-weight service pages,
-and the header nav still lists all eight.
+**Practices:** Cloud-Native, Software Development, DevSecOps, Integration & Test. They appear
+in that order in three places that must agree: the homepage cards, `/what-we-do/`, and the
+footer's What We Do column in `_src/site.json`. That order is also the order of the four nodes
+in the continuous-delivery SVG, which is duplicated in `home.html` and `what-we-do.html` —
+change one and you must change the other.
+
+Data Management, Cybersecurity, Intelligence and Strategy were retired on 2026-09-18 and their
+URLs 301 to `/what-we-do/`. Cloud-Native was promoted out of what used to be a supporting tier;
+the Core/Supporting split no longer exists.
 
 **Leadership:** Trong Khuong Bui (Founder & CEO) and Eric Huang (Chief Strategy Officer).
 There is no Board of Advisors. The ten legacy per-person bio URLs all 301 to the single page.
@@ -243,8 +246,10 @@ There is no Board of Advisors. The ten legacy per-person bio URLs all 301 to the
 **Corporate facts** live in `_src/site.json` and flow into the footer and JSON-LD — change
 them there, never in page copy: `info@vidoori.com`, `contracts@vidoori.com`,
 (240) 608-6810, 4000 Garden City Drive, Suite 808, Hyattsville, MD 20785.
-UEI `N37JST95C3S5`, CAGE `6T0A7`. Contract vehicles: GSA MAS `GS-35F-335CA`,
-GSA 8(a) STARS III `47QTCB22D0131`, SeaPort NxG.
+UEI `N37JST95C3S5`, CAGE `6T0A7`. Contract vehicles: GSA MAS `GS-35F-335CA`, SeaPort NxG, and FAA eFAST
+`693KA9-22-A-00186` (Master Ordering Agreement; CSD and CSS functional areas).
+GSA 8(a) STARS III (`47QTCB22D0131`) and OASIS expired and were removed from the live site
+on 2026-09-18; the 2022 STARS III award announcement stays as a historical record.
 
 **External properties:** VPT platform `vpt.vidoori.com/about`, careers ATS
 `vidoori.teamtailor.com/jobs`.
@@ -342,10 +347,10 @@ same change, not later:
 
 **Content decisions pending on `dave-sept-2026`** (not yet merged)
 
-6. **OASIS 4 is claimed on the homepage and nowhere else.** The credentials block and the stat
-   band say four contract vehicles; `/who-we-are/contract-vehicles/` and `_src/site.json` still
-   say three. Confirm whether Vidoori holds it before the branch merges — an unheld vehicle on
-   the homepage of a federal contractor is a misrepresentation, not a typo. Issue 12.
+6. **The capability statement PDF still lists 8(a) STARS III.** OASIS and STARS III were
+   confirmed inactive and removed from the live site on 2026-09-18, but
+   `assets/docs/Vidoori_CapabilityStatement.pdf` is a binary the build cannot edit and still
+   names STARS III. It needs replacing. Issue 18; the removal itself is issue 12.
 7. **The homepage tagline was replaced.** *We are dedicated to our client's mission.* gave way
    to *Modernize mission-critical systems.* A brand decision, not a copy edit. Issue 13.
 8. **A raster image was added to the homepage**, contradicting ADR 2. Owner has decided to

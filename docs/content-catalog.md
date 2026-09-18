@@ -18,15 +18,14 @@ at the bottom — it is the rationale for the rules in `_redirects` and should n
 | Periwinkle | `#BAC0D1` | Secondary / muted accent |
 | Green | `#9AD389` | Accent highlight |
 
-## Site structure (42 pages: 24 pages + 18 posts)
+## Site structure (38 pages: 20 pages + 18 posts)
 
 ### Primary nav (`_src/site.json`)
 - **Who We Are** — `/who-we-are/`
   - Our Company, Leadership, Our Values, Corporate Culture, Certifications,
     Awards & Recognition, Contract Vehicles
 - **What We Do** — `/what-we-do/`
-  - All Capabilities, Integration & Test, DevSecOps, Cloud-Native, Data Management,
-    Software Development, Cybersecurity, Intelligence, Strategy
+  - All Capabilities, Integration & Test, DevSecOps, Cloud-Native, Software Development
 - **Solutions** — VPT Performance Testing (`https://vpt.vidoori.com/about`, external) — the
   external platform in this group; VAIL (`/vail/`) is the internal lab page
 - **Insights** — `/insights/`
@@ -51,7 +50,6 @@ copy rather than the primary nav.
 
 ### Positioning
 - Homepage headline: "Modernize mission-critical systems. Deliver with confidence."
-- Homepage credentials include an OASIS 4 contract vehicle card (name supplied by the site owner).
 - Homepage hero pairs the headline with the animated Vidoori logo. Responsive credential cards are grouped under Quality Standards (CMMI, ISO, accounting) and Federal Access (contract vehicles), separated by spacing and a divider.
 - Tagline: **"We are dedicated to our client's mission."** (`_src/site.json`)
 - Boilerplate: "Vidoori is a consulting firm providing high quality information technology
@@ -79,8 +77,8 @@ them there, not in page copy.
 | Vehicle | Contract # | Notes |
 |---|---|---|
 | GSA MAS | `GS-35F-335CA` | Contract Manager: Haley Kubal, contracts@vidoori.com |
-| GSA 8(a) STARS III | `47QTCB22D0131` | Includes Emerging Technologies sub-area |
 | SeaPort NxG | — | Navy; Engineering + Program Management Services |
+| FAA eFAST | `693KA9-22-A-00186` | Master Ordering Agreement; CSD and CSS functional areas, rates through 2029 |
 
 UEI: `N37JST95C3S5` · CAGE: `6T0A7`
 
@@ -113,16 +111,12 @@ Learning opportunities
 - **Cloud-Native**: Application Modernization, Microservices & Containers, Automation,
   Cloud Architecture & Development, Cloud Platforms (AWS, Azure), Mobile Development.
   Sub-themes: Architecture & Design, Development, Management.
-- **Data Management**: Data Quality Analysis, Synthetic Data Generation, Integrated Dashboards,
-  Data Science, Custom O365 & SharePoint Integration, Business Intelligence Dashboards,
-  Data Privacy and Security, Multiple Data Source Integration, Data Governance.
 - **Software Development**: Architecture & Design, Mobile Platform Development, Data Integration,
   Custom Application Development, Database Management & Development, Application Modernization.
-- **Cybersecurity**: right-sized solutions, how we work, an expanded network. Offensive and
-  defensive threat protection; APT mitigation; Information Assurance compliance.
-- **Intelligence**: two solution areas — Integrated business intelligence, Portfolio investment
-  management.
-- **Strategy**: consulting narrative only, no capability list.
+
+The Data Management, Cybersecurity, Intelligence and Strategy pages were retired on
+2026-09-18; their capability lists are recorded in git history and their URLs 301 to
+`/what-we-do/`.
 
 ### Vidoori Team (`/who-we-are/leadership/`)
 

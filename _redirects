@@ -47,6 +47,16 @@
 /referral-form-non-vpn-test               /careers/  301
 /referral-form-non-vpn-test/              /careers/  301
 
+# --- Capability pages retired 2026-09-18 (ADR 3: no URL may 404) ---
+/what-we-do/strategy-consulting           /what-we-do/  301
+/what-we-do/strategy-consulting/          /what-we-do/  301
+/what-we-do/data                          /what-we-do/  301
+/what-we-do/data/                         /what-we-do/  301
+/what-we-do/cybersecurity                 /what-we-do/  301
+/what-we-do/cybersecurity/                /what-we-do/  301
+/what-we-do/applied-intelligence          /what-we-do/  301
+/what-we-do/applied-intelligence/         /what-we-do/  301
+
 # --- WordPress plumbing: send crawlers away rather than 404 ---
 /wp-login.php                             /  301
 /xmlrpc.php                               /  301

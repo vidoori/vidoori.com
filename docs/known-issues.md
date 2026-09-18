@@ -170,19 +170,33 @@ internal links across 2267 references, every new CSS class is defined, and the n
 tokens throughout without tripping either documented colour trap. Everything below is an
 editorial or factual decision for the owner rather than a defect.
 
-### 12. OASIS 4 is claimed on the homepage and nowhere else
+### 12. ~~OASIS 4 is claimed on the homepage and nowhere else~~ (resolved 2026-09-18)
 
-The homepage credentials block lists **OASIS 4** as a federal contract vehicle, and the stat
-band was changed from three vehicles to four. `/who-we-are/contract-vehicles/` was not
-updated and still lists three &mdash; GSA MAS `GS-35F-335CA`, GSA 8(a) STARS III
-`47QTCB22D0131`, and SeaPort NxG. `_src/site.json` is unchanged as well, so the corporate
-facts that feed the footer and JSON-LD still say three.
+The branch added an **OASIS 4** contract-vehicle card to the homepage and raised the stat band
+from three vehicles to four, while `/who-we-are/contract-vehicles/` and `_src/site.json` still
+said three. No contract number appeared anywhere, `Vidoori_CapabilityStatement.pdf` had no
+mention of OASIS at all, and &ldquo;OASIS 4&rdquo; is not a designation GSA uses &mdash; the
+vehicle family is OASIS, OASIS SB and the OASIS+ successor.
 
-The site contradicts itself either way. **Confirm whether Vidoori holds OASIS 4.** If it
-does, it needs its contract number, an entry on the contract-vehicles page, and a line in
-`site.json`. If it does not, remove it from the homepage and restore the count to three. An
-unheld vehicle advertised on the homepage of a federal contractor is a misrepresentation, so
-settle this before the branch merges.
+**Owner confirmed both OASIS and 8(a) STARS III are no longer active**, so both were removed
+from the live site on 2026-09-18:
+
+- Homepage: the STARS III and OASIS 4 credential cards, and the stat band, now reading
+  *2 &mdash; Federal contract vehicles: GSA MAS and SeaPort NxG*.
+- `/who-we-are/contract-vehicles/`: the whole STARS III record, plus the meta description and
+  the lede, which said &ldquo;Three vehicles&rdquo;.
+- `/who-we-are/`: the Contract Vehicles card summary.
+- `docs/content-catalog.md`: the STARS III row and the OASIS note, which had claimed the name
+  was &ldquo;supplied by the site owner&rdquo;.
+- `CLAUDE.md` section 8 corporate facts.
+
+No `_redirects` rule was needed: no page or URL was removed, only sections within pages.
+
+Two things deliberately left alone. The February 2022 announcement at
+`/news/vidoori-awarded-contract-gsa-stars-iii/` is an accurate record of an award that did
+happen and stays, per the rule that historical content is not live content. And
+`assets/docs/Vidoori_CapabilityStatement.pdf` still lists STARS III &mdash; it is a binary the
+build does not touch, so it needs replacing by whoever maintains it. See issue 18.
 
 ### 13. The homepage tagline was replaced
 
@@ -256,3 +270,15 @@ Open decision, three ways out:
 Until this is settled, `main` is protected by agreement only. Note that every push to `main`
 publishes to production, so an accidental push is a live change &mdash; recoverable by reverting,
 but not prevented.
+
+### 18. The capability statement PDF still lists 8(a) STARS III
+
+`assets/docs/Vidoori_CapabilityStatement.pdf` names GSA MAS, 8(a) STARS III and SeaPort NxG.
+STARS III was removed from the site on 2026-09-18 as no longer active, but the PDF is a binary
+asset the build does not generate and cannot edit, so it still advertises the expired vehicle
+and is linked from `/who-we-are/contract-vehicles/`.
+
+Needs a new PDF from whoever maintains it. Until then the site and the document it hands to
+contracting officers disagree. Note that PDFs carry no `?v=` version stamp, so the replacement
+should either reuse the filename and be given time to age out of the edge cache, or ship under
+a new filename with the link updated.

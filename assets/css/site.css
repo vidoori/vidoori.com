@@ -1183,7 +1183,38 @@ a:hover { color: var(--navy-500); }
   font-weight: 600;
   letter-spacing: 0.02em;
 }
-.badge-row { display: flex; flex-wrap: wrap; gap: var(--sp-3); }
+.chip-row { display: flex; flex-wrap: wrap; gap: var(--sp-3); }
+
+/* Credential chip: the homepage .credential-card idiom at inline scale, used
+   on /who-we-are/certifications/ and /who-we-are/contract-vehicles/. It
+   replaced a rounded green pill there, which readers took for a link. Squared
+   corners and a card treatment read as a label instead. Note this is a
+   separate class rather than a change to .badge — .badge is the category
+   marker in every post's .article-meta and must keep its pill shape.
+   Sets its own colour as well as its background, so it stays legible inside
+   the dark page hero. */
+.cred-chip {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--white);
+  color: var(--text-muted);
+  border: 1px solid var(--navy-100);
+  border-top: 2px solid var(--brand-green);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  font-size: var(--step--1);
+  text-align: left;
+}
+.cred-chip__type {
+  color: var(--green-700);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.cred-chip strong { color: var(--navy-800); font-size: var(--step-0); font-weight: 700; }
 .section--brand-figured .badge {
   background: rgba(154, 211, 137, 0.14);
   color: var(--green-400);
@@ -1577,21 +1608,131 @@ a:hover { color: var(--navy-500); }
 }
 @media (prefers-reduced-motion: reduce) { .leadership-panel::before { transition: none; } }
 
-/* VAIL cycle: native SVG on wide screens, readable sequential steps on mobile. */
-.vail-cycle-shell { background: var(--navy-50); color: var(--navy-700); border-radius: var(--radius-lg); padding: var(--sp-4); }
-.vail-cycle { display: block; width: 100%; height: auto; text-anchor: middle; font-family: inherit; }
-.vail-cycle__arrow { stroke: var(--green-700); color: var(--green-700); stroke-width: 3; fill: none; }
-.vail-cycle__node { fill: var(--white); stroke: var(--navy-100); stroke-width: 2; }
-.vail-cycle__number { fill: var(--navy-700); }
-.vail-cycle__digit { fill: var(--white); font-size: 20px; font-weight: 700; }
-.vail-cycle__label { fill: var(--navy-900); font-size: 20px; font-weight: 700; }
-.vail-cycle__small { fill: var(--text-muted); font-size: 16px; }
-.vail-cycle__center { fill: var(--navy-700); font-size: 44px; font-weight: 800; }
-.vail-cycle__subtitle { fill: var(--green-700); font-size: 20px; }
-.vail-cycle-mobile { display: none; }
-@media (max-width: 42rem) {
- .vail-cycle { display: none; }
- .vail-cycle-mobile { display: grid; gap: var(--sp-4); padding-left: var(--sp-5); margin: var(--sp-3); }
- .vail-cycle-mobile li { padding: var(--sp-2); }
- .vail-cycle-mobile span { display: block; color: var(--text-muted); font-size: var(--step--1); }
+/* VAIL flow: three stages, plus what the lab produces.
+
+   Built from HTML and CSS rather than an inline SVG. The site draws diagrams
+   as SVG (ADR 2), but this one is almost entirely text, and text in an SVG
+   cannot reflow — it only scales, so on a phone it would land at a few
+   pixels. As markup the cards stack, the copy stays selectable and
+   translatable, and the connectors simply disappear when they no longer
+   describe the layout. */
+.vail-flow { margin-top: var(--sp-6); }
+
+.vail-flow__stages { display: grid; gap: var(--sp-5); list-style: none; margin: 0; padding: 0; }
+.vail-flow__stage {
+  position: relative;
+  padding: var(--sp-5);
+  background: var(--navy-50);
+  color: var(--text);
+  border-radius: var(--radius-lg);
+}
+.vail-flow__stage--lab {
+  background: linear-gradient(145deg, var(--navy-700), var(--navy-900));
+  color: var(--text-on-brand);
+  border-top: 4px solid var(--brand-green);
+}
+.vail-flow__step {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin: 0 0 var(--sp-4);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--green-700);
+}
+.vail-flow__stage--lab .vail-flow__step { color: var(--green-200); }
+.vail-flow__num {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 50%;
+  background: var(--white);
+  color: var(--navy-700);
+  font-size: 0.72rem;
+  letter-spacing: 0;
+}
+.vail-flow__stage--lab .vail-flow__num { background: rgba(255, 255, 255, 0.16); color: var(--white); }
+.vail-flow__stage h3 { margin: 0 0 var(--sp-3); font-size: var(--step-1); }
+.vail-flow__stage p { margin: 0; color: var(--text-muted); font-size: var(--step--1); }
+.vail-flow__stage--lab h3 { color: var(--white); }
+.vail-flow__stage--lab p { color: var(--navy-200); }
+.vail-flow__stage .vail-flow__meta {
+  margin-top: var(--sp-4);
+  padding-top: var(--sp-4);
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+  font-weight: 600;
+}
+
+.vail-flow__outputs { margin-top: var(--sp-6); }
+.vail-flow__outputs-label {
+  margin: 0 0 var(--sp-4);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.vail-flow__outputs ul { display: grid; gap: var(--sp-4); list-style: none; margin: 0; padding: 0; }
+.vail-flow__output {
+  padding: var(--sp-5);
+  background: var(--white);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+.vail-flow__output h4 { margin: var(--sp-2) 0 var(--sp-3); font-size: var(--step-0); }
+.vail-flow__output p { margin: 0; color: var(--text-muted); font-size: var(--step--1); }
+
+.vail-flow__note {
+  margin: var(--sp-6) 0 0;
+  padding-top: var(--sp-5);
+  border-top: 1px solid var(--border);
+  font-size: var(--step--1);
+  color: var(--text-muted);
+}
+.vail-flow__note strong { color: var(--navy-800); }
+
+@media (min-width: 40rem) {
+  .vail-flow__outputs ul { grid-template-columns: 1fr 1fr; }
+}
+
+/* Connectors exist only where the layout is actually a row. */
+@media (min-width: 56rem) {
+  .vail-flow__stages { grid-template-columns: repeat(3, 1fr); gap: var(--sp-7); }
+  .vail-flow__stage + .vail-flow__stage::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: calc(var(--sp-7) * -1);
+    width: var(--sp-7);
+    height: 2px;
+    background: var(--navy-200);
+    transform: translateY(-50%);
+  }
+  .vail-flow__stage + .vail-flow__stage::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -11px;
+    width: 9px;
+    height: 9px;
+    border-top: 2px solid var(--navy-200);
+    border-right: 2px solid var(--navy-200);
+    transform: translateY(-50%) rotate(45deg);
+  }
+  .vail-flow__outputs { position: relative; margin-top: var(--sp-7); text-align: center; }
+  .vail-flow__outputs::before {
+    content: "";
+    position: absolute;
+    top: calc(var(--sp-7) * -1);
+    left: 50%;
+    width: 2px;
+    height: var(--sp-7);
+    background: var(--navy-200);
+  }
+  .vail-flow__output { text-align: left; }
 }

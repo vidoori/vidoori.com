@@ -17,7 +17,7 @@ only `---`. Values are plain text; there is no quoting or nesting.
 |---|---|---|
 | `title` | yes | `<title>` and `og:title`. ` \| Vidoori` is appended automatically. |
 | `description` | yes | Meta description and `og:description`. Aim for 120–160 characters. |
-| `path` | yes | URL path, with leading and trailing slash: `/what-we-do/data/`. Determines the output file. |
+| `path` | yes | URL path, with leading and trailing slash: `/what-we-do/cloud-native/`. Determines the output file. |
 | `nav` | no | Which top-level nav item highlights: `who-we-are`, `what-we-do`, `solutions`, `insights`, `careers`, or `none`. |
 | `schema` | no | JSON-LD type. Default `WebPage`. Use `none` to emit only the Organization node. |
 | `rawtitle` | no | `true` suppresses the ` \| Vidoori` suffix. Only the homepage uses this. |
@@ -146,7 +146,8 @@ Copy these from existing pages; the full catalogue with rendered descriptions is
 | Numbers | `.stats` + `.stat` |
 | Certification or award entry | `.record` |
 | Key/value identifiers | `.kv` |
-| Pill label | `.badge`, in a `.badge-row` |
+| Category pill (posts) | `.badge`, in `.article-meta` |
+| Credential label | `.cred-chip`, in a `.chip-row` |
 | Emphasised sentence | `.callout` |
 | Closing call to action | `.cta-band` |
 | Long-form body copy | `.prose` |

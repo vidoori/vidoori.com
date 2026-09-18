@@ -131,9 +131,9 @@ them `--brand-green`; that rule is gone, and so is the `<em>`.
 ```html
 <article class="card card--link">
   <div class="card__icon" aria-hidden="true"><svg>…</svg></div>
-  <h3><a href="/what-we-do/data/">Data Management</a></h3>
+  <h3><a href="/what-we-do/cloud-native/">Cloud-Native</a></h3>
   <p>Description.</p>
-  <span class="link-arrow" aria-hidden="true">More about Data Management</span>
+  <span class="link-arrow" aria-hidden="true">More about Cloud-Native</span>
 </article>
 ```
 
@@ -155,7 +155,8 @@ with `a::after { inset: 0 }`. The visible "More about…" is a `<span>`, marked
 | `.stats` / `.stat` | Figures with a green top rule. |
 | `.record` | Certification / contract-vehicle entry: label column plus body column. |
 | `.kv` | Key/value grid; values are monospaced. Add `.is-text` to a `<dd>` to opt out. |
-| `.badge` / `.badge-row` | Pill labels. Auto-inverts inside `.section--brand-figured`. |
+| `.badge` | Category pill on a post's `.article-meta`. Auto-inverts inside `.section--brand-figured`. |
+| `.cred-chip` / `.chip-row` | Credential label in the `.credential-card` idiom — squared, green top rule, uppercase type over value. Used where a pill read as a link. |
 | `.callout` | One emphasised sentence with a green left rule. |
 | `.cta-band` | Closing call to action. Nearly every page ends with one. |
 | `.teaser` | Insights listing item. Generated for `/insights/`. |

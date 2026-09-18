@@ -28,7 +28,7 @@ Edit the file in `_src/pages/` and run `python3 tools/build.py`.
 
 The reason for a generator on an otherwise plain static site is explained in
 [docs/architecture.md](docs/architecture.md#adr-1-a-local-generator-rather-than-hand-maintained-headers).
-Short version: 42 pages share one header and footer, and hand-maintaining that markup 41
+Short version: 38 pages share one header and footer, and hand-maintaining that markup 38
 times guarantees drift. Cloudflare still serves plain committed HTML with no build command.
 
 ## Layout
