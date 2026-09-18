@@ -229,19 +229,23 @@ Owner has decided to **keep it**. One follow-up remains.
   follows. Note that images carry no `?v=` version stamp, unlike `site.css` and `site.js`, so a
   future revision to this file will need a new filename to bypass caches.
 
-### 15. Three leadership profiles were added and need confirmation
+### 15. ~~Three leadership profiles were added and need confirmation~~ (confirmed 2026-09-18)
 
-`/who-we-are/leadership/` gains David Lieberman (Chief Information Officer), Sahar Yamini (VP
+`/who-we-are/leadership/` gained David Lieberman (Chief Information Officer), Sahar Yamini (VP
 Enterprise Transformation &amp; Applied AI), and Tim Withum (Chief Technology Officer), each with
 a LinkedIn URL. The site previously listed two people.
 
-**Titles and LinkedIn links need owner confirmation** &mdash; per the standing rule, facts about
-the business are flagged rather than guessed. Two of the three bios are a single sentence and
-read thin next to the fuller entries for Trong Bui and Eric Huang.
+**Owner checked the LinkedIn profiles and the titles on 2026-09-18 and confirmed both.** No
+further verification needed; treat the three as authoritative alongside Trong Bui and Eric
+Huang.
 
-One structural note: profiles were converted from `<article>` to `<details>`/`<summary>`, so
-each person&rsquo;s LinkedIn link now sits inside the collapsed region and is hidden until the bio
-is expanded. It used to be visible at all times.
+One editorial note left open rather than resolved: the Lieberman and Withum bios are a single
+sentence each and read thin beside the fuller entries. Not wrong, just uneven &mdash; worth
+filling out when there is copy to do it with.
+
+Structural note for whoever next touches the page: each person&rsquo;s LinkedIn link lives in the
+shared biography panel, so it is visible only while that person is open. Before the September
+rebuild it sat in the card and was visible at all times.
 
 ### 16. &ldquo;Leadership&rdquo; was relabelled &ldquo;Vidoori Team&rdquo; but the URL did not change
 

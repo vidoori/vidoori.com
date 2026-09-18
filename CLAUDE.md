@@ -356,8 +356,9 @@ same change, not later:
 8. **A raster image was added to the homepage**, contradicting ADR 2. Owner has decided to
    keep it. Resized and re-encoded to 1200x900 WebP (1994 KB to 86 KB) on 2026-09-15; what
    remains is amending the ADR if raster assets are now allowed. Issue 14.
-9. **Three leadership profiles were added** — Lieberman, Yamini, Withum. Titles and LinkedIn
-   links need owner confirmation. Issue 15.
+9. **Leadership bios are uneven in length.** The Lieberman and Withum entries are a single
+   sentence each beside fuller ones for Bui and Huang. Their titles and LinkedIn links were
+   confirmed by the owner on 2026-09-18; only the copy is outstanding. Issue 15.
 
 ## 13. Working expectations
 
