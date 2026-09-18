@@ -181,9 +181,14 @@ has already cost one debugging session.
   `.link-arrow`
 - Spacing utilities: `.mt-0`, `.mt-5`, `.mt-6`, `.mt-7`
 
-**Image-light by design (ADR 2).** There is no photography and no icon font. Diagrams are
-hand-written inline SVG with a `role="img"` and a descriptive `aria-label`. Do not add raster
-assets. If a page needs a visual, draw an SVG in the style of the existing ones.
+**Image-light by design (ADR 2, amended 2026-09-18).** No icon font. Diagrams are markup or
+hand-written inline SVG with a `role="img"` and a descriptive `aria-label` — never a raster,
+because a diagram is mostly text and text in an image cannot reflow. Illustration *is* now
+allowed, but only if it is AI-generated or otherwise unambiguously ours, shows no identifiable
+person, is sized to no more than 2× what the container actually renders at, ships as WebP, and
+carries real `alt` text with matching `width`/`height`. Read the ADR 2 amendment before adding
+one. Note images carry no `?v=` stamp, so a revision needs a new filename or the edge serves
+the old file.
 
 **Accessibility is a commitment, not a nice-to-have:** semantic landmarks, a skip link,
 visible focus states, `aria-current` on the active nav item, labelled form fields with
@@ -353,9 +358,9 @@ same change, not later:
    names STARS III. It needs replacing. Issue 18; the removal itself is issue 12.
 7. **The homepage tagline was replaced.** *We are dedicated to our client's mission.* gave way
    to *Modernize mission-critical systems.* A brand decision, not a copy edit. Issue 13.
-8. **A raster image was added to the homepage**, contradicting ADR 2. Owner has decided to
-   keep it. Resized and re-encoded to 1200x900 WebP (1994 KB to 86 KB) on 2026-09-15; what
-   remains is amending the ADR if raster assets are now allowed. Issue 14.
+8. ~~**A raster image was added to the homepage**, contradicting ADR 2.~~ Closed 2026-09-18.
+   Re-encoded to 1200x900 WebP (1994 KB to 86 KB), and ADR 2 amended to permit illustration
+   under stated conditions rather than ban it. Issue 14.
 9. **Leadership bios are uneven in length.** The Lieberman and Withum entries are a single
    sentence each beside fuller ones for Bui and Huang. Their titles and LinkedIn links were
    confirmed by the owner on 2026-09-18; only the copy is outstanding. Issue 15.

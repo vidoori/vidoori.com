@@ -64,7 +64,8 @@ dependency-free HTML. Nothing about the deployed site depends on the generator e
 
 ## ADR 2: Image-light, with graphics drawn in CSS and inline SVG
 
-**Status:** accepted (explicitly chosen by the site owner).
+**Status:** accepted, then amended 2026-09-18 to permit illustration under conditions. The
+original decision and the amendment are both below; read both.
 
 **Context.** The WordPress site used a hero video (`Vidoori-Home-Hero-4.mp4`) and roughly
 103 uploaded images. We did not have those source files locally, and their licensing was
@@ -80,13 +81,45 @@ unverifiable — stock photography on the old site could not be traced to a lice
 
 **Consequences.**
 
-- The site ships no raster images at all. Total page weight is dominated by one 30 KB
-  stylesheet.
 - No licensing exposure, no image pipeline, no responsive-image markup to maintain.
 - The inline SVGs are decorative *and* informative, which is better than stock photos of
   people at laptops.
-- If real photography is added later, `.figure-panel` is the slot designed to hold it —
-  swap the inner `<svg>` for a `<picture>` and the layout is unchanged.
+- `.figure-panel` is the slot designed to hold an image — swap the inner `<svg>` for an
+  `<img>` or `<picture>` and the layout is unchanged.
+
+### Amendment, 2026-09-18: illustration is allowed, under conditions
+
+The original ban was really a licensing and weight argument, not an aesthetic one. The owner
+has accepted illustration where both of those are answered. The homepage *Join Our Team*
+section now carries one such image.
+
+**The conditions, all of which must hold.**
+
+1. **Provenance is clean.** The image is AI-generated or otherwise unambiguously ours. The
+   licensing exposure that motivated the original ban is the thing being avoided, not
+   photography as such.
+2. **No identifiable people.** Illustration rather than photorealism, and no real person's
+   likeness. This is what keeps the privacy question from arising at all.
+3. **Sized to the layout, not to the source.** Measure what the container actually renders at
+   and ship no more than 2× that. The team image renders in a 504px column on desktop and
+   823px at its widest (the single-column stack just below the 56rem breakpoint), so it ships
+   at 1200px.
+4. **WebP, not PNG.** For flat-shaded illustration the difference is not marginal: the same
+   image was 1994 KB as PNG and 86 KB as WebP at q80, a 95.7% reduction with no visible
+   change. WebP needs no fallback — Safari 14 closed the last gap in 2020, and any browser
+   without it already fails this site's CSP and CSS.
+5. **Real `alt` text, and `width`/`height` matching the file.** The dimensions reserve the
+   right space so the page does not shift as the image loads.
+
+**What has not changed.** Diagrams stay as markup or inline SVG. A diagram is mostly text, and
+text in a raster or in an SVG cannot reflow — it can only scale. The VAIL flow diagram was
+measured at roughly 2px per character at phone width when rasterized, which is why it is built
+from HTML and CSS instead. The rule of thumb: if it is a picture, an image is fine; if it is
+words in boxes, it is markup.
+
+**One trap this creates.** `tools/build.py` version-stamps `site.css` and `site.js` with a
+content hash, but images carry no `?v=`. A revised image reusing its filename will be served
+stale from the edge. Ship revisions under a new filename and update the reference.
 
 ---
 

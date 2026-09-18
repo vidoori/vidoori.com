@@ -224,10 +224,11 @@ Owner has decided to **keep it**. One follow-up remains.
   below the 56rem breakpoint. Re-encoded at 1200&times;900 WebP q80, which covers desktop at 2&times;
   with room to spare. 1994 KB &rarr; 86 KB, a 95.7% reduction. The `width` and `height`
   attributes were updated to match so the reserved space stays correct.
-- **Decide whether ADR 2 still holds.** If raster images are now acceptable, amend the ADR in
-  `docs/architecture.md` so the next person is not working from a rule the site no longer
-  follows. Note that images carry no `?v=` version stamp, unlike `site.css` and `site.js`, so a
-  future revision to this file will need a new filename to bypass caches.
+- ~~**Decide whether ADR 2 still holds.**~~ (resolved 2026-09-18) Amended rather than
+  abandoned. Illustration is now allowed where provenance is clean, no identifiable person
+  appears, it is sized to the layout and ships as WebP with real `alt` text. Diagrams stay as
+  markup or inline SVG. The amendment in `docs/architecture.md` carries the full conditions,
+  including the version-stamp trap: images have no `?v=`, so a revision needs a new filename.
 
 ### 15. ~~Three leadership profiles were added and need confirmation~~ (confirmed 2026-09-18)
 
