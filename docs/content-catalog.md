@@ -80,6 +80,12 @@ them there, not in page copy.
 | SeaPort-NxG | — | Navy; Engineering + Program Management Services |
 | FAA eFAST | `693KA9-22-A-00186` | Master Ordering Agreement; CSD and CSS functional areas, rates through 2029 |
 
+NAICS codes, from the SAM.gov registration as of 2026-09-18. Primary **541512**; additional
+513210, 518210, 519290, 541330, 541511, 541513, 541519, 541715, 611420, 811210. Also held but
+deliberately not published: 488119 (Other Airport Operations), which reads oddly on an IT
+sheet. Published in two places &mdash; `/who-we-are/contract-vehicles/` and the capability
+statement &mdash; and `build_capability_statement.py --check` fails if they disagree.
+
 UEI: `N37JST95C3S5` · CAGE: `6T0A7`
 
 ### Awards (6)

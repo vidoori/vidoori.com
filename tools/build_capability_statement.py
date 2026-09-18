@@ -75,7 +75,17 @@ CONTRACT_VEHICLES = [
     "FAA eFAST - 693KA9-22-A-00186",
 ]
 
-NAICS = "541511, 541512, 541513, 541519, 519190, 541330, 611420, 811212"
+# NAICS. Taken from the SAM.gov registration on 2026-09-18, which is the
+# authoritative list. Two codes the sheet carried before that date were NAICS
+# 2017 spellings retired in the 2022 revision: 519190 became 519290, and 811212
+# was consolidated into 811210. 488119 (Other Airport Operations) is held but
+# deliberately not advertised here - it reads oddly on an IT capability sheet.
+NAICS_PRIMARY = "541512"
+NAICS_OTHER = [
+    "513210", "518210", "519290", "541330", "541511",
+    "541513", "541519", "541715", "611420", "811210",
+]
+NAICS_ALL = [NAICS_PRIMARY] + NAICS_OTHER
 
 COMPETENCIES = [
     ("Integration & Test", [
@@ -383,7 +393,7 @@ def build(logo_path=None):
 
     # ---- company snapshot -------------------------------------------------
     y -= 8
-    box_h = 138.0
+    box_h = 150.0
     box_top = y
     c.rect(M, box_top - box_h, W, box_h, NAVY_50)
     c.rect(M, box_top - box_h, 3, box_h, GREEN_400)
@@ -419,11 +429,13 @@ def build(logo_path=None):
         c.text(col[2], yy, line, 8.4, GRAY_600)
         yy -= 11
     yy = head(col[2], yy - 3, "NAICS CODES")
-    for line in wrap(NAICS, 8.4, colw[2]):
+    c.text(col[2], yy, "%s (primary)" % NAICS_PRIMARY, 8.4, NAVY_950, bold=True)
+    yy -= 11
+    for line in wrap(", ".join(NAICS_OTHER), 8.4, colw[2]):
         c.text(col[2], yy, line, 8.4, GRAY_600)
         yy -= 11
 
-    y = box_top - box_h - 26
+    y = box_top - box_h - 14
 
     # ---- core competencies ------------------------------------------------
     band(c, M, y, 152, "Core Competencies")
@@ -524,7 +536,7 @@ def check_against_site(root):
     for value in ("N37JST95C3S5", "6T0A7"):
         if value not in vehicles:
             problems.append("%s is on the PDF but not on /who-we-are/contract-vehicles/" % value)
-    for code in NAICS.replace(",", " ").split():
+    for code in NAICS_ALL:
         if code not in vehicles:
             problems.append("NAICS %s is on the PDF but not on "
                             "/who-we-are/contract-vehicles/" % code)
