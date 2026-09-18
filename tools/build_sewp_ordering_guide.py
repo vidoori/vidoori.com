@@ -86,14 +86,14 @@ CONTACTS = {
         "name": "Gregory Gilleland",
         "title": "SEWP VI Program Manager",
         "phone": "[TBD: direct telephone]",
-        "email": "[TBD: direct email]",
+        "email": "gregory.gilleland@vidoori.com",
     },
     "dpm": {
         "role": "Deputy Program Manager",
         "name": "Haley Kubal",
         "title": "SEWP VI Deputy Program Manager",
         "phone": "[TBD: direct telephone]",
-        "email": "[TBD: direct email]",
+        "email": "haley.kubal@vidoori.com",
     },
 }
 
