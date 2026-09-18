@@ -286,7 +286,7 @@ them there, never in page copy: `info@vidoori.com`, `contracts@vidoori.com`,
 (240) 608-6810, 4000 Garden City Drive, Suite 808, Hyattsville, MD 20785.
 UEI `N37JST95C3S5`, CAGE `6T0A7`. Contract vehicles: GSA MAS `GS-35F-335CA`, SeaPort-NxG, FAA eFAST
 `693KA9-22-A-00186` (Master Ordering Agreement; CSD and CSS functional areas), and NASA SEWP VI
-(Category C &mdash; ITC/AV Mission-Based Services, awarded 2026-07-02). SEWP VI has its own page at
+`80TECH26D1457` (Category C &mdash; ITC/AV Mission-Based Services, awarded 2026-07-02). SEWP VI has its own page at
 `/who-we-are/contract-vehicles/nasa-sewp-vi/`, short link `/sewp`, because the contract requires a
 published contract-holder page; see §14.
 GSA 8(a) STARS III (`47QTCB22D0131`) and OASIS expired and were removed from the live site

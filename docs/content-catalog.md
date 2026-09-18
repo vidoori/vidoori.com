@@ -79,7 +79,7 @@ them there, not in page copy.
 | GSA MAS | `GS-35F-335CA` | Contract Manager: Haley Kubal, contracts@vidoori.com |
 | SeaPort-NxG | — | Navy; Engineering + Program Management Services |
 | FAA eFAST | `693KA9-22-A-00186` | Master Ordering Agreement; CSD and CSS functional areas, rates through 2029 |
-| NASA SEWP VI | *pending* | Category C — ITC/AV Mission-Based Services; awarded 2026-07-02; own page at `/who-we-are/contract-vehicles/nasa-sewp-vi/` |
+| NASA SEWP VI | `80TECH26D1457` | Category C — ITC/AV Mission-Based Services; awarded 2026-07-02; own page at `/who-we-are/contract-vehicles/nasa-sewp-vi/` |
 
 NAICS codes, from the SAM.gov registration as of 2026-09-18. Primary **541512**; additional
 513210, 518210, 519290, 541330, 541511, 541513, 541519, 541715, 611420, 811210. Also held but

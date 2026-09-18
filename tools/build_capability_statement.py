@@ -73,7 +73,7 @@ CONTRACT_VEHICLES = [
     "GSA MAS - GS-35F-335CA",
     "SeaPort-NxG",
     "FAA eFAST - 693KA9-22-A-00186",
-    "NASA SEWP VI - Category C",
+    "NASA SEWP VI - 80TECH26D1457",
 ]
 
 # NAICS. Taken from the SAM.gov registration on 2026-09-18, which is the

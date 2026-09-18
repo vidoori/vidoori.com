@@ -57,7 +57,7 @@ import pdfkit  # noqa: E402
 
 VERSION = "[TBD: version]"
 EFFECTIVE = "[TBD: effective date]"
-CONTRACT_NUMBER = "[TBD: 80TECH26D____]"
+CONTRACT_NUMBER = "80TECH26D1457"
 
 CONTACTS = {
     "quotes": {
