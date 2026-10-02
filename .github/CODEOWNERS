@@ -1,0 +1,5 @@
+# Every change to this repository needs the site owner's approval before it can
+# merge to main, which is what publishes to production. Enforced by the `main`
+# ruleset ("Require review from Code Owners"); the owner bypasses it through a
+# pull request. See docs/deployment.md, "How deploys work day to day".
+* @nsvidoori

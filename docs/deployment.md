@@ -79,7 +79,13 @@ After cutover:
 
 ## How deploys work day to day
 
-Every push to `main` publishes to production. Every push to any other branch, and every pull
+`main` is protected by a repository ruleset: every change reaches it through a pull request
+that has passed the `verify` check and been approved by the site owner, who is the sole code
+owner (`.github/CODEOWNERS`). The owner, as organization admin, may merge their own pull
+requests without approval, but cannot push to `main` directly either. Force-pushes to `main`
+and deleting it are blocked.
+
+Merging to `main` publishes to production. Every push to any other branch, and every pull
 request, gets its own preview URL. That makes previews the natural place to check the contact
 form, since Functions run there exactly as in production.
 
