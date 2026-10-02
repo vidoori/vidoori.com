@@ -13,7 +13,6 @@ strike through its heading, add the date, and move it to *Resolved*; do not dele
 | # | Item | Waiting on |
 |---|---|---|
 | 7 | Referral program T&amp;Cs | HR and Legal |
-| 17 | Branch protection on `main` | GitHub plan decision |
 | 19 | Capability statement not on `tools/pdfkit.py` | Engineering, low priority |
 | 21 | PDF/UA conformance not checked in CI | Engineering, low priority |
 | 22 | Vidoori Team page hidden | Owner decision |
@@ -52,27 +51,6 @@ if you want real uploads and it can be added.
 
 The &ldquo;eligible jobs&rdquo; line in the program rules links to the Teamtailor jobs board
 (2026-10-02).
-
-### 17. Branch protection on `main` is not in place &mdash; blocked on the GitHub plan
-
-The repository was transferred from `nsvidoori/vidoori.com` to the `vidoori` organization on
-2026-09-15 so that rulesets could enforce a pull-request workflow on `main`. The org is on
-**GitHub Free**, where rulesets are configurable but not enforced on private repositories.
-Enforcement needs GitHub Team at $4/user/month, billed for every org member and every outside
-collaborator with access to private repos &mdash; not just the people touching this site.
-
-Open decision, three ways out:
-
-- **Upgrade to Team.** Cost scales with org headcount, not with this repo.
-- **Make this repository public.** Rulesets are free on public repos even in a free org, and
-  it would not affect the org&rsquo;s other private repos. Check the git history for anything
-  sensitive first; the site&rsquo;s secrets live in Cloudflare environment variables, not the repo.
-- **Stay on Free without enforcement.** Pull requests work fine by convention; they simply
-  cannot be required, so a direct push to `main` would deploy to production unchallenged.
-
-Until this is settled, `main` is protected by agreement only. Note that every push to `main`
-publishes to production, so an accidental push is a live change &mdash; recoverable by reverting,
-but not prevented.
 
 ### 19. `build_capability_statement.py` has not migrated to `tools/pdfkit.py`
 
@@ -393,7 +371,7 @@ revision date.
 
 - ~~**NAICS `519190` may be stale.**~~ (resolved 2026-09-18) It was &ldquo;All Other
   Information Services&rdquo; under NAICS 2017 and was reclassified in the 2022 revision.
-  Corrected to `519290` against the SAM.gov registration in commit `52b33e0`, on both the
+  Corrected to `519290` against the SAM.gov registration in commit `8761f72`, on both the
   capability statement and `/who-we-are/contract-vehicles/`.
 - ~~**Nothing enforces agreement between the PDF and the site.**~~ (resolved 2026-09-18)
   `python3 tools/build_capability_statement.py --check` now runs in
@@ -447,3 +425,41 @@ which applies to every hostname the project serves, production included.
 **Resolved 2026-10-02:** the owner removed `test.vidoori.com` from the Pages custom domains,
 and the hostname no longer resolves publicly, so there is nothing left to crawl. One side
 effect: it was the non-production host where the forms could be tested &mdash; see issue 1.
+
+### 17. ~~Branch protection on `main` is not in place~~ (resolved 2026-10-02)
+
+The repository was transferred from `nsvidoori/vidoori.com` to the `vidoori` organization on
+2026-09-15 so that rulesets could enforce a pull-request workflow on `main`. The org is on
+**GitHub Free**, where rulesets are configurable but not enforced on private repositories.
+Enforcement needs GitHub Team at $4/user/month, billed for every org member and every outside
+collaborator with access to private repos &mdash; not just the people touching this site.
+
+Open decision, three ways out:
+
+- **Upgrade to Team.** Cost scales with org headcount, not with this repo.
+- **Make this repository public.** Rulesets are free on public repos even in a free org, and
+  it would not affect the org&rsquo;s other private repos. Check the git history for anything
+  sensitive first; the site&rsquo;s secrets live in Cloudflare environment variables, not the repo.
+- **Stay on Free without enforcement.** Pull requests work fine by convention; they simply
+  cannot be required, so a direct push to `main` would deploy to production unchallenged.
+
+Until this is settled, `main` is protected by agreement only. Note that every push to `main`
+publishes to production, so an accidental push is a live change &mdash; recoverable by reverting,
+but not prevented.
+
+**Resolved 2026-10-02 by making the repository public**, the second option above.
+`main` is protected by a repository ruleset: every change reaches it through a pull request
+that has passed the `verify` check and been approved by the site owner, who is the sole code
+owner (`.github/CODEOWNERS`). The owner, as organization admin, may merge their own pull
+requests without approval, but cannot push to `main` directly either. Force-pushes to `main`
+and deleting it are blocked.
+
+Before it went public, the history was rewritten to remove the original hand-made capability
+statement PDF, which carried a former employee&rsquo;s mobile number and email. Every commit from
+the initial commit to the one that introduced `tools/build_capability_statement.py` now carries
+the generated PDF in its place; messages, authors, dates and all other files are unchanged.
+**Every commit ID from before 2026-10-02 changed as a result**, so an ID quoted from an old
+clone or an old note will not resolve; look commits up by message instead. Any clone made
+before the rewrite must be discarded and re-cloned, not pulled, or a push from it would bring
+the old file back. The `dave-sept-2026` branch, fully merged, was deleted, and the 44 CI runs
+that referenced pre-rewrite commits were removed.
