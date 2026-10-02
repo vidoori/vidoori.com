@@ -152,6 +152,7 @@ description:  meta description and JSON-LD description
 path:         URL it builds to, e.g. /what-we-do/cloud-native/  (trailing slash)
 nav:          which top-level nav item highlights as current
 schema:       WebPage | Article | Service | AboutPage | CollectionPage | ContactPage | none
+robots:       optional; `noindex` adds a robots meta tag and drops the page from sitemap.xml
 section:      Article only — category label shown on the card
 date:         Article only — drives ordering on /insights/
 serviceName:  Service only — the JSON-LD serviceType
@@ -213,6 +214,10 @@ has already cost one debugging session.
 - Actions: `.btn` + `.btn--primary` / `--ghost` / `--accent` / `--onbrand`, `.btn-row`,
   `.link-arrow`
 - Spacing utilities: `.mt-0`, `.mt-5`, `.mt-6`, `.mt-7`
+- Placeholders: `.tbd` — a conspicuous dashed chip for a value the business still has to
+  supply. Unused since the SEWP page was completed, and kept on purpose: wrap any missing
+  fact in `<span class="tbd">` rather than guessing it, so a reviewer sees the gap at a
+  glance. Remove each span as the real value arrives.
 
 **Image-light by design (ADR 2, amended 2026-09-18).** No icon font. Diagrams are markup or
 hand-written inline SVG with a `role="img"` and a descriptive `aria-label` — never a raster,
@@ -279,16 +284,17 @@ URLs 301 to `/what-we-do/`. Cloud-Native was promoted out of what used to be a s
 the Core/Supporting split no longer exists.
 
 **Leadership:** Trong Khuong Bui (Founder & CEO) and Eric Huang (Chief Strategy Officer).
-There is no Board of Advisors. The ten legacy per-person bio URLs all 301 to the single page.
+There is no Board of Advisors. **The Vidoori Team page is hidden** (see §12 item 7); while it
+is, the ten legacy per-person bio URLs 301 to `/who-we-are/` rather than to it.
 
 **Corporate facts** live in `_src/site.json` and flow into the footer and JSON-LD — change
 them there, never in page copy: `info@vidoori.com`, `contracts@vidoori.com`,
 (240) 608-6810, 4000 Garden City Drive, Suite 808, Hyattsville, MD 20785.
-UEI `N37JST95C3S5`, CAGE `6T0A7`. Contract vehicles: GSA MAS `GS-35F-335CA`, SeaPort-NxG, FAA eFAST
+UEI `N37JST95C3S5`, CAGE `6T0A7`. Contract vehicles: GSA MAS `GS-35F-335CA` (SINs `54151S` and `511210`), SeaPort-NxG, FAA eFAST
 `693KA9-22-A-00186` (Master Ordering Agreement; CSD and CSS functional areas), and NASA SEWP VI
-`80TECH26D1457` (Category C &mdash; ITC/AV Mission-Based Services, awarded 2026-07-02). SEWP VI has its own page at
+`80TECH26D1457` (Category C &mdash; ITC/AV Mission-Based Services, awarded 2026-07-02, effective 2026-11-01). SEWP VI has its own page at
 `/who-we-are/contract-vehicles/nasa-sewp-vi/`, short link `/sewp`, because the contract requires a
-published contract-holder page; see §14.
+published contract-holder page; see §4 for its ordering guide, a contract deliverable.
 GSA 8(a) STARS III (`47QTCB22D0131`) and OASIS expired and were removed from the live site
 on 2026-09-18; the 2022 STARS III award announcement stays as a historical record.
 
@@ -361,7 +367,7 @@ same change, not later:
 
 ---
 
-## 12. Open items (as of 2026-09-18)
+## 12. Open items (as of 2026-10-02)
 
 `docs/known-issues.md` is the full list and carries the detail. What remains:
 
@@ -371,14 +377,14 @@ same change, not later:
    canonicals point at the www host. If both `vidoori.com` and `www.vidoori.com` are added as
    Pages custom domains without a redirect, both serve the site. **`_redirects` cannot fix
    this** — it is path-only and cannot redirect across hostnames. It must be a Cloudflare
-   Redirect Rule or Bulk Redirect at the zone level.
+   Redirect Rule or Bulk Redirect at the zone level. Issue 23.
 2. **`CONTACT_TO_EMAIL` points at an individual**, not a shared mailbox. Worth changing before
-   the www cutover so inquiries and referrals do not depend on one person's inbox.
+   the www cutover so inquiries and referrals do not depend on one person's inbox. Issue 24.
 3. **`test.vidoori.com` is publicly crawlable.** Canonicals point at production, which covers
    most of the risk. A `X-Robots-Tag: noindex` Transform Rule scoped to that hostname would
-   close it; the owner has decided against Cloudflare Access.
+   close it; the owner has decided against Cloudflare Access. Issue 25.
 4. **`logos/` and `assets/img/` hold byte-identical SVGs.** Accepted. If a logo changes,
-   update `logos/` then `cp logos/*.svg assets/img/`.
+   update `logos/` then `cp logos/*.svg assets/img/`. Issue 10.
 5. **`main` is not protected.** The repo moved to the `vidoori` org on 2026-09-15 so a
    pull-request workflow could be enforced, but the org is on GitHub Free, where rulesets are
    configurable and *not enforced* on private repos. Enforcement needs GitHub Team, billed per
@@ -386,19 +392,27 @@ same change, not later:
    `main` is protected by agreement only, and every push to it deploys to production.
    Issue 17.
 
-**Content decisions** &mdash; all closed as of 2026-09-18, kept here so they are not re-raised
+6. **The referral program has no linked T&Cs.** Deferred to HR and Legal by the owner on
+   2026-10-02; the site launches with the program rules as they stand. Issue 7.
+7. **The Vidoori Team page is hidden, not deleted &mdash; pending discussion.**
+   `/who-we-are/leadership/` still builds and resolves, but every link to it was removed on
+   2026-10-02, it carries `robots: noindex` (meta tag plus `X-Robots-Tag` in `_headers`), and
+   it is out of `sitemap.xml`. Do not delete it, and do not link to it, until the owner
+   decides. Issue 22 lists what to undo to restore it.
 
-6. ~~**The capability statement PDF still lists 8(a) STARS III.**~~ Closed 2026-09-18. The
+**Content decisions** &mdash; closed as of 2026-09-18, kept here so they are not re-raised
+
+8. ~~**The capability statement PDF still lists 8(a) STARS III.**~~ Closed 2026-09-18. The
    PDF is now generated by `tools/build_capability_statement.py` and agrees with the site.
-   CI now enforces agreement via `build_capability_statement.py --check`. One follow-up
-   remains under issue 18: NAICS `519190` was reclassified in the NAICS 2022 revision and
-   should be checked against the SAM.gov registration.
-7. ~~**The homepage tagline was replaced.**~~ Accepted by the owner 2026-09-18, along with the
+   CI now enforces agreement via `build_capability_statement.py --check`. The NAICS
+   follow-up under issue 18 is also closed: `519190` was corrected to `519290` against the
+   SAM.gov registration.
+9. ~~**The homepage tagline was replaced.**~~ Accepted by the owner 2026-09-18, along with the
    6-9 month rotation figure on `/vail/`. Both are deliberate; do not re-raise them. Issue 13.
-8. ~~**A raster image was added to the homepage**, contradicting ADR 2.~~ Closed 2026-09-18.
+10. ~~**A raster image was added to the homepage**, contradicting ADR 2.~~ Closed 2026-09-18.
    Re-encoded to 1200x900 WebP (1994 KB to 86 KB), and ADR 2 amended to permit illustration
    under stated conditions rather than ban it. Issue 14.
-9. ~~**Leadership bios are uneven in length.**~~ Accepted 2026-09-18, along with the two ways
+11. ~~**Leadership bios are uneven in length.**~~ Accepted 2026-09-18, along with the two ways
    `/vail/` describes its intake (&ldquo;college graduates&rdquo; in body copy,
    &ldquo;juniors and new hires&rdquo; in the diagram). Both are deliberate; do not re-raise
    them. Issue 15.

@@ -201,7 +201,8 @@ button, input, select, textarea { font: inherit; color: inherit; }
   color: var(--text-on-brand);
 }
 .section--brand h2, .section--brand h3 { color: var(--white); }
-.section--brand a:not(.btn) { color: var(--green-400); }
+.section--brand a:not(.btn),
+.section--brand-figured a:not(.btn) { color: var(--green-400); }
 
 /* Deep navy panel with a subtle geometric wash. Replaces the photographic
    hero backgrounds the WordPress site used — no image payload. */
@@ -1783,7 +1784,10 @@ a:hover { color: var(--navy-500); }
    number, effective date, named contacts) and a reviewer must be able to see
    them at a glance. Uses neutrals rather than a new accent colour, since the
    palette is fixed. Remove each span as the value arrives; when none remain,
-   the page is ready to go live. */
+   the page is ready to go live.
+   Unused since the SEWP page was completed on 2026-10-02, and kept on purpose
+   as the site's placeholder convention: use it for any fact still awaited
+   rather than guessing. */
 .tbd {
   font-family: var(--font-mono);
   font-size: 0.9em;

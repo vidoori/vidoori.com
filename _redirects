@@ -105,8 +105,11 @@
 # would match /who-we-are/leadership/ itself and redirect the real page to
 # itself forever. A placeholder requires a non-empty segment. Both the bare and
 # trailing-slash spellings are listed because matching is literal.
-/who-we-are/leadership/:person            /who-we-are/leadership/  301
-/who-we-are/leadership/:person/           /who-we-are/leadership/  301
+# They point at /who-we-are/, not the team page: that page is hidden pending
+# discussion (docs/known-issues.md issue 22) and must not be reachable from a
+# public link. Repoint them if it returns.
+/who-we-are/leadership/:person            /who-we-are/  301
+/who-we-are/leadership/:person/           /who-we-are/  301
 
 # --- Legacy WordPress theme paths ---
 /what-we-do-old/*                         /what-we-do/  301

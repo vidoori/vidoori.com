@@ -1,12 +1,227 @@
 # Known issues and open decisions
 
-Things found during the August 2026 rebuild that need a human decision, plus content
-discrepancies inherited from the WordPress site. Nothing here blocks local development;
-several items **do** block go-live.
+Open decisions, accepted trade-offs, and the record of what was resolved, from the August 2026
+rebuild onward. **Current as of 2026-10-02.** Nothing here blocks local development.
+
+Issue numbers are stable &mdash; `CLAUDE.md`, `_redirects`, `_headers` and the content catalog
+cite them &mdash; so items are grouped by status rather than renumbered. When you resolve one,
+strike through its heading, add the date, and move it to *Resolved*; do not delete it.
+
+**Open at a glance**
+
+| # | Item | Waiting on |
+|---|---|---|
+| 7 | Referral program T&amp;Cs | HR and Legal |
+| 17 | Branch protection on `main` | GitHub plan decision |
+| 19 | Capability statement not on `tools/pdfkit.py` | Engineering, low priority |
+| 21 | PDF/UA conformance not checked in CI | Engineering, low priority |
+| 22 | Vidoori Team page hidden | Owner decision |
+| 23 | Apex &rarr; www redirect | Go-live (outside the repo) |
+| 24 | `CONTACT_TO_EMAIL` is an individual | Cloudflare dashboard |
+| 25 | `test.vidoori.com` is crawlable | Cloudflare dashboard |
 
 ---
 
-## Blocking go-live
+## Open
+
+### 7. Referral program terms &amp; conditions &mdash; deferred to HR and Legal
+
+**Open.** The site launches with the program rules as they stand on `/careers/#referral`; the
+owner will take full terms to HR and Legal (decision 2026-10-02). Once a PDF or rules text is
+supplied, link it from the program rules and the eligibility checkbox. The legacy T&amp;Cs link
+was already dead before the rebuild &mdash; it pointed at `vidooridigital.wpcomstaging.com`, a
+staging domain returning a WordPress 404 &mdash; so there is nothing to recover.
+
+The rest of this item is resolved and kept as a record.
+
+`/referral-program-form/` and `/referral-form-non-vpn-test/` were separate WordPress form
+pages. Both redirect to `/careers/#referral`.
+
+**Resolved 2026-09-01:** that section is now a real form posting to `/api/referral`, implemented by
+`functions/api/referral.js` and modelled on the contact form — same Turnstile widget, same
+Postmark server, same honeypot and submit-timing bot checks, same no-JS fallback. It replaces
+a `mailto:` link that captured nothing.
+
+Captured fields: referrer name / email / phone, candidate name / email / phone, job title, an
+optional resume-or-profile URL, free-text notes, an eligibility confirmation, and privacy
+consent. Both checkboxes are recorded in the email so there is a record of what the referrer
+agreed to. Email subject: `External Referral - <Candidate> for <Role>`.
+
+**Deliberate omission — file upload.** The form takes a *link* to a resume, not a file.
+Multipart parsing plus Postmark attachment encoding is a significant addition, and Postmark
+caps attachments at 10 MB. The page tells referrers to email a resume file separately. Say so
+if you want real uploads and it can be added.
+
+The &ldquo;eligible jobs&rdquo; line in the program rules links to the Teamtailor jobs board
+(2026-10-02).
+
+### 17. Branch protection on `main` is not in place &mdash; blocked on the GitHub plan
+
+The repository was transferred from `nsvidoori/vidoori.com` to the `vidoori` organization on
+2026-09-15 so that rulesets could enforce a pull-request workflow on `main`. The org is on
+**GitHub Free**, where rulesets are configurable but not enforced on private repositories.
+Enforcement needs GitHub Team at $4/user/month, billed for every org member and every outside
+collaborator with access to private repos &mdash; not just the people touching this site.
+
+Open decision, three ways out:
+
+- **Upgrade to Team.** Cost scales with org headcount, not with this repo.
+- **Make this repository public.** Rulesets are free on public repos even in a free org, and
+  it would not affect the org&rsquo;s other private repos. Check the git history for anything
+  sensitive first; the site&rsquo;s secrets live in Cloudflare environment variables, not the repo.
+- **Stay on Free without enforcement.** Pull requests work fine by convention; they simply
+  cannot be required, so a direct push to `main` would deploy to production unchallenged.
+
+Until this is settled, `main` is protected by agreement only. Note that every push to `main`
+publishes to production, so an accidental push is a live change &mdash; recoverable by reverting,
+but not prevented.
+
+### 19. `build_capability_statement.py` has not migrated to `tools/pdfkit.py`
+
+`tools/pdfkit.py` was factored out on 2026-09-18 so the capability statement and the SEWP
+ordering guide would not become the kind of near-copy that `contact.js` and `referral.js`
+already are. The ordering guide uses it. The capability statement still carries its own inline
+copy of the same primitives &mdash; Helvetica metrics, wrapping, the object writer.
+
+Left deliberately rather than done in passing: migrating changes the committed PDF's bytes
+(the header version and object order differ), which `build_capability_statement.py --check`
+would correctly flag, so it wants its own change with its own regenerate rather than riding
+along with the SEWP work. Until then, a fix to the shared primitives has to be made twice.
+
+### 21. PDF/UA conformance is not checked in CI
+
+The ordering guide validates clean locally &mdash; veraPDF reports 106 rules passed, 0 failed,
+`isCompliant: true` &mdash; but veraPDF is a Java tool that is not installed on the GitHub
+runner, so CI only verifies the committed PDF matches the generator. A change to
+`tools/pdfkit.py` could break conformance without CI noticing. Re-run veraPDF by hand after
+touching the PDF code:
+
+```bash
+verapdf -f ua1 --format text assets/docs/Vidoori_SEWP_VI_Ordering_Guide.pdf
+```
+
+### 22. The Vidoori Team page is hidden, pending discussion
+
+`/who-we-are/leadership/` (labelled *Vidoori Team*) was hidden on 2026-10-02 at the owner&rsquo;s
+request. **The page itself was deliberately not deleted** &mdash;
+`_src/pages/who-we-are-leadership.html` still builds and the URL still resolves for anyone who
+types it. Whether it stays, changes, or goes is still under discussion. Do not delete it, and do
+not link to it, until that is settled.
+
+What hiding it involved, and therefore what to undo to bring it back:
+
+- **Links removed** from the Who We Are dropdown and the footer (`_src/site.json`), and the
+  *Leadership* card removed from &ldquo;More about Vidoori&rdquo; on `/who-we-are/`. That card&rsquo;s
+  copy said &ldquo;executives and advisors&rdquo;, which was stale &mdash; there is no Board of
+  Advisors &mdash; so rewrite it rather than restoring it verbatim.
+- **Search engines told not to index it** two ways: `robots: noindex` in its front matter, which
+  makes `tools/build.py` emit `<meta name="robots" content="noindex, nofollow">` and omit it from
+  `sitemap.xml`; and an `X-Robots-Tag` rule for `/who-we-are/leadership/*` in `_headers`.
+- **Legacy bio redirects repointed.** The ten old `/who-we-are/leadership/<name>` URLs in
+  `_redirects` now 301 to `/who-we-are/` instead of to this page, so outside links no longer
+  deliver people to it.
+
+`robots.txt` was deliberately **not** changed to disallow the path: a crawler that is barred
+from fetching a page never sees its `noindex`, and can still index the bare URL from outside
+links.
+
+If the page is retired instead, it is not one edit: follow the removal checklist in `CLAUDE.md`
+&sect;7. The bio redirects already point elsewhere, so ADR 3 is satisfied either way.
+
+### 23. Apex &rarr; www redirect
+
+`origin` in `_src/site.json` is `https://www.vidoori.com`, so every canonical tag and
+`sitemap.xml` point at the www host. If both `vidoori.com` and `www.vidoori.com` serve the
+site without a redirect, the same content is reachable on two hosts. **`_redirects` cannot fix
+this** &mdash; it is path-only and cannot redirect across hostnames. It is handled at the DNS
+or zone level, outside this repo, as part of the go-live the owner is running.
+
+### 24. `CONTACT_TO_EMAIL` points at an individual
+
+The contact and referral forms both deliver to `CONTACT_TO_EMAIL`, a Cloudflare Pages
+environment variable that currently names one person&rsquo;s inbox rather than a shared mailbox.
+Inquiries and referrals therefore depend on that person. Changing it is a dashboard setting,
+not a code change; send a test submission afterwards.
+
+### 25. `test.vidoori.com` is publicly crawlable
+
+The test host serves the full site to anyone. Canonicals point at production, which covers most
+of the duplicate-content risk. An `X-Robots-Tag: noindex` Transform Rule scoped to that hostname
+would close it; the owner has decided against Cloudflare Access. It cannot go in `_headers`,
+which applies to every hostname the project serves, production included.
+
+---
+
+## Accepted &mdash; deliberate, do not re-raise
+
+Decisions the owner has made. Recorded so they are not mistaken for oversights.
+
+### 10. `logos/` and `assets/img/` hold duplicate SVGs &mdash; accepted
+
+`logos/` contains the untouched originals &mdash; instructed not to edit. `assets/img/` holds
+copies, which is what the site serves. They are byte-identical today. Owner has reviewed and
+accepted this. If a logo is ever revised, update `logos/` and re-copy:
+
+```bash
+cp logos/vidoori-logo.svg logos/vidoori-logo-badge.svg assets/img/
+```
+
+### 13. ~~The homepage tagline was replaced~~ (accepted 2026-09-18)
+
+The hero previously read *Delivering Excellence Since 2008* over *We are dedicated to our
+client&rsquo;s mission.* &mdash; the company tagline. The September rebuild replaced both with
+*Federal and commercial IT consulting* and *Modernize mission-critical systems. Deliver with
+confidence.*
+
+**Owner reviewed and accepted this.** Not an oversight; do not re-raise it. The tagline itself
+still lives in `_src/site.json` and continues to feed the site&rsquo;s positioning language.
+
+### 13b. VAIL rotation length &mdash; accepted 2026-09-18
+
+`/vail/` states a **6&ndash;9 month rotation**. The figure came from the owner&rsquo;s own
+diagram and appears nowhere else on the site. **Owner confirmed it and accepted publication.**
+Do not re-raise it.
+
+### 15. ~~Three leadership profiles were added and need confirmation~~ (confirmed 2026-09-18)
+
+`/who-we-are/leadership/` gained David Lieberman (Chief Information Officer), Sahar Yamini (VP
+Enterprise Transformation &amp; Applied AI), and Tim Withum (Chief Technology Officer), each with
+a LinkedIn URL. The site previously listed two people.
+
+**Owner checked the LinkedIn profiles and the titles on 2026-09-18 and confirmed both.** No
+further verification needed; treat the three as authoritative alongside Trong Bui and Eric
+Huang.
+
+**Accepted as they stand, 2026-09-18.** The Lieberman and Withum bios are a single sentence
+each against fuller entries for Bui and Huang. The owner has looked at it and is content with
+the imbalance; it is a deliberate state, not missing copy. Do not re-raise it.
+
+Related, and accepted on the same terms: `/vail/` describes who the lab is for in two ways
+&mdash; &ldquo;college graduates&rdquo; in the body copy and &ldquo;juniors and new hires&rdquo;
+in the flow diagram, which came from the owner&rsquo;s own artwork. Both readings are correct;
+no reconciliation wanted.
+
+Structural note for whoever next touches the page: each person&rsquo;s LinkedIn link lives in the
+shared biography panel, so it is visible only while that person is open. Before the September
+rebuild it sat in the card and was visible at all times.
+
+### 16. &ldquo;Leadership&rdquo; was relabelled &ldquo;Vidoori Team&rdquo; but the URL did not change
+
+The nav, footer, page title, `<h1>`, and breadcrumb now read *Vidoori Team*; the path remains
+`/who-we-are/leadership/`. That is the correct trade &mdash; the URL contract in ADR 3 matters
+more than a tidy path, and changing it would cost a redirect rule for no benefit. Recorded
+only so the mismatch between label and path is not later mistaken for an oversight.
+
+The page has since been hidden pending discussion; see issue 22.
+
+---
+
+## Resolved
+
+Kept as a record of what was found and how it was settled. Issues 1&ndash;11 came from the
+August 2026 rebuild. Issues 12&ndash;18 were raised on 2026-09-15 while reviewing the
+`dave-sept-2026` branch, whose technical work was sound; they were editorial or factual
+decisions for the owner rather than defects.
 
 ### 1. ~~Turnstile and Postmark configuration~~ (resolved 2026-09-01)
 
@@ -82,35 +297,6 @@ infographic image. Given the image-light decision, there was nothing to port.
 Owner has decided not to re-author it. The URL 301-redirects to `/insights/`, in both bare and
 trailing-slash spellings, so no inbound link 404s.
 
-### 7. ~~Two referral forms were consolidated~~ (resolved 2026-09-01)
-
-`/referral-program-form/` and `/referral-form-non-vpn-test/` were separate WordPress form
-pages. Both redirect to `/careers/#referral`.
-
-**Resolved:** that section is now a real form posting to `/api/referral`, implemented by
-`functions/api/referral.js` and modelled on the contact form — same Turnstile widget, same
-Postmark server, same honeypot and submit-timing bot checks, same no-JS fallback. It replaces
-a `mailto:` link that captured nothing.
-
-Captured fields: referrer name / email / phone, candidate name / email / phone, job title, an
-optional resume-or-profile URL, free-text notes, an eligibility confirmation, and privacy
-consent. Both checkboxes are recorded in the email so there is a record of what the referrer
-agreed to. Email subject: `External Referral - <Candidate> for <Role>`.
-
-**Deliberate omission — file upload.** The form takes a *link* to a resume, not a file.
-Multipart parsing plus Postmark attachment encoding is a significant addition, and Postmark
-caps attachments at 10 MB. The page tells referrers to email a resume file separately. Say so
-if you want real uploads and it can be added.
-
-**Still open:** the legacy referral terms & conditions PDF link was already dead before the
-rebuild — it pointed at `vidooridigital.wpcomstaging.com`, a staging domain returning a
-WordPress 404. It is not reproduced. The page states the program rules in prose, but for a
-cash-incentive programme you probably want real linked T&Cs. Supply a PDF and it can be added.
-
----
-
-## Lower priority
-
 ### 8. ~~No analytics~~ (resolved 2026-09-01)
 
 Cloudflare Web Analytics is enabled and **confirmed reporting** &mdash; the dashboard shows
@@ -140,16 +326,6 @@ present.
 `tools/build.py` builds `sameAs` from a filtered list rather than indexing `site.json`
 directly, so removing another social property cannot raise a `KeyError`.
 
-### 10. `logos/` and `assets/img/` hold duplicate SVGs &mdash; accepted
-
-`logos/` contains the untouched originals &mdash; instructed not to edit. `assets/img/` holds
-copies, which is what the site serves. They are byte-identical today. Owner has reviewed and
-accepted this. If a logo is ever revised, update `logos/` and re-copy:
-
-```bash
-cp logos/vidoori-logo.svg logos/vidoori-logo-badge.svg assets/img/
-```
-
 ### 11. ~~`--check` is not enforced automatically~~ (resolved 2026-09-01)
 
 `.github/workflows/verify.yml` now runs `python3 tools/build.py --check` and
@@ -159,16 +335,6 @@ generated HTML, a hand-edited root `.html` file, or a broken internal link fails
 Verified by deliberately editing `_src/` without rebuilding: `--check` exits 1 and names the
 stale file. No `setup-python` step is needed — GitHub's Ubuntu runners ship Python 3 and both
 scripts are stdlib-only.
-
----
-
-## Open after the September 2026 branch review
-
-Raised on 2026-09-15 while reviewing `dave-sept-2026` before it became a pull request. The
-branch&rsquo;s technical work is sound &mdash; the build succeeds, `check_links.py` reports no broken
-internal links across 2267 references, every new CSS class is defined, and the new CSS uses
-tokens throughout without tripping either documented colour trap. Everything below is an
-editorial or factual decision for the owner rather than a defect.
 
 ### 12. ~~OASIS 4 is claimed on the homepage and nowhere else~~ (resolved 2026-09-18)
 
@@ -196,31 +362,16 @@ Two things deliberately left alone. The February 2022 announcement at
 `/news/vidoori-awarded-contract-gsa-stars-iii/` is an accurate record of an award that did
 happen and stays, per the rule that historical content is not live content. And
 `assets/docs/Vidoori_CapabilityStatement.pdf` still lists STARS III &mdash; it is a binary the
-build does not touch, so it needs replacing by whoever maintains it. See issue 18.
+build does not touch, so it needs replacing by whoever maintains it. See issue 18 &mdash; since
+resolved: the PDF is now generated and no longer lists STARS III.
 
-### 13. ~~The homepage tagline was replaced~~ (accepted 2026-09-18)
-
-The hero previously read *Delivering Excellence Since 2008* over *We are dedicated to our
-client&rsquo;s mission.* &mdash; the company tagline. The September rebuild replaced both with
-*Federal and commercial IT consulting* and *Modernize mission-critical systems. Deliver with
-confidence.*
-
-**Owner reviewed and accepted this.** Not an oversight; do not re-raise it. The tagline itself
-still lives in `_src/site.json` and continues to feed the site&rsquo;s positioning language.
-
-### 13b. VAIL rotation length &mdash; accepted 2026-09-18
-
-`/vail/` states a **6&ndash;9 month rotation**. The figure came from the owner&rsquo;s own
-diagram and appears nowhere else on the site. **Owner confirmed it and accepted publication.**
-Do not re-raise it.
-
-### 14. A raster image was added to the homepage &mdash; contradicts ADR 2
+### 14. ~~A raster image was added to the homepage, contradicting ADR 2~~ (resolved 2026-09-18)
 
 `assets/img/team-game.webp` (86 KB, 1200&times;900) sits in the *Join Our Team* section of the
 homepage, replacing the inline SVG network diagram that was there. ADR 2 records that the site
 is image-light by design: no photography, no icon font, diagrams hand-written as inline SVG.
 
-Owner has decided to **keep it**. One follow-up remains.
+Owner has decided to **keep it**. Both follow-ups are resolved.
 
 - ~~**Resize and convert.**~~ (resolved 2026-09-15) It arrived as a 1.9 MB, 1448&times;1086 PNG
   &mdash; the wrong format for flat-shaded illustration. Measured against the layout, the image
@@ -234,57 +385,6 @@ Owner has decided to **keep it**. One follow-up remains.
   appears, it is sized to the layout and ships as WebP with real `alt` text. Diagrams stay as
   markup or inline SVG. The amendment in `docs/architecture.md` carries the full conditions,
   including the version-stamp trap: images have no `?v=`, so a revision needs a new filename.
-
-### 15. ~~Three leadership profiles were added and need confirmation~~ (confirmed 2026-09-18)
-
-`/who-we-are/leadership/` gained David Lieberman (Chief Information Officer), Sahar Yamini (VP
-Enterprise Transformation &amp; Applied AI), and Tim Withum (Chief Technology Officer), each with
-a LinkedIn URL. The site previously listed two people.
-
-**Owner checked the LinkedIn profiles and the titles on 2026-09-18 and confirmed both.** No
-further verification needed; treat the three as authoritative alongside Trong Bui and Eric
-Huang.
-
-**Accepted as they stand, 2026-09-18.** The Lieberman and Withum bios are a single sentence
-each against fuller entries for Bui and Huang. The owner has looked at it and is content with
-the imbalance; it is a deliberate state, not missing copy. Do not re-raise it.
-
-Related, and accepted on the same terms: `/vail/` describes who the lab is for in two ways
-&mdash; &ldquo;college graduates&rdquo; in the body copy and &ldquo;juniors and new hires&rdquo;
-in the flow diagram, which came from the owner&rsquo;s own artwork. Both readings are correct;
-no reconciliation wanted.
-
-Structural note for whoever next touches the page: each person&rsquo;s LinkedIn link lives in the
-shared biography panel, so it is visible only while that person is open. Before the September
-rebuild it sat in the card and was visible at all times.
-
-### 16. &ldquo;Leadership&rdquo; was relabelled &ldquo;Vidoori Team&rdquo; but the URL did not change
-
-The nav, footer, page title, `<h1>`, and breadcrumb now read *Vidoori Team*; the path remains
-`/who-we-are/leadership/`. That is the correct trade &mdash; the URL contract in ADR 3 matters
-more than a tidy path, and changing it would cost a redirect rule for no benefit. Recorded
-only so the mismatch between label and path is not later mistaken for an oversight.
-
-### 17. Branch protection on `main` is not in place &mdash; blocked on the GitHub plan
-
-The repository was transferred from `nsvidoori/vidoori.com` to the `vidoori` organization on
-2026-09-15 so that rulesets could enforce a pull-request workflow on `main`. The org is on
-**GitHub Free**, where rulesets are configurable but not enforced on private repositories.
-Enforcement needs GitHub Team at $4/user/month, billed for every org member and every outside
-collaborator with access to private repos &mdash; not just the people touching this site.
-
-Open decision, three ways out:
-
-- **Upgrade to Team.** Cost scales with org headcount, not with this repo.
-- **Make this repository public.** Rulesets are free on public repos even in a free org, and
-  it would not affect the org&rsquo;s other private repos. Check the git history for anything
-  sensitive first; the site&rsquo;s secrets live in Cloudflare environment variables, not the repo.
-- **Stay on Free without enforcement.** Pull requests work fine by convention; they simply
-  cannot be required, so a direct push to `main` would deploy to production unchallenged.
-
-Until this is settled, `main` is protected by agreement only. Note that every push to `main`
-publishes to production, so an accidental push is a live change &mdash; recoverable by reverting,
-but not prevented.
 
 ### 18. ~~The capability statement PDF still lists 8(a) STARS III~~ (resolved 2026-09-18)
 
@@ -304,12 +404,12 @@ is the site boilerplate covering Government *and* Commercial, the unverified DCM
 VAIL is a differentiator, the two run-together bullets are split, and the footer carries a
 revision date.
 
-**Two things remain open.**
+**Both follow-ups are now resolved.**
 
-- **NAICS `519190` may be stale.** It was &ldquo;All Other Information Services&rdquo; under
-  NAICS 2017 and was reclassified in the 2022 revision. It was carried over from the previous
-  PDF and now also appears on `/who-we-are/contract-vehicles/`, so a correction means both
-  places. Check the SAM.gov registration.
+- ~~**NAICS `519190` may be stale.**~~ (resolved 2026-09-18) It was &ldquo;All Other
+  Information Services&rdquo; under NAICS 2017 and was reclassified in the 2022 revision.
+  Corrected to `519290` against the SAM.gov registration in commit `52b33e0`, on both the
+  capability statement and `/who-we-are/contract-vehicles/`.
 - ~~**Nothing enforces agreement between the PDF and the site.**~~ (resolved 2026-09-18)
   `python3 tools/build_capability_statement.py --check` now runs in
   `.github/workflows/verify.yml` beside the other two checks. It fails if the committed PDF
@@ -319,39 +419,24 @@ revision date.
   three drift cases before shipping: an extra vehicle on the sheet, a practice removed from the
   site, and a `CONTENT` edit without a regenerate.
 
-### 19. `build_capability_statement.py` has not migrated to `tools/pdfkit.py`
-
-`tools/pdfkit.py` was factored out on 2026-09-18 so the capability statement and the SEWP
-ordering guide would not become the kind of near-copy that `contact.js` and `referral.js`
-already are. The ordering guide uses it. The capability statement still carries its own inline
-copy of the same primitives &mdash; Helvetica metrics, wrapping, the object writer.
-
-Left deliberately rather than done in passing: migrating changes the committed PDF's bytes
-(the header version and object order differ), which `build_capability_statement.py --check`
-would correctly flag, so it wants its own change with its own regenerate rather than riding
-along with the SEWP work. Until then, a fix to the shared primitives has to be made twice.
-
-### 20. The SEWP ordering guide is a draft with eight open placeholders
+### 20. ~~The SEWP ordering guide is a draft with open placeholders~~ (resolved 2026-10-02)
 
 `assets/docs/Vidoori_SEWP_VI_Ordering_Guide.pdf` is linked from
-`/who-we-are/contract-vehicles/nasa-sewp-vi/` and carries a DRAFT banner. It is structurally
-complete and validates clean against PDF/UA-1, but eight values await the program manager:
-the contract number, the effective date, the guide's own version and effective date, and the
-name, title, direct telephone and direct email for each named contact.
+`/who-we-are/contract-vehicles/nasa-sewp-vi/`. All placeholders are filled and the DRAFT banner
+is gone: Version 1.0, effective November 1, 2026, contract effective date November 1, 2026, and
+direct telephone numbers for both named contacts &mdash; Gregory Gilleland (240) 608-6812 and
+Haley Kubal (240) 608-6813.
 
-`python3 tools/build_sewp_ordering_guide.py --check` lists what is still outstanding. The
-banner disappears when none remain. **Do not issue to SEWP before then** &mdash; and note the
-contract requires the guide to be live before the first delivery order, and republished within
-ten business days of every contract modification.
+Gregory Gilleland is the single named contact for quotes, post-delivery support and order
+troubleshooting as well as Program Manager. The guide keeps the three service roles as separate
+entries because the CHUM asks for each by name; they all point at one `GILLELAND` record in the
+generator, so splitting the roles later is a one-line change per role.
 
-### 21. PDF/UA conformance is not checked in CI
+The guide was also brought back into line with the page: it now reproduces clause A.1.13
+verbatim, as the page does, and lists eligible customers. The DRAFT banner now keys off every
+`[TBD]` value, contacts included &mdash; previously it checked only the contract facts and the
+version, so a guide with contact placeholders could have shipped without it.
 
-The ordering guide validates clean locally &mdash; veraPDF reports 106 rules passed, 0 failed,
-`isCompliant: true` &mdash; but veraPDF is a Java tool that is not installed on the GitHub
-runner, so CI only verifies the committed PDF matches the generator. A change to
-`tools/pdfkit.py` could break conformance without CI noticing. Re-run veraPDF by hand after
-touching the PDF code:
-
-```bash
-verapdf -f ua1 --format text assets/docs/Vidoori_SEWP_VI_Ordering_Guide.pdf
-```
+The contract requires the guide to be republished within ten business days of every contract
+modification. `python3 tools/build_sewp_ordering_guide.py --check` lists any placeholder
+reintroduced later.

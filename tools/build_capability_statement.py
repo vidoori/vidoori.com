@@ -39,7 +39,7 @@ import zlib
 # Content. Edit this, not the drawing code below.
 # ---------------------------------------------------------------------------
 
-REVISION = "September 2026"
+REVISION = "October 2026"
 
 LEAD = (
     "Vidoori, Inc. is a consulting firm providing high quality information technology "
@@ -75,6 +75,12 @@ CONTRACT_VEHICLES = [
     "FAA eFAST - 693KA9-22-A-00186",
     "NASA SEWP VI - 80TECH26D1457",
 ]
+
+# GSA MAS Special Item Numbers, on an indented line under the vehicle. Appended
+# to the GSA MAS line they overrun the column; the snapshot box is 8 pt taller
+# to hold the extra line. Each must also appear on /who-we-are/contract-vehicles/; --check
+# enforces that.
+GSA_SINS = ["54151S", "511210"]
 
 # NAICS. Taken from the SAM.gov registration on 2026-09-18, which is the
 # authoritative list. Two codes the sheet carried before that date were NAICS
@@ -394,7 +400,8 @@ def build(logo_path=None):
 
     # ---- company snapshot -------------------------------------------------
     y -= 8
-    box_h = 150.0
+    box_h = 158.0  # was 150; +8 makes room for the GSA SINs line without pushing
+                   # the Differentiators column into the footer
     box_top = y
     c.rect(M, box_top - box_h, W, box_h, NAVY_50)
     c.rect(M, box_top - box_h, 3, box_h, GREEN_400)
@@ -429,6 +436,9 @@ def build(logo_path=None):
     for line in CONTRACT_VEHICLES:
         c.text(col[2], yy, line, 8.4, GRAY_600)
         yy -= 11
+        if line.startswith("GSA MAS"):
+            c.text(col[2] + 8, yy, "SINs " + ", ".join(GSA_SINS), 8.4, GRAY_600)
+            yy -= 11
     yy = head(col[2], yy - 3, "NAICS CODES")
     c.text(col[2], yy, "%s (primary)" % NAICS_PRIMARY, 8.4, NAVY_950, bold=True)
     yy -= 11
@@ -537,6 +547,10 @@ def check_against_site(root):
     for value in ("N37JST95C3S5", "6T0A7"):
         if value not in vehicles:
             problems.append("%s is on the PDF but not on /who-we-are/contract-vehicles/" % value)
+    for sin in GSA_SINS:
+        if sin not in vehicles:
+            problems.append("GSA SIN %s is on the PDF but not on "
+                            "/who-we-are/contract-vehicles/" % sin)
     for code in NAICS_ALL:
         if code not in vehicles:
             problems.append("NAICS %s is on the PDF but not on "

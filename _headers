@@ -51,3 +51,9 @@
 /api/*
   Cache-Control: no-store
   X-Robots-Tag: noindex
+
+# Hidden page: exists, but must not be indexed. Pairs with `robots: noindex` in
+# its front matter, which adds the meta tag and drops it from sitemap.xml. The
+# splat matches the bare directory too. See docs/known-issues.md issue 22.
+/who-we-are/leadership/*
+  X-Robots-Tag: noindex, nofollow

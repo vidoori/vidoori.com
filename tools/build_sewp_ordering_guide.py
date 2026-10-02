@@ -55,44 +55,31 @@ import pdfkit  # noqa: E402
 # Content. Edit this, not the layout code.
 # ---------------------------------------------------------------------------
 
-VERSION = "[TBD: version]"
-EFFECTIVE = "[TBD: effective date]"
+VERSION = "Version 1.0"
+EFFECTIVE = "November 1, 2026"
 CONTRACT_NUMBER = "80TECH26D1457"
 
+# Gregory Gilleland is both the Program Manager and the single named contact for
+# quotes, post-delivery support and order troubleshooting. The three service
+# roles are kept as separate entries because the CHUM asks for each by name;
+# if the roles are ever split between people, change the entry here.
+GILLELAND = {
+    "name": "Gregory Gilleland",
+    "title": "SEWP VI Program Manager",
+    "phone": "(240) 608-6812",
+    "email": "gregory.gilleland@vidoori.com",
+}
+
 CONTACTS = {
-    "quotes": {
-        "role": "Quotes and sales",
-        "name": "[TBD: name]",
-        "title": "[TBD: title]",
-        "phone": "[TBD: direct telephone]",
-        "email": "[TBD: direct email]",
-    },
-    "support": {
-        "role": "Post-delivery support",
-        "name": "[TBD: name]",
-        "title": "[TBD: title]",
-        "phone": "[TBD: direct telephone]",
-        "email": "[TBD: direct email]",
-    },
-    "orders": {
-        "role": "Order troubleshooting",
-        "name": "[TBD: name]",
-        "title": "[TBD: title]",
-        "phone": "[TBD: direct telephone]",
-        "email": "[TBD: direct email]",
-    },
-    "pm": {
-        "role": "Program Manager",
-        "name": "Gregory Gilleland",
-        "title": "SEWP VI Program Manager",
-        "phone": "[TBD: direct telephone]",
-        "email": "gregory.gilleland@vidoori.com",
-    },
+    "quotes": dict(GILLELAND, role="Quotes and sales"),
+    "support": dict(GILLELAND, role="Post-delivery support"),
+    "orders": dict(GILLELAND, role="Order troubleshooting"),
+    "pm": dict(GILLELAND, role="Program Manager"),
     "dpm": {
         "role": "Deputy Program Manager",
         "name": "Haley Kubal",
         "title": "SEWP VI Deputy Program Manager",
-        "phone": "[TBD: direct telephone]",
+        "phone": "(240) 608-6813",
         "email": "haley.kubal@vidoori.com",
     },
 }
@@ -102,8 +89,9 @@ CONTRACT_FACTS = [
     ("Vehicle", "NASA SEWP VI Government-Wide Acquisition Contract"),
     ("Category", "C - ITC/AV Mission-Based Services"),
     ("Award date", "July 2, 2026"),
-    ("Effective date", "[TBD: pending contract modification]"),
+    ("Effective date", "November 1, 2026"),
     ("Ordering period", "Ten years from the effective date"),
+    ("Eligible customers", "NASA and all U.S. federal agencies"),
     ("Contract holder", "Vidoori, Inc."),
     ("UEI", "N37JST95C3S5"),
     ("CAGE code", "6T0A7"),
@@ -136,10 +124,53 @@ SECTIONS = [
                   "contract holders a fair opportunity to be considered for each order in "
                   "accordance with FAR 16.505(b), except as provided by law."),
             ("facts", None),
+            ("h3", "A.1.13 Fair Opportunity and Requests for Quotes"),
+            ("p", "The clause below is reproduced verbatim from the executed NASA SEWP VI "
+                  "contract. Wording, punctuation and capitalisation are the contract's own "
+                  "and have not been edited."),
+            ("quote", "A.1.13 FAIR OPPORTUNITY AND REQUESTS FOR QUOTES"),
+            ("quote", "Contractors will be provided a fair opportunity at the individual order "
+                      "level as appropriate per FAR Part 16.505(b), including the SEWP RFQ "
+                      "tools. No documentation for the order selection is required to be "
+                      "submitted with the order. All such documentation is to be maintained by "
+                      "the issuing procurement office."),
+            ("quote", "The Contractor shall not market, quote or otherwise offer for sale, any "
+                      "IT Solutions not listed under this contract, until the said solutions "
+                      "are included in the SEWP database of record, and available to all "
+                      "Government end-users."),
+            ("quote", "If the Government issues a Request For Information (RFI) as part of "
+                      "market research, the Contractor may provide items not yet listed on "
+                      "their SEWP contract as part of a market research quote if:"),
+            ("quote", "1. all such items are clearly marked as not yet available on their SEWP "
+                      "contract; and"),
+            ("quote", "2. the contractor submits a technology refreshment request to add those "
+                      "products to their contract"),
+            ("quote", "If the Government issues a Request For Quote (RFQ) or a Market Research "
+                      "Request (MRR), the Contractor may only respond with items available on "
+                      "their Contract and the price of each item shall be the no greater than "
+                      "the price in Attachment F SEWP database of record at the time the quote "
+                      "is issued. If the Contractor has insufficient items on their contract to "
+                      "fully respond to the Formal RFQ, the Contractor must respond with a No "
+                      "Bid. Unless the RFQ specifically allows for partial quotes, the "
+                      "Contractor must respond fully to all requirements specified in the RFQ."),
+            ("quote", "When submitting a quote to a government end-user, the contractor must "
+                      "clearly state the length of time the quote is valid. The contractor "
+                      "shall honor any order submitted within the stated time period of a "
+                      "quote."),
+            ("quote", "When responding to an RFI or RFQ issued from the NASA SEWP RFQ on-line "
+                      "quoting system, the Contractor must respond as outlined in Attachment C: "
+                      "Contract Holder User Manual (CHUM)."),
+            ("quote", "Contract Holders are prohibited from using Government information posted "
+                      "on the NASA SEWP Contract Holder Only Page, such as RFQs, RFIs, etc., for "
+                      "purposes other than proposing on SEWP requirements. This includes "
+                      "Contract Holders providing third parties with SEWP information and "
+                      "requirements for the purpose of assisting companies, that are not SEWP "
+                      "Contract Holders, with providing unsolicited proposals to meet agency "
+                      "requirements already posted to the NASA SEWP RFQ on-line quoting system."),
             ("h3", "Delivery areas"),
             ("p", "Vidoori supports mission-based ITC/AV services requirements across "
-                  "integration and test, cloud-native engineering, DevSecOps, and data "
-                  "management. Ancillary products may support a mission-based services "
+                  "cloud-native engineering, software development, DevSecOps, and "
+                  "integration and test. Ancillary products may support a mission-based services "
                   "requirement."),
         ],
     },
@@ -418,7 +449,7 @@ def build(logo_path=None):
     f.h1("NASA SEWP VI Ordering Guide")
     f.para("Vidoori, Inc. - Category C, ITC/AV Mission-Based Services", NAVY_700, 11.5, 15)
 
-    if any("[TBD" in str(v) for _, v in CONTRACT_FACTS) or "[TBD" in VERSION:
+    if placeholders():
         f.y -= 6
         top = f.y
         p2 = f.page
@@ -445,6 +476,8 @@ def build(logo_path=None):
                 f.para(value)
             elif kind == "h3":
                 f.h3(value)
+            elif kind == "quote":
+                f.para(value, color=NAVY_900, indent=14.0)
             elif kind == "facts":
                 f.facts(CONTRACT_FACTS)
             elif kind == "contact":

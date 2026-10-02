@@ -22,8 +22,9 @@ at the bottom — it is the rationale for the rules in `_redirects` and should n
 
 ### Primary nav (`_src/site.json`)
 - **Who We Are** — `/who-we-are/`
-  - Our Company, Leadership, Our Values, Corporate Culture, Certifications,
+  - Our Company, Our Values, Corporate Culture, Certifications,
     Awards & Recognition, Contract Vehicles
+  - The Vidoori Team page is hidden pending discussion &mdash; see below and issue 22
 - **What We Do** — `/what-we-do/`
   - All Capabilities, Integration & Test, DevSecOps, Cloud-Native, Software Development
 - **Solutions** — VPT Performance Testing (`https://vpt.vidoori.com/about`, external) — the
@@ -76,10 +77,10 @@ them there, not in page copy.
 ### Contract vehicles
 | Vehicle | Contract # | Notes |
 |---|---|---|
-| GSA MAS | `GS-35F-335CA` | Contract Manager: Haley Kubal, contracts@vidoori.com |
+| GSA MAS | `GS-35F-335CA` | SINs 54151S (IT Professional Services) and 511210 (Software Licenses); Contract Manager: Haley Kubal, contracts@vidoori.com |
 | SeaPort-NxG | — | Navy; Engineering + Program Management Services |
 | FAA eFAST | `693KA9-22-A-00186` | Master Ordering Agreement; CSD and CSS functional areas, rates through 2029 |
-| NASA SEWP VI | `80TECH26D1457` | Category C — ITC/AV Mission-Based Services; awarded 2026-07-02; own page at `/who-we-are/contract-vehicles/nasa-sewp-vi/` |
+| NASA SEWP VI | `80TECH26D1457` | Category C — ITC/AV Mission-Based Services; awarded 2026-07-02, effective 2026-11-01; own page at `/who-we-are/contract-vehicles/nasa-sewp-vi/` |
 
 NAICS codes, from the SAM.gov registration as of 2026-09-18. Primary **541512**; additional
 513210, 518210, 519290, 541330, 541511, 541513, 541519, 541715, 611420, 811210. Also held but
@@ -89,7 +90,8 @@ statement &mdash; and `build_capability_statement.py --check` fails if they disa
 
 UEI: `N37JST95C3S5` · CAGE: `6T0A7`
 
-### Awards (6)
+### Awards (7)
+- Washington, D.C. Top Workplaces — No. 77, 50–149 employee category (2026); links to topworkplaces.com listing
 - Washington Business Journal 50 Fastest Growing — No. 32 (2020)
 - Inc. 5000 (US) — No. 607 (2020), 2 consecutive years
 - Fast 100 Asian American Business — 2020, 2 consecutive years
@@ -125,7 +127,11 @@ The Data Management, Cybersecurity, Intelligence and Strategy pages were retired
 2026-09-18; their capability lists are recorded in git history and their URLs 301 to
 `/what-we-do/`.
 
-### Vidoori Team (`/who-we-are/leadership/`)
+### Vidoori Team (`/who-we-are/leadership/`) &mdash; HIDDEN, pending discussion
+
+**Hidden since 2026-10-02, not deleted** (`docs/known-issues.md` issue 22). The page builds and
+its URL resolves, but nothing links to it, it carries `noindex`, and it is not in
+`sitemap.xml`. Reachable only by typing the URL.
 
 The page is intended to include all employees; the current roster contains five people. All profiles use compact circular initials with names and titles below; click/keyboard expansion reveals the biography beneath the selected circle within its original column. Sahar's summary uses public LinkedIn About and credential information (https://www.linkedin.com/in/saharyamini). David and Tim retain role-based summaries pending access to their profile text.
 | Name | Title |
@@ -137,7 +143,7 @@ The page is intended to include all employees; the current roster contains five 
 | Tim Withum | Chief Technology Officer |
 
 There is no Board of Advisors section. Individual bio URLs do not exist; the ten legacy
-`/who-we-are/leadership/<name>` paths all 301 to the single page.
+`/who-we-are/leadership/<name>` paths 301 to `/who-we-are/` while the page is hidden.
 
 ### Insights — 18 posts
 Category path segments in use: `news`, `cybersecurity`, `data`, `test-integration`,

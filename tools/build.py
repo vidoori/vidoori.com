@@ -338,7 +338,7 @@ def render(site, shell, meta, content, src_name, posts=None):
         "{{JSONLD}}": build_jsonld(site, meta),
         "{{NAV}}": render_nav(site, meta.get("nav"), path),
         "{{FOOTER_COLUMNS}}": render_footer_columns(site),
-        "{{HEAD_EXTRA}}": meta.get("head", "").replace("\\n", "\n"),
+        "{{HEAD_EXTRA}}": robots_meta(meta) + meta.get("head", "").replace("\\n", "\n"),
         "{{CONTENT}}": content.rstrip() + "\n",
         "{{CSS_VERSION}}": asset_version("assets/css/site.css"),
         "{{JS_VERSION}}": asset_version("assets/js/site.js"),
@@ -358,17 +358,33 @@ def render(site, shell, meta, content, src_name, posts=None):
     return BANNER.format(src=src_name) + page
 
 
+def robots_meta(meta):
+    """`robots: noindex` in front matter hides a page from search engines.
+
+    Used for a page that must keep existing but not be found: it gets a robots
+    meta tag here and is left out of sitemap.xml. _headers sends a matching
+    X-Robots-Tag for the same path, which also covers crawlers that never
+    parse the HTML. Hiding it from people is separate: remove its links.
+    """
+    if meta.get("robots") == "noindex":
+        return '<meta name="robots" content="noindex, nofollow">\n'
+    return ""
+
+
 def write_sitemap(site, results):
     """Generate sitemap.xml from the same page list that was just rendered.
 
     Generated rather than hand-maintained for the same reason as the Insights
     index: a hand-written sitemap goes stale the first time someone forgets.
-    Excludes the 404 page, which should never be indexed.
+    Excludes the 404 page, which should never be indexed, and any page whose
+    front matter says `robots: noindex`.
     """
     origin = site["origin"]
     entries = []
     for meta, _ in results:
         if meta.get("schema") == "none" or meta["path"].endswith(".html"):
+            continue
+        if meta.get("robots") == "noindex":
             continue
 
         # Rough priority: home > top-level sections > everything else.

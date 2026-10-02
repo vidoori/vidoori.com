@@ -42,7 +42,6 @@
       "href": "/who-we-are/",
       "children": [
         { "label": "Our Company", "href": "/who-we-are/" },
-        { "label": "Vidoori Team", "href": "/who-we-are/leadership/" },
         { "label": "Our Values", "href": "/who-we-are/our-values/" },
         { "label": "Corporate Culture", "href": "/who-we-are/corporate-culture/" },
         { "label": "Certifications", "href": "/who-we-are/certifications/" },
@@ -80,7 +79,6 @@
       "heading": "Who We Are",
       "links": [
         { "label": "Our Company", "href": "/who-we-are/" },
-        { "label": "Vidoori Team", "href": "/who-we-are/leadership/" },
         { "label": "Certifications", "href": "/who-we-are/certifications/" },
         { "label": "Awards", "href": "/who-we-are/awards/" },
         { "label": "Contract Vehicles", "href": "/who-we-are/contract-vehicles/" }
