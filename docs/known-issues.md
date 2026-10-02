@@ -1,7 +1,8 @@
 # Known issues and open decisions
 
 Open decisions, accepted trade-offs, and the record of what was resolved, from the August 2026
-rebuild onward. **Current as of 2026-10-02.** Nothing here blocks local development.
+rebuild onward. **Current as of 2026-10-02**, the day the site went live on
+`www.vidoori.com`. Nothing here blocks local development.
 
 Issue numbers are stable &mdash; `CLAUDE.md`, `_redirects`, `_headers` and the content catalog
 cite them &mdash; so items are grouped by status rather than renumbered. When you resolve one,
@@ -16,9 +17,6 @@ strike through its heading, add the date, and move it to *Resolved*; do not dele
 | 19 | Capability statement not on `tools/pdfkit.py` | Engineering, low priority |
 | 21 | PDF/UA conformance not checked in CI | Engineering, low priority |
 | 22 | Vidoori Team page hidden | Owner decision |
-| 23 | Apex &rarr; www redirect | Go-live (outside the repo) |
-| 24 | `CONTACT_TO_EMAIL` is an individual | Cloudflare dashboard |
-| 25 | `test.vidoori.com` is crawlable | Cloudflare dashboard |
 
 ---
 
@@ -128,28 +126,6 @@ links.
 If the page is retired instead, it is not one edit: follow the removal checklist in `CLAUDE.md`
 &sect;7. The bio redirects already point elsewhere, so ADR 3 is satisfied either way.
 
-### 23. Apex &rarr; www redirect
-
-`origin` in `_src/site.json` is `https://www.vidoori.com`, so every canonical tag and
-`sitemap.xml` point at the www host. If both `vidoori.com` and `www.vidoori.com` serve the
-site without a redirect, the same content is reachable on two hosts. **`_redirects` cannot fix
-this** &mdash; it is path-only and cannot redirect across hostnames. It is handled at the DNS
-or zone level, outside this repo, as part of the go-live the owner is running.
-
-### 24. `CONTACT_TO_EMAIL` points at an individual
-
-The contact and referral forms both deliver to `CONTACT_TO_EMAIL`, a Cloudflare Pages
-environment variable that currently names one person&rsquo;s inbox rather than a shared mailbox.
-Inquiries and referrals therefore depend on that person. Changing it is a dashboard setting,
-not a code change; send a test submission afterwards.
-
-### 25. `test.vidoori.com` is publicly crawlable
-
-The test host serves the full site to anyone. Canonicals point at production, which covers most
-of the duplicate-content risk. An `X-Robots-Tag: noindex` Transform Rule scoped to that hostname
-would close it; the owner has decided against Cloudflare Access. It cannot go in `_headers`,
-which applies to every hostname the project serves, production included.
-
 ---
 
 ## Accepted &mdash; deliberate, do not re-raise
@@ -214,6 +190,15 @@ only so the mismatch between label and path is not later mistaken for an oversig
 
 The page has since been hidden pending discussion; see issue 22.
 
+### 24. `CONTACT_TO_EMAIL` points at an individual &mdash; accepted 2026-10-02
+
+The contact and referral forms both deliver to `CONTACT_TO_EMAIL`, a Cloudflare Pages
+environment variable that currently names one person&rsquo;s inbox rather than a shared mailbox.
+Inquiries and referrals therefore depend on that person. Changing it is a dashboard setting,
+not a code change; send a test submission afterwards. Unchanged at go-live on 2026-10-02 &mdash;
+both forms were confirmed delivering to it. **Owner has decided to leave it as is.** Do not
+re-raise it.
+
 ---
 
 ## Resolved
@@ -235,7 +220,7 @@ confirms the guard is active rather than merely configured.
 
 Note the widget no longer always passes. Verification genuinely fails on any hostname not on
 the widget's list — `localhost` is not on it, so forms cannot be exercised under
-`python3 -m http.server`. Test on a preview deployment or `test.vidoori.com`.
+`python3 -m http.server`. `test.vidoori.com` was retired on 2026-10-02, so a preview deployment validates only if its `*.pages.dev` hostname is on the widget's hostname list; otherwise forms can only be exercised on production.
 
 ### 2. ~~One PDF exceeds Cloudflare Pages' file size limit~~ (resolved)
 
@@ -440,3 +425,25 @@ version, so a guide with contact placeholders could have shipped without it.
 The contract requires the guide to be republished within ten business days of every contract
 modification. `python3 tools/build_sewp_ordering_guide.py --check` lists any placeholder
 reintroduced later.
+
+### 23. ~~Apex &rarr; www redirect~~ (resolved 2026-10-02)
+
+`origin` in `_src/site.json` is `https://www.vidoori.com`, so every canonical tag and
+`sitemap.xml` point at the www host. If both `vidoori.com` and `www.vidoori.com` serve the
+site without a redirect, the same content is reachable on two hosts. **`_redirects` cannot fix
+this** &mdash; it is path-only and cannot redirect across hostnames. It is handled at the DNS
+or zone level, outside this repo.
+
+**Resolved 2026-10-02:** the owner confirmed the bare `vidoori.com` redirects to `www` as part
+of the go-live.
+
+### 25. ~~`test.vidoori.com` is publicly crawlable~~ (resolved 2026-10-02)
+
+The test host serves the full site to anyone. Canonicals point at production, which covers most
+of the duplicate-content risk. An `X-Robots-Tag: noindex` Transform Rule scoped to that hostname
+would close it; the owner has decided against Cloudflare Access. It cannot go in `_headers`,
+which applies to every hostname the project serves, production included.
+
+**Resolved 2026-10-02:** the owner removed `test.vidoori.com` from the Pages custom domains,
+and the hostname no longer resolves publicly, so there is nothing left to crawl. One side
+effect: it was the non-production host where the forms could be tested &mdash; see issue 1.

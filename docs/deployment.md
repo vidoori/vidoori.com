@@ -52,6 +52,12 @@ Redirect Rule. `_redirects` cannot do cross-hostname redirects.
 
 ### 5. Cutover
 
+**Completed 2026-10-02.** `www.vidoori.com` now serves the Pages project. Verified after the
+switch: pages, legacy redirects, the 404 page, both PDFs and the hidden team page&rsquo;s
+`X-Robots-Tag` on the live host, and both forms delivered email end to end. The sitemap is
+submitted to Google Search Console; Bing was deliberately skipped. The checklist below is
+kept for reference.
+
 The DNS switch is the risky step. Before it:
 
 - [ ] Preview deployment reviewed on desktop and mobile

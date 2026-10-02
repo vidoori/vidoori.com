@@ -69,13 +69,13 @@ Turnstile has two keys. They are not interchangeable:
 - **Secret key** — never commit. It goes in the Pages environment variable above.
 
 **The repo ships the live site key `0x4AAAAAAEkCdhTn3knzXCzq`** (widget hostname
-`vidoori.com`, which also covers `test.vidoori.com`). The matching **secret key must be set
+`vidoori.com`). The matching **secret key must be set
 as the `TURNSTILE_SECRET_KEY` Pages environment variable** — until it is, `/api/contact`
 returns 503.
 
 Because this is a real widget rather than the always-passes test key, verification fails on
 any hostname not on the widget's list. `localhost` is not on it, so the widget will not
-validate under `python3 -m http.server`; test on a preview deployment or `test.vidoori.com`.
+validate under `python3 -m http.server`. `test.vidoori.com` was retired on 2026-10-02, so a preview deployment validates only if its `*.pages.dev` hostname is on the widget's hostname list; otherwise forms can only be exercised on production.
 
 If the widget is ever rotated or replaced:
 

@@ -21,7 +21,7 @@
     "country": "US"
   },
 
-  "_turnstileNote": "Cloudflare Turnstile SITE key (public, safe to commit). The matching SECRET key is a Pages environment variable named TURNSTILE_SECRET_KEY — never put it here. This is the live widget for vidoori.com; the widget is configured for the vidoori.com and test.vidoori.com hostnames. See docs/contact-form.md.",
+  "_turnstileNote": "Cloudflare Turnstile SITE key (public, safe to commit). The matching SECRET key is a Pages environment variable named TURNSTILE_SECRET_KEY — never put it here. This is the live widget for vidoori.com; the widget is configured for the vidoori.com hostname (test.vidoori.com was retired 2026-10-02). See docs/contact-form.md.",
   "turnstileSiteKey": "0x4AAAAAAEkCdhTn3knzXCzq",
 
   "identifiers": {

@@ -18,7 +18,8 @@ It is a **static site**: plain HTML, one CSS file, one small JS file, deployed o
 Pages. **No Node, no framework, no package manager, no build step on deploy.** Cloudflare
 serves the committed HTML as-is.
 
-It was rebuilt in August 2026 from a legacy WordPress site. That history matters mainly
+It was rebuilt in August 2026 from a legacy WordPress site and **went live on
+`www.vidoori.com` on 2026-10-02**. That history matters mainly
 because **every URL the old site had must keep resolving** — see §7.
 
 ### Audience and tone
@@ -284,7 +285,7 @@ URLs 301 to `/what-we-do/`. Cloud-Native was promoted out of what used to be a s
 the Core/Supporting split no longer exists.
 
 **Leadership:** Trong Khuong Bui (Founder & CEO) and Eric Huang (Chief Strategy Officer).
-There is no Board of Advisors. **The Vidoori Team page is hidden** (see §12 item 7); while it
+There is no Board of Advisors. **The Vidoori Team page is hidden** (see §12 item 4); while it
 is, the ten legacy per-person bio URLs 301 to `/who-we-are/` rather than to it.
 
 **Corporate facts** live in `_src/site.json` and flow into the footer and JSON-LD — change
@@ -326,7 +327,7 @@ optionally `POSTMARK_MESSAGE_STREAM` and `CONTACT_BCC_EMAIL`.
 The Turnstile **site** key in `_src/site.json` is public and safe to commit; it holds the
 live widget for `vidoori.com`. Because it is a real widget, verification fails on hostnames
 not on the widget's list — `localhost` is not, so the form cannot be validated under a plain
-local server. Test on a preview deployment or `test.vidoori.com`.
+local server. `test.vidoori.com` was retired on 2026-10-02, so a preview deployment validates only if its `*.pages.dev` hostname is on the widget's hostname list; otherwise forms can only be exercised on production.
 
 If you change form fields, change them in three places or the form breaks: the markup in the
 page, the client validation in `assets/js/site.js`, and the server validation in the Function
@@ -340,7 +341,7 @@ the widget never renders and every submission fails verification.
 
 ## 10. Deployment
 
-Cloudflare Pages. Build command **empty**, output directory `/`. Every push to `main`
+**Live on `www.vidoori.com` since 2026-10-02.** Cloudflare Pages. Build command **empty**, output directory `/`. Every push to `main`
 publishes to production; other branches get preview deployments. `_headers` sets a deliberately
 tight CSP (the only third-party origin is `challenges.cloudflare.com` for Turnstile) plus
 HSTS, `X-Frame-Options: DENY`, and a restrictive `Permissions-Policy`.
@@ -373,46 +374,40 @@ same change, not later:
 
 **Infrastructure and configuration**
 
-1. **Apex → www redirect is not in place.** `origin` is `https://www.vidoori.com`, so
-   canonicals point at the www host. If both `vidoori.com` and `www.vidoori.com` are added as
-   Pages custom domains without a redirect, both serve the site. **`_redirects` cannot fix
-   this** — it is path-only and cannot redirect across hostnames. It must be a Cloudflare
-   Redirect Rule or Bulk Redirect at the zone level. Issue 23.
-2. **`CONTACT_TO_EMAIL` points at an individual**, not a shared mailbox. Worth changing before
-   the www cutover so inquiries and referrals do not depend on one person's inbox. Issue 24.
-3. **`test.vidoori.com` is publicly crawlable.** Canonicals point at production, which covers
-   most of the risk. A `X-Robots-Tag: noindex` Transform Rule scoped to that hostname would
-   close it; the owner has decided against Cloudflare Access. Issue 25.
-4. **`logos/` and `assets/img/` hold byte-identical SVGs.** Accepted. If a logo changes,
+1. **`logos/` and `assets/img/` hold byte-identical SVGs.** Accepted. If a logo changes,
    update `logos/` then `cp logos/*.svg assets/img/`. Issue 10.
-5. **`main` is not protected.** The repo moved to the `vidoori` org on 2026-09-15 so a
+2. **`main` is not protected.** The repo moved to the `vidoori` org on 2026-09-15 so a
    pull-request workflow could be enforced, but the org is on GitHub Free, where rulesets are
    configurable and *not enforced* on private repos. Enforcement needs GitHub Team, billed per
    org member. Until it is settled — upgrade, make the repo public, or rely on convention —
    `main` is protected by agreement only, and every push to it deploys to production.
    Issue 17.
 
-6. **The referral program has no linked T&Cs.** Deferred to HR and Legal by the owner on
+3. **The referral program has no linked T&Cs.** Deferred to HR and Legal by the owner on
    2026-10-02; the site launches with the program rules as they stand. Issue 7.
-7. **The Vidoori Team page is hidden, not deleted &mdash; pending discussion.**
+4. **The Vidoori Team page is hidden, not deleted &mdash; pending discussion.**
    `/who-we-are/leadership/` still builds and resolves, but every link to it was removed on
    2026-10-02, it carries `robots: noindex` (meta tag plus `X-Robots-Tag` in `_headers`), and
    it is out of `sitemap.xml`. Do not delete it, and do not link to it, until the owner
    decides. Issue 22 lists what to undo to restore it.
 
+**Closed at go-live, 2026-10-02:** the apex &rarr; www redirect is in place (issue 23), and
+`CONTACT_TO_EMAIL` stays pointed at an individual by owner decision (issue 24), and
+`test.vidoori.com` was retired (issue 25).
+
 **Content decisions** &mdash; closed as of 2026-09-18, kept here so they are not re-raised
 
-8. ~~**The capability statement PDF still lists 8(a) STARS III.**~~ Closed 2026-09-18. The
+5. ~~**The capability statement PDF still lists 8(a) STARS III.**~~ Closed 2026-09-18. The
    PDF is now generated by `tools/build_capability_statement.py` and agrees with the site.
    CI now enforces agreement via `build_capability_statement.py --check`. The NAICS
    follow-up under issue 18 is also closed: `519190` was corrected to `519290` against the
    SAM.gov registration.
-9. ~~**The homepage tagline was replaced.**~~ Accepted by the owner 2026-09-18, along with the
+6. ~~**The homepage tagline was replaced.**~~ Accepted by the owner 2026-09-18, along with the
    6-9 month rotation figure on `/vail/`. Both are deliberate; do not re-raise them. Issue 13.
-10. ~~**A raster image was added to the homepage**, contradicting ADR 2.~~ Closed 2026-09-18.
+7. ~~**A raster image was added to the homepage**, contradicting ADR 2.~~ Closed 2026-09-18.
    Re-encoded to 1200x900 WebP (1994 KB to 86 KB), and ADR 2 amended to permit illustration
    under stated conditions rather than ban it. Issue 14.
-11. ~~**Leadership bios are uneven in length.**~~ Accepted 2026-09-18, along with the two ways
+8. ~~**Leadership bios are uneven in length.**~~ Accepted 2026-09-18, along with the two ways
    `/vail/` describes its intake (&ldquo;college graduates&rdquo; in body copy,
    &ldquo;juniors and new hires&rdquo; in the diagram). Both are deliberate; do not re-raise
    them. Issue 15.
