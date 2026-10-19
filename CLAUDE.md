@@ -65,7 +65,7 @@ copies the site serves. If a logo is revised, update `logos/` then
 _src/                      SOURCE — this is what you edit
   site.json                  nav, footer, contact block, Turnstile site key
   partials/base.html         page shell: <head>, header, nav, footer
-  pages/*.html               39 files: front matter + <main> content
+  pages/*.html               40 files: front matter + <main> content
 
 tools/                     Python 3 stdlib only, never runs on deploy
   build.py                   _src/ -> committed HTML + sitemap.xml
@@ -268,7 +268,7 @@ someone no longer listed is stale and should be repointed at `info@vidoori.com` 
 
 ## 8. Facts about the site
 
-39 pages: 21 pages + 18 posts. `docs/content-catalog.md` is the authoritative inventory —
+40 pages: 21 pages + 19 posts. `docs/content-catalog.md` is the authoritative inventory —
 what the site says and where each fact lives. Check it before hunting through files.
 
 **Nav:** Who We Are · What We Do · Solutions (VPT only, external) · Insights · Careers.
@@ -402,7 +402,8 @@ by a ruleset (issue 17).
    6-9 month rotation figure on `/vail/`. Both are deliberate; do not re-raise them. Issue 13.
 6. ~~**A raster image was added to the homepage**, contradicting ADR 2.~~ Closed 2026-09-18.
    Re-encoded to 1200x900 WebP (1994 KB to 86 KB), and ADR 2 amended to permit illustration
-   under stated conditions rather than ban it. Issue 14.
+   under stated conditions rather than ban it. Issue 14. The image itself was removed at the
+   owner&rsquo;s request on 2026-10-19; the amendment stands.
 7. ~~**Leadership bios are uneven in length.**~~ Accepted 2026-09-18, along with the two ways
    `/vail/` describes its intake (&ldquo;college graduates&rdquo; in body copy,
    &ldquo;juniors and new hires&rdquo; in the diagram). Both are deliberate; do not re-raise

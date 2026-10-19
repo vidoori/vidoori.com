@@ -349,6 +349,10 @@ Owner has decided to **keep it**. Both follow-ups are resolved.
   markup or inline SVG. The amendment in `docs/architecture.md` carries the full conditions,
   including the version-stamp trap: images have no `?v=`, so a revision needs a new filename.
 
+**Update 2026-10-19:** the image was removed at the owner&rsquo;s request and not replaced.
+`assets/img/team-game.webp` and its `.team-image` rule are deleted; the section now sets its
+heading beside the copy in a `.split split--wide-end`. The ADR 2 amendment still stands.
+
 ### 18. ~~The capability statement PDF still lists 8(a) STARS III~~ (resolved 2026-09-18)
 
 The PDF was a hand-made artefact that had drifted: it advertised STARS III after that vehicle

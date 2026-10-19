@@ -18,7 +18,7 @@ at the bottom — it is the rationale for the rules in `_redirects` and should n
 | Periwinkle | `#BAC0D1` | Secondary / muted accent |
 | Green | `#9AD389` | Accent highlight |
 
-## Site structure (39 pages: 21 pages + 18 posts)
+## Site structure (40 pages: 21 pages + 19 posts)
 
 ### Primary nav (`_src/site.json`)
 - **Who We Are** — `/who-we-are/`
@@ -46,8 +46,8 @@ copy rather than the primary nav.
 ## Key content
 
 ### Homepage presentation
-- Join Our Team uses a generated illustration of coworkers enjoying a tabletop game, replacing the abstract network diagram at the owner's request.
-- News and perspectives uses three compact columns on desktop and stacked stories on smaller screens.
+- Join Our Team has no image: the heading sits beside the copy and buttons. The generated illustration that was there was removed at the owner's request on 2026-10-19.
+- News and perspectives uses three compact columns on desktop and stacked stories on smaller screens. The cards show the three most recent posts; when a post is added, add its card first and drop the oldest.
 
 ### Positioning
 - Homepage headline: "Modernize mission-critical systems. Deliver with confidence."
@@ -145,12 +145,13 @@ The page is intended to include all employees; the current roster contains five 
 There is no Board of Advisors section. Individual bio URLs do not exist; the ten legacy
 `/who-we-are/leadership/<name>` paths 301 to `/who-we-are/` while the page is hidden.
 
-### Insights — 18 posts
+### Insights — 19 posts
 Category path segments in use: `news`, `cybersecurity`, `data`, `test-integration`,
 `cloud-native`, `innovations`. No publish dates are exposed anywhere on the site.
 
 | Post | Path |
 |---|---|
+| Sahar Yamini Named a 2026 FinOps Awards Honoree | `/news/sahar-yamini-named-2026-finops-awards-honoree/` |
 | The Partnership Between Administrative and Synthetic Data | `/data/the-partnership-between-administrative-and-synthetic-data/` |
 | Embracing a Cloud-Native Mindset in Federal Agencies | `/cloud-native/embracing-a-cloud-native-mindset-in-federal-agencies/` |
 | Achieving Excellence: Passing ISO Surveillance Audit | `/news/achieving-excellence-passing-iso-surveillance-audit/` |
