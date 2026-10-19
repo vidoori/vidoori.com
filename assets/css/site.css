@@ -1531,8 +1531,6 @@ a:hover { color: var(--navy-500); }
   a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 9pt; word-break: break-all; }
 }
 
-.team-image { display: block; width: 100%; height: auto; border-radius: var(--radius-lg); }
-
 /* Leadership: five profiles sharing one full-width biography panel.
 
    The page ships <details> elements, which work unaided — with JavaScript off
