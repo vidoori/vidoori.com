@@ -55,7 +55,7 @@ import pdfkit  # noqa: E402
 # Content. Edit this, not the layout code.
 # ---------------------------------------------------------------------------
 
-VERSION = "Version 1.0"
+VERSION = "Version 1.1"
 EFFECTIVE = "November 1, 2026"
 CONTRACT_NUMBER = "80TECH26D1457"
 
@@ -86,6 +86,7 @@ CONTACTS = {
 
 CONTRACT_FACTS = [
     ("Contract number", CONTRACT_NUMBER),
+    ("Period of performance", "November 1, 2026 - October 31, 2036"),
     ("Vehicle", "NASA SEWP VI Government-Wide Acquisition Contract"),
     ("Category", "C - ITC/AV Mission-Based Services"),
     ("Award date", "July 2, 2026"),
@@ -97,6 +98,17 @@ CONTRACT_FACTS = [
     ("CAGE code", "6T0A7"),
     ("Primary NAICS", "541512 - Computer Systems Design Services"),
     ("Business size", "Small Business"),
+]
+
+# The government program office, not a Vidoori contact. Values as supplied by
+# the program manager; do not merge into CONTACTS.
+SEWP_OFFICE = [
+    ("Office", "NASA SEWP Program Management Office"),
+    ("Location", "Goddard Space Flight Center, Greenbelt, MD"),
+    ("Customer Help Desk", "(301) 286-1478"),
+    ("Email", "help@sewp.nasa.gov"),
+    ("Hours", "Monday - Friday, 7:30 AM - 6:00 PM ET"),
+    ("Website", "https://www.sewp.nasa.gov"),
 ]
 
 SECTIONS = [
@@ -203,9 +215,13 @@ SECTIONS = [
                   "QRT; the formal request must still be submitted through it."),
             ("h3", "Pricing and payment"),
             ("p", "Quoted prices are at or below the contract price for the offering. Vidoori "
-                  "accepts the Government Purchase Card. The SEWP administrative charge is "
-                  "embedded in offering prices by contract and is never quoted or invoiced as "
-                  "a separate line item."),
+                  "accepts the Government Purchase Card."),
+            ("h3", "SEWP Fee"),
+            ("p", "SEWP is a self-funded program supported by an Agency Administrative "
+                  "Handling Fee of 0.34% applied to all orders. The fee is included in the "
+                  "quoted price of all offerings and is never listed as a separate line item "
+                  "on quotes, orders, or invoices. Customers do not pay any additional charge "
+                  "beyond the quoted price."),
         ],
     },
     {
@@ -290,6 +306,20 @@ SECTIONS = [
             ("p", "This guide is republished within ten business days of every contract "
                   "modification. The current version is always available at "
                   "vidoori.com/sewp."),
+        ],
+    },
+    {
+        "n": "6",
+        "title": "NASA SEWP Program Office",
+        "chum": "Government program office contact information, separate from the "
+                "contractor's own contacts.",
+        "blocks": [
+            ("p", "The NASA SEWP Program Management Office administers the SEWP VI contract. "
+                  "It is separate from the Vidoori contacts in section 5."),
+            ("facts", SEWP_OFFICE),
+            ("h3", "Order submission"),
+            ("p", "All delivery orders, credit card orders, and modifications are sent to "
+                  "sewporders@sewp.nasa.gov."),
         ],
     },
 ]
@@ -379,7 +409,9 @@ class Flow:
         self.y -= 32
 
     def h3(self, s):
-        self.need(30)
+        # Room for the heading plus a few lines of what follows, so a heading
+        # is never stranded at the foot of a page.
+        self.need(70)
         self.y -= 6
         self.page.text(MARGIN, self.y - 11, s, 10.5, NAVY_900, bold=True, tag="H3")
         self.y -= 20
@@ -479,7 +511,7 @@ def build(logo_path=None):
             elif kind == "quote":
                 f.para(value, color=NAVY_900, indent=14.0)
             elif kind == "facts":
-                f.facts(CONTRACT_FACTS)
+                f.facts(value or CONTRACT_FACTS)
             elif kind == "contact":
                 f.contact(CONTACTS[value])
 
