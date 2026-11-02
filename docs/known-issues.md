@@ -92,7 +92,9 @@ What hiding it involved, and therefore what to undo to bring it back:
   Advisors &mdash; so rewrite it rather than restoring it verbatim.
 - **Search engines told not to index it** two ways: `robots: noindex` in its front matter, which
   makes `tools/build.py` emit `<meta name="robots" content="noindex, nofollow">` and omit it from
-  `sitemap.xml`; and an `X-Robots-Tag` rule for `/who-we-are/leadership/*` in `_headers`.
+  `sitemap.xml`; and an `X-Robots-Tag` rule for `/who-we-are/leadership/` in `_headers`. That
+  rule is the exact path on purpose: it was a splat until 2026-11-02, and Cloudflare applies
+  `_headers` to redirect responses too, so it stamped `noindex` onto the ten bio 301s (issue 26).
 - **Legacy bio redirects repointed.** The ten old `/who-we-are/leadership/<name>` URLs in
   `_redirects` now 301 to `/who-we-are/` instead of to this page, so outside links no longer
   deliver people to it.
@@ -435,6 +437,25 @@ which applies to every hostname the project serves, production included.
 **Resolved 2026-10-02:** the owner removed `test.vidoori.com` from the Pages custom domains,
 and the hostname no longer resolves publicly, so there is nothing left to crawl. One side
 effect: it was the non-production host where the forms could be tested &mdash; see issue 1.
+
+### 26. ~~Search Console findings after go-live~~ (resolved 2026-11-02)
+
+The Page indexing report exported on 2026-10-08 listed 35 URLs as not indexed. Most were
+legacy WordPress URLs last crawled before go-live, or redirects that are working as intended.
+Four real gaps were fixed:
+
+- **Legacy bio redirects carried `noindex`.** `_headers` matched `/who-we-are/leadership/*`,
+  which also covers the ten bio 301s, so Search Console reported
+  `/who-we-are/leadership/suzan-zimmerman/` as *Excluded by &lsquo;noindex&rsquo;* and the
+  redirects passed nothing to `/who-we-are/`. The rule now names the exact path. See issue 22.
+- **`/home` 404ed.** WordPress answered it as an alias of `/`. It now 301s to `/`.
+- **Per-post RSS feeds 404ed** (`/news/<slug>/feed/` and the like). They now 301 to their post.
+- **Four retired capability PDFs 404ed**, against ADR 3. They now 301 to the nearest live page.
+  The Connect &amp; Earn referral T&amp;Cs PDF still 404s on purpose: pointing it at `/careers/`
+  would imply the terms live there, and that is issue 7.
+
+Left alone as correct: the WordPress emoji script and old favicon (files, not pages), and the
+junk URL `/wp-content/themes/vidoori/*` with a literal asterisk.
 
 ### 17. ~~Branch protection on `main` is not in place~~ (resolved 2026-10-02)
 
