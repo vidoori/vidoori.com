@@ -404,6 +404,12 @@ verbatim, as the page does, and lists eligible customers. The DRAFT banner now k
 `[TBD]` value, contacts included &mdash; previously it checked only the contract facts and the
 version, so a guide with contact placeholders could have shipped without it.
 
+**2026-11-02, Version 1.1:** added the period of performance (November 1, 2026 &ndash;
+October 31, 2036) under the contract number, a SEWP Fee subsection in section 2, and a new
+section 6 for the NASA SEWP Program Office, separate from the Vidoori contacts. The page
+gained the same three items. The download link now carries a `?v=` content hash so the
+revision is not served stale from cache.
+
 The contract requires the guide to be republished within ten business days of every contract
 modification. `python3 tools/build_sewp_ordering_guide.py --check` lists any placeholder
 reintroduced later.

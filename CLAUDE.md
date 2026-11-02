@@ -193,8 +193,10 @@ tokens, never raw hex.**
    white). Apply the same rule to any new panel component.
 
 **Asset URLs are version-stamped.** `tools/build.py` appends `?v=<content hash>` to the
-`site.css` and `site.js` references in every page, so changing either file changes its URL and
-the new version reaches visitors immediately. Do not hand-write those references without the
+`site.css` and `site.js` references in every page, and to every `href` under `/assets/docs/`
+(the ordering guide and capability statement), so changing any of them changes its URL and
+the new version reaches visitors immediately. That makes order matter: **regenerate a PDF,
+then run `build.py`**, or `--check` fails on the stale hash. Do not hand-write those references without the
 stamp. This exists because Cloudflare was observed serving a five-day-old `site.js` from the
 edge: the zone's Browser Cache TTL was set to 5 days and silently overrode `_headers`. That
 setting is now "Respect Existing Headers" and the served TTLs match the file — but the stamp
@@ -226,7 +228,7 @@ because a diagram is mostly text and text in an image cannot reflow. Illustratio
 allowed, but only if it is AI-generated or otherwise unambiguously ours, shows no identifiable
 person, is sized to no more than 2× what the container actually renders at, ships as WebP, and
 carries real `alt` text with matching `width`/`height`. Read the ADR 2 amendment before adding
-one. Note images carry no `?v=` stamp, so a revision needs a new filename or the edge serves
+one. Note images carry no `?v=` stamp (PDFs linked from `/assets/docs/` do), so a revision needs a new filename or the edge serves
 the old file.
 
 **Accessibility is a commitment, not a nice-to-have:** semantic landmarks, a skip link,

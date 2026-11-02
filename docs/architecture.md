@@ -118,7 +118,9 @@ from HTML and CSS instead. The rule of thumb: if it is a picture, an image is fi
 words in boxes, it is markup.
 
 **One trap this creates.** `tools/build.py` version-stamps `site.css` and `site.js` with a
-content hash, but images carry no `?v=`. A revised image reusing its filename will be served
+content hash, and does the same for every link to a PDF under `/assets/docs/` (added
+2026-11-02, when the revised SEWP ordering guide had to reach customers the day it was
+republished), but images carry no `?v=`. A revised image reusing its filename will be served
 stale from the edge. Ship revisions under a new filename and update the reference.
 
 ---

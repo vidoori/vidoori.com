@@ -351,6 +351,17 @@ def render(site, shell, meta, content, src_name, posts=None):
     if "{{INSIGHTS_LIST}}" in page:
         page = page.replace("{{INSIGHTS_LIST}}", render_insights_list(posts or []))
 
+    # Documents under /assets/docs/ get the same ?v= stamp as the CSS and JS.
+    # The ordering guide is republished in place under a fixed filename (the
+    # contract and printed material cite it), and _headers lets it be cached
+    # for a day, so without the stamp a revised guide can be served stale.
+    # Rebuild after regenerating a PDF, or --check fails on the old hash.
+    page = re.sub(
+        r'href="/(assets/docs/[^"?#]+)"',
+        lambda m: 'href="/%s?v=%s"' % (m.group(1), asset_version(m.group(1))),
+        page,
+    )
+
     leftover = re.findall(r"\{\{[A-Z_]+\}\}", page)
     if leftover:
         raise ValueError("%s: unreplaced tokens %s" % (src_name, sorted(set(leftover))))
