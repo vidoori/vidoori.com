@@ -40,6 +40,9 @@
 /pims/                                    /what-we-do/  301
 /tamela                                   /  301
 /tamela/                                  /  301
+# WordPress answered /home as well as /. Search Console caught it 404ing after go-live.
+/home                                     /  301
+/home/                                    /  301
 
 # Referral forms replaced by the referral section on /careers/
 /referral-program-form                    /careers/  301
@@ -96,6 +99,16 @@
 # File paths, so no trailing-slash variant.
 /wp-content/uploads/2025/07/Vidoori_CapabilityStatement.pdf        /assets/docs/Vidoori_CapabilityStatement.pdf  301
 
+# --- Legacy uploaded PDFs that were retired, sent to the nearest live page ---
+# Search Console was still crawling these after go-live. The Connect & Earn
+# referral T&Cs PDF is deliberately NOT redirected: the referral program has no
+# linked T&Cs (docs/known-issues.md issue 7), and pointing it at /careers/
+# would imply the terms live there.
+/wp-content/uploads/2023/03/Cloud-Native_v1.pdf                    /what-we-do/cloud-native/  301
+/wp-content/uploads/2023/01/Integration-and-Test-Capablities.pdf   /what-we-do/integration-test/  301
+/wp-content/uploads/2021/08/Applied-Intelligence-Capabilities.pdf  /what-we-do/  301
+/wp-content/uploads/2025/06/I-FSS-600.pdf                          /who-we-are/contract-vehicles/  301
+
 # ==========================================================================
 # DYNAMIC RULES — splats and placeholders. Everything static goes ABOVE this.
 # ==========================================================================
@@ -118,6 +131,12 @@
 /category/*                               /insights/  301
 /tag/*                                    /insights/  301
 /author/*                                 /insights/  301
+
+# --- Per-post RSS feeds: send each back to its post ---
+# Below the taxonomy splats so /category/x/feed/ etc. still go to /insights/.
+# A retired post's feed lands on its old URL, whose own rule takes it from there.
+/:section/:slug/feed                      /:section/:slug/  301
+/:section/:slug/feed/                     /:section/:slug/  301
 
 # --- WordPress plumbing ---
 /wp-admin/*                               /  301

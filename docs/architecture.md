@@ -138,10 +138,13 @@ search ranking and inbound links from press coverage.
 
 Where a legacy URL genuinely has no equivalent, `_redirects` issues a 301:
 
-- 10 individual leadership bio pages → the consolidated `/who-we-are/leadership/`
+- 10 individual leadership bio pages → `/who-we-are/` while the team page is hidden
+  (known-issues 22)
 - WordPress taxonomy archives (`/category/*`, `/tag/*`, `/author/*`) → `/insights/`
-- WordPress plumbing (`/wp-admin/*`, `/xmlrpc.php`, `/wp-json/*`) → `/`
-- Legacy PDF paths under `/wp-content/uploads/` → `/assets/docs/`
+- Per-post RSS feeds (`/<section>/<slug>/feed/`) → the post itself
+- WordPress plumbing (`/wp-admin/*`, `/xmlrpc.php`, `/wp-json/*`) and `/home` → `/`
+- The capability statement under `/wp-content/uploads/` → `/assets/docs/`; four retired
+  capability PDFs → the nearest live page. The referral T&Cs PDF still 404s (known-issues 7).
 
 `tools/check_links.py` treats a `_redirects` rule as a valid link target, so redirects and
 real pages are both verified.

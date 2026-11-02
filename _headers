@@ -53,7 +53,11 @@
   X-Robots-Tag: noindex
 
 # Hidden page: exists, but must not be indexed. Pairs with `robots: noindex` in
-# its front matter, which adds the meta tag and drops it from sitemap.xml. The
-# splat matches the bare directory too. See docs/known-issues.md issue 22.
-/who-we-are/leadership/*
+# its front matter, which adds the meta tag and drops it from sitemap.xml. See
+# docs/known-issues.md issue 22.
+# Exact path, NOT a splat. Cloudflare applies _headers to _redirects responses
+# too, so /who-we-are/leadership/* also stamped noindex onto the ten legacy bio
+# 301s beneath it. Search Console then reported them "Excluded by 'noindex'"
+# and the redirects passed nothing on to /who-we-are/.
+/who-we-are/leadership/
   X-Robots-Tag: noindex, nofollow
